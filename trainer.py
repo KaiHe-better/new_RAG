@@ -177,7 +177,7 @@ class My_Trainer:
                 batch_answer = data_item["answer"]
 
                 query = self.get_multi_query_input(question, data_item)
-                query_emb_list, attention_mask_list, bags_list = self.retriever.search_document(query, 5) 
+                query_emb_list, attention_mask_list, bags_list = self.retriever.search_document(query) 
                 retrieve_docs = combine_doc(bags_list)
 
                 input_dict = self.return_input_dict(dev_data_loader, data_item, retrieve_docs)
@@ -203,8 +203,8 @@ class My_Trainer:
                         # self.scheduler.step()
                     self.optimizer.zero_grad()
 
-                # if (step_num % self.args.train_eval==0) and step_num>1:
-                if (step_num % self.args.train_eval==0) :
+                if (step_num % self.args.train_eval==0) and step_num>1:
+                # if (step_num % self.args.train_eval==0) :
                     eval_num +=1
                     self.train_result_logger = empty_logger_file(self.train_result_logger)
 
@@ -246,7 +246,7 @@ class My_Trainer:
             if self.args.if_RA:
                 query = self.get_multi_query_input(question, data_item)
 
-                query_emb_list, attention_mask_list, bags_list = self.retriever.search_document(query, 5) 
+                query_emb_list, attention_mask_list, bags_list = self.retriever.search_document(query) 
                 retrieve_docs = combine_doc(bags_list)
 
                 if self.args.infer_add_gold_retrieval:

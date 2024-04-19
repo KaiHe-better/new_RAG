@@ -42,8 +42,8 @@ class Contriever(BertModel):
             output_hidden_states=output_hidden_states,
         )
 
-        last_hidden = model_output["last_hidden_state"]
-        last_hidden = last_hidden.masked_fill(~attention_mask[..., None].bool(), 0.0)
+        raw_last_hidden = model_output["last_hidden_state"]
+        last_hidden = raw_last_hidden.masked_fill(~attention_mask[..., None].bool(), 0.0)
 
         if self.config.pooling == "average":
             emb = last_hidden.sum(dim=1) / attention_mask.sum(dim=1)[..., None]
@@ -52,7 +52,7 @@ class Contriever(BertModel):
 
         if normalize:
             emb = torch.nn.functional.normalize(emb, dim=-1)
-        return emb
+        return raw_last_hidden, emb
 
 
 class XLMRetriever(XLMRobertaModel):

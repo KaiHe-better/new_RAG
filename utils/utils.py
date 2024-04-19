@@ -300,28 +300,7 @@ def load_LLM(args, dtype=torch.bfloat16):
         tokenizer = AutoTokenizer.from_pretrained("../LLM_models/llama2/Llama-2-7b-chat-hf", use_fast=False)
         return model, tokenizer
     else:
-        model_name_or_path = args.LLM
-        open_source_models = ["gpt2", "llama", "mistral"]
-        if any([m in model_name_or_path for m in open_source_models]):
-            if model_name_or_path == "gpt2":
-                model_name_or_path = "gpt2"
-
-            if model_name_or_path == "llama2-7b":
-                model_name_or_path = "../LLM_models/llama2/Llama-2-7b-chat-hf"
-
-            if model_name_or_path == "llama2-13b":
-                model_name_or_path = "../LLM_models/llama2/Llama-2-13b-chat-hf"
-
-            if model_name_or_path == "llama2-70b":
-                model_name_or_path = "../LLM_models/llama2/Llama-2-70b-chat-hf"
-
-            if model_name_or_path == "mistral-7B-v0.2":
-                model_name_or_path ="mistralai/Mistral-7B-Instruct-v0.2"
-
-
-            model_name_or_path = os.path.join(model_name_or_path)
-        else:
-            raise Exception(" Please choose valid LLM ! ")
+        model_name_or_path = os.path.join(args.LLM)
 
         # Load the FP16 modelargs.triever
         args.print_logger.info(f"Loading {model_name_or_path} in {dtype}...")
@@ -330,7 +309,7 @@ def load_LLM(args, dtype=torch.bfloat16):
             model_name_or_path,
             device_map='auto',
             torch_dtype=dtype,
-            max_memory=get_max_memory(),
+            # max_memory=get_max_memory(),
             load_in_8bit=False,
             offload_folder=model_name_or_path,
         )

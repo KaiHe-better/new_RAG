@@ -2,14 +2,15 @@ import os
 import yaml
 import sys
 import argparse
+from dotenv import load_dotenv
 
 parser = argparse.ArgumentParser()
 
 # system settings
 parser.add_argument("--config", type=str, default="mistral_USMLE_MI_RA.yaml", help="Path to the config file")
 parser.add_argument("--test_code_flag", type=bool, default=False, help="if retrieval augmented")
-parser.add_argument('--gpu', default="7", type=str, help='gpu device numbers')
-parser.add_argument('--ID', type=str, default='1', help='run ID')
+parser.add_argument('--gpu', default="4", type=str, help='gpu device numbers')
+parser.add_argument('--ID', type=str, default='7', help='run ID')
 parser.add_argument('--seed', default=42, help='trandom seed')
 parser.add_argument('--num_workers', default=16, type=int, help='data_loader_work')
 parser.add_argument("--loading_ckpt_path", type=str, default=None, help="loading_ckpt_path, None ")
@@ -17,7 +18,7 @@ parser.add_argument("--loading_ckpt_path", type=str, default=None, help="loading
 parser.add_argument("--if_train", type=bool, default=True, help="if retrieval augmented")
 parser.add_argument("--if_RA", type=bool, default=True, help="if retrieval augmented")
 parser.add_argument("--if_MI_RA", type=bool, default=True, help="if_MI_RA")
-parser.add_argument("--LLM", type=str,  default="mistral-7B-v0.2", choices=["llama2-7b", "chatGPT", "mistral-7B-v0.2"], help="LLM to use")
+parser.add_argument("--LLM", type=str,  default="mistral-7B-v0.2", choices=["llama3-7b", "chatGPT", "mistral-7B-v0.2"], help="LLM to use")
 parser.add_argument("--num_layers", type=int,  default=1, help="num_layers")
 # train
 parser.add_argument('--dataset', type=str, default="USMLE", choices=["USMLE", "MedMCQA", "HEADQA", "MMLU", "OTTQA"], help='train_file_path')
@@ -42,7 +43,6 @@ parser.add_argument('--nhead', type=int, default=8, help='MI_learner nhead')
 parser.add_argument('--dropout', type=float, default=0.1, help='MI_learner dropout')
 # loss
 parser.add_argument('--loss_list', type=str, default="kl_soft+kl_hard", help='kl_soft+kl_hard+mse')
-parser.add_argument('--mse_weight', type=float, default=0, help='soft_weight')
 parser.add_argument('--soft_weight', type=float, default=0.7, help='soft_weight')
 parser.add_argument('--hard_weight', type=float, default=0.3, help='hard_weight')
 # decoding
@@ -60,8 +60,8 @@ parser.add_argument('--if_hierarchical_retrieval', type=bool, default=False, hel
 parser.add_argument('--hierarchical_ratio', type=float, default=1.4, help='hierarchical_ratio, 1-2')
 parser.add_argument('--quantile_num', type=float, default=0.95, help='quantile_num, 0.8-1.1')
 # retriever
-parser.add_argument("--n_docs", type=int, default=5, help="Number of documents to retrieve per questions")
-parser.add_argument("--model_name_or_path", type=str,  default="facebook/dragon-plus-query-encoder", choices=["facebook/dragon-plus-query-encoder", "facebook/contriever-msmarco"], help="triever to use")
+parser.add_argument("--n_docs", type=int, default=10, help="Number of documents to retrieve per questions")
+parser.add_argument("--model_name_or_path", type=str,  default="facebook/contriever-msmarco", choices=["facebook/dragon-plus-query-encoder", "facebook/contriever-msmarco"], help="triever to use")
 parser.add_argument("--question_maxlength", type=int, default=512, help="Maximum number of tokens in a question")
 parser.add_argument("--passages", type=str, default="datasets/Retrieval_corpus/enwiki_2020_dec_intro_only.jsonl", help="Path to passages (.tsv file)")
 parser.add_argument("--passages_embeddings", type=str, default="datasets/Retrieval_corpus/enwiki_dec_2020_contriever_intro/*", help="Glob path to encoded passages")
@@ -90,7 +90,9 @@ args = parser.parse_args()
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
-os.environ["OPENAI_API_KEY"] = "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"
+
+load_dotenv(".env")
+os.environ["OPENAI_API_KEY"] = os.getenv('OPENAI_API_KEY')
 
 from dataloader.data_loader import get_loader  
 from trainer import My_Trainer

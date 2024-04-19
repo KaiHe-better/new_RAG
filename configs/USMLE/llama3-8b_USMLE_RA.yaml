@@ -1,5 +1,5 @@
 ---
-LLM: llama2-7b
+LLM: meta-llama/Meta-Llama-3-8B
 dataset: USMLE
 max_new_tokens: 1
 if_train: False

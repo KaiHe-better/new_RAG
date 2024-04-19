@@ -52,10 +52,10 @@ class Retriever:
                 truncation=True,
             )
             encoded_batch = {k: v.cuda() for k, v in encoded_batch.items()}
-            embeddings = self.model(**encoded_batch)
+            last_hidden_state, pooler_output = self.model(**encoded_batch)
             attention_mask = encoded_batch["attention_mask"]
 
-        return embeddings.last_hidden_state, embeddings.pooler_output, attention_mask
+        return last_hidden_state, pooler_output, attention_mask
     
     def embed_queries_demo(self, queries):
         embeddings, batch_question = [], []
@@ -153,15 +153,14 @@ class Retriever:
         self.passage_id_map = {x["id"]: x for x in self.passages}
         print("passages have been loaded")
 
-    def search_document(self, query, top_n=10):
+    def search_document(self, query):
         questions_embedding, questions_embedding_mean, attention_mask = self.embed_queries(self.args, query)
 
         # get top k results
         doc_list = []
         for item in questions_embedding_mean:
             top_ids_and_scores = self.index.search_knn(item.unsqueeze(0).cpu().numpy(), self.args.n_docs)
-            doc_list.append(self.add_passages(self.passage_id_map, top_ids_and_scores)[:top_n])
-            
+            doc_list.append(self.add_passages(self.passage_id_map, top_ids_and_scores)[:self.args.n_docs])
         return questions_embedding, attention_mask, doc_list
     
     def search_document_demo(self, query, n_docs=10):
