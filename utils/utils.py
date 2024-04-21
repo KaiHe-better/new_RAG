@@ -137,8 +137,10 @@ def extracted_token_id_label(res, label, tokenizer, dataset, prompt, LLM):
 
     else :
         # res = res[0]
-        res = res[-1]
-        label_list = [tokenizer._convert_token_to_id("A"), tokenizer._convert_token_to_id("B"),tokenizer._convert_token_to_id("C"),tokenizer._convert_token_to_id("D")]
+        print(res)
+        res = res[-3:]
+        # label_list = [tokenizer._convert_token_to_id("A"), tokenizer._convert_token_to_id("B"),tokenizer._convert_token_to_id("C"),tokenizer._convert_token_to_id("D")]
+        label_list = [tokenizer._convert_token_to_id_with_added_voc("A"), tokenizer._convert_token_to_id_with_added_voc("B"),tokenizer._convert_token_to_id_with_added_voc("C"),tokenizer._convert_token_to_id_with_added_voc("D")]
         
         if "A" in res:
             return "A", [label_list[0]], 0 

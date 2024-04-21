@@ -3,5 +3,5 @@ LLM: meta-llama/Meta-Llama-3-8B-Instruct
 dataset: USMLE
 max_new_tokens: 1
 if_train: False
-if_RA: True
+if_RA: False
 if_MI_RA: False

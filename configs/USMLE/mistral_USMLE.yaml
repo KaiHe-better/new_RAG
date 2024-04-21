@@ -3,7 +3,5 @@ LLM: mistralai/Mistral-7B-Instruct-v0.2
 dataset: USMLE
 max_new_tokens: 1
 if_train: False
-if_RA: True
+if_RA: False
 if_MI_RA: False
-
-

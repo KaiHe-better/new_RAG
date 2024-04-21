@@ -287,7 +287,8 @@ class My_Trainer:
             self.writer.add_scalar('Performance/test/f1', test_f1, eval_num )
         else:
             test_acc, test_precision, test_recall, test_f1 = self.my_metrics.acc_PRF(all_test_labels, all_test_prediction_ids)
-            self.args.print_logger.info(f"test: acc {test_acc}, f1 {test_f1}, precision {test_precision}, recall {test_recall}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, hallucination: {total_hallucination_cnt/len(test_data_loader)/len(question)} ")
+            total_hallucination_cnt = round(total_hallucination_cnt/len(test_data_loader)/len(question)*100, 2)
+            self.args.print_logger.info(f"test: acc {test_acc}, f1 {test_f1}, precision {test_precision}, recall {test_recall}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, hallucination: {total_hallucination_cnt} ")
             self.args.print_logger.info(f"cost_time: {cost_time} \n ")
             record_performance = test_acc
 
