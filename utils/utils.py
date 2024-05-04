@@ -136,9 +136,8 @@ def extracted_token_id_label(res, label, tokenizer, dataset, prompt, LLM):
         return res, res_tokenize, 0 
 
     else :
-        # res = res[0]
-        print(res)
         res = res[-3:]
+       
         # label_list = [tokenizer._convert_token_to_id("A"), tokenizer._convert_token_to_id("B"),tokenizer._convert_token_to_id("C"),tokenizer._convert_token_to_id("D")]
         label_list = [tokenizer._convert_token_to_id_with_added_voc("A"), tokenizer._convert_token_to_id_with_added_voc("B"),tokenizer._convert_token_to_id_with_added_voc("C"),tokenizer._convert_token_to_id_with_added_voc("D")]
         
@@ -303,6 +302,8 @@ def load_LLM(args, dtype=torch.bfloat16):
         return model, tokenizer
     else:
         model_name_or_path = os.path.join(args.LLM)
+        if model_name_or_path == "meta-llama/Llama-2-7b-chat-hf":
+            model_name_or_path = "../LLM_models/llama2/Llama-2-7b-chat-hf"
 
         # Load the FP16 modelargs.triever
         args.print_logger.info(f"Loading {model_name_or_path} in {dtype}...")
@@ -319,18 +320,12 @@ def load_LLM(args, dtype=torch.bfloat16):
         args.print_logger.info("Finish loading in %.2f mins." % ((time.time() - start_time)/60))
 
         # Load the tokenizer
-        tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, use_fast=False)
+        # tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, use_fast=False)
+        tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
 
         tokenizer.padding_side = "left"
         tokenizer.pad_token = tokenizer.eos_token
         tokenizer.cls_token = tokenizer.bos_token
         tokenizer.sep_token = tokenizer.eos_token
         
-        # model.save_pretrained("/hpc/home/kai_he/WorkShop/My_project/LLM_models/google/flan-t5-xxl")
-        # tokenizer.save_pretrained("/hpc/home/kai_he/WorkShop/My_project/LLM_models/google/flan-t5-xxl")
-        
         return model, tokenizer
-
-
-    
-

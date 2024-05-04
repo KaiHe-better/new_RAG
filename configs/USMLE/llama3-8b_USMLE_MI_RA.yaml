@@ -1,6 +1,7 @@
 ---
 LLM: meta-llama/Meta-Llama-3-8B-Instruct
 dataset: USMLE
-if_train: False
-if_RA: False
-if_MI_RA: False
+if_train: True
+if_RA: True
+if_MI_RA: True
+

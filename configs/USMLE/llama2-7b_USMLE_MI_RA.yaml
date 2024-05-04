@@ -1,5 +1,5 @@
 ---
-LLM: llama2-7b
+LLM: meta-llama/Llama-2-7b-chat-hf
 dataset: USMLE
 max_new_tokens: 1
 if_train: True

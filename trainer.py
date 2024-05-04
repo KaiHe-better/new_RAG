@@ -1,6 +1,6 @@
 from langchain.prompts import PromptTemplate
 from langchain.chat_models import ChatOpenAI
-from transformers import pipeline
+from transformers import pipeline, GenerationConfig
 from langchain.chains import LLMChain
 import torch.nn.functional as F
 import json
@@ -15,7 +15,7 @@ import torch.nn as nn
 from tqdm import tqdm
 from src.metrics import My_Metrics
 from torch.utils.tensorboard import SummaryWriter
-from utils.utils import extracted_token_id_label, LineListOutputParser, empty_logger_file, combine_doc, __dist__, left_pad_loss_logit
+from utils.utils import extracted_token_id_label, LineListOutputParser, empty_logger_file, combine_doc, __dist__, left_pad_loss_logit, get_logger
 
 
 class My_Trainer:
@@ -23,16 +23,16 @@ class My_Trainer:
     def __init__(self, args, MI_learner, LLM, LLM_tokenizer, device, retriever):
         self.args = args
         self.print_logger = args.print_logger
-        self.test_result_logger = args.test_result_logger
-        self.train_result_logger = args.train_result_logger
+        # self.test_result_logger = args.test_result_logger
+        # self.train_result_logger = args.train_result_logger
+        self.loss_fct = nn.NLLLoss(reduction="none")
 
         self.device = device
         self.MI_learner = MI_learner
 
         self.LLM = LLM
         self.LLM_tokenizer = LLM_tokenizer
-        self.LLM_tokenizer.pad_token_id = self.LLM_tokenizer.eos_token_id
-        self.LLM.config.pad_token_id = self.LLM_tokenizer.eos_token_id
+
         self.my_metrics = My_Metrics()
         self.writer = SummaryWriter(args.dir_path+"/runs/")
 
@@ -168,6 +168,8 @@ class My_Trainer:
         best_performce = 0
         eval_num = 0
         for epoch_num in range(self.args.epoch):
+            self.test_result_logger = get_logger(self.args.dir_path, "test_result")
+            self.train_result_logger = get_logger(self.args.dir_path, "train_result")
             for data_item in train_data_loader:
                 self.MI_learner.train()
                 step_num+=1
@@ -179,13 +181,13 @@ class My_Trainer:
                 query = self.get_multi_query_input(question, data_item)
                 query_emb_list, attention_mask_list, bags_list = self.retriever.search_document(query) 
                 retrieve_docs = combine_doc(bags_list)
-
                 input_dict = self.return_input_dict(dev_data_loader, data_item, retrieve_docs)
+                
                 with torch.no_grad():
                     _, _,  _, _, batch_loss, batch_logit_log_softmax = self.pipeline_inference(input_dict, labels, batch_answer, training_flag=True, record_flag=False)
 
                 loss_list, new_retrieve_docs, _ = self.MI_learner(query_emb_list, attention_mask_list, bags_list, batch_logit_log_softmax, one_hot_labels, batch_loss, self.retriever, True)
-                total_loss = loss_list[-1]
+                total_loss = loss_list[-1]+batch_loss
 
                 total_loss.backward()
                 # new
@@ -195,7 +197,7 @@ class My_Trainer:
                 self.writer.add_scalar('Loss/total_loss', round(float(total_loss), 4), step_num)
                 self.writer.add_scalar('LR', self.optimizer.param_groups[0]['lr'], step_num)
 
-                self.print_logger.info(f"epoch_num: {epoch_num}, training process num: {step_num}/{total_batch}, mse_loss: {round(float(loss_list[0]), 4)}, kl_soft_loss: {round(float(loss_list[1]), 4)}, kl_hard_loss: {round(float(loss_list[2]), 4)}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, best_step:{best_step}, best_performce: {best_performce}")
+                self.print_logger.info(f"epoch_num: {epoch_num}, training process num: {step_num}/{total_batch}, len_loss: {round(float(loss_list[0]), 4)}, kl_soft_loss: {round(float(loss_list[1]), 4)}, kl_hard_loss: {round(float(loss_list[2]), 4)}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, best_step:{best_step}, best_performce: {best_performce}")
                                        
                 if (step_num + 1) % self.args.accumulation_steps == 0:
                     self.optimizer.step()
@@ -204,7 +206,7 @@ class My_Trainer:
                     self.optimizer.zero_grad()
 
                 if (step_num % self.args.train_eval==0) and step_num>1:
-                # if (step_num % self.args.train_eval==0) :
+                # if (step_num % 2==0) :
                     eval_num +=1
                     self.train_result_logger = empty_logger_file(self.train_result_logger)
 
@@ -218,10 +220,13 @@ class My_Trainer:
                         best_performce = test_performce
                         best_step = step_num
 
-                        # if step_num>10:
-                        #     torch.save(self.MI_learner.state_dict(), self.args.dir_path+'/MI_' +str(best_performce)+'.pkl') 
+                        if step_num>10:
+                            torch.save(self.MI_learner.state_dict(), self.args.dir_path+'/MI_' +str(best_performce)+'.pkl') 
 
-    
+                break_cnt = 2 if self.args.test_code_flag else None
+                if break_cnt is not None and break_cnt<step_num:
+                    break
+                        
 
     def test_proc(self, test_data_loader, dev_data_loader, eval_num=0, break_cnt=None):
             
@@ -254,7 +259,7 @@ class My_Trainer:
 
                 old_doc_len +=  sum([len(i) for i in self.LLM_tokenizer(retrieve_docs)["input_ids"]]) / len(retrieve_docs)
                 if self.args.if_MI_RA:
-                    _, retrieve_docs, _ = self.MI_learner(query_emb_list, attention_mask_list, bags_list, "batch_logit_log_softmax", "one_hot_labels", "batch_loss", self.retriever, False)
+                    _, retrieve_docs, _ = self.MI_learner(query_emb_list, attention_mask_list, bags_list, "batch_logit_log_softmax", "one_hot_labels", "batch_loss", self.retriever,  False)
                     new_doc_len +=  sum([len(i) for i in self.LLM_tokenizer(retrieve_docs)["input_ids"]]) / len(retrieve_docs)
             else:
                 retrieve_docs = ""
@@ -287,7 +292,7 @@ class My_Trainer:
             self.writer.add_scalar('Performance/test/f1', test_f1, eval_num )
         else:
             test_acc, test_precision, test_recall, test_f1 = self.my_metrics.acc_PRF(all_test_labels, all_test_prediction_ids)
-            total_hallucination_cnt = round(total_hallucination_cnt/len(test_data_loader)/len(question)*100, 2)
+            total_hallucination_cnt = round(total_hallucination_cnt/len(test_data_loader.dataset)*100, 2)
             self.args.print_logger.info(f"test: acc {test_acc}, f1 {test_f1}, precision {test_precision}, recall {test_recall}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, hallucination: {total_hallucination_cnt} ")
             self.args.print_logger.info(f"cost_time: {cost_time} \n ")
             record_performance = test_acc
@@ -346,10 +351,9 @@ class My_Trainer:
 
         return batch_pred, batch_id_pred, batch_hallucination_cnt, save_doc_num
     
-    def local_llm_infer(self, input_dict, label, batch_answer, training_flag=False, record_flag=True):
-        save_doc_num = [self.args.n_docs]*len(label)
+    def local_llm_infer(self, input_dict, labels, batch_answer, training_flag=False, record_flag=True):
+        save_doc_num = [self.args.n_docs]*len(labels)
        
-    
         my_input_list = []
         keys = input_dict.keys()
         for values in zip(*input_dict.values()):
@@ -362,39 +366,39 @@ class My_Trainer:
         batch_hallucination_cnt = 0
 
         inputs = self.LLM_tokenizer(my_input_list, return_tensors="pt", padding=True).to(self.args.device)
-        outputs = self.LLM.generate(**inputs, max_new_tokens=self.args.max_new_tokens, 
-                                    num_return_sequences=1, 
-                                    temperature=self.args.temperature,
-                                    top_p=self.args.top_p,
-                                    return_dict_in_generate=True, 
-                                    output_scores=True,
-                                    output_hidden_states=True,
-                                    do_sample=True
-                                    # length_penalty=self.args.length_penalty,
-                                    # num_beams=self.args.num_beams,
-                                )
-        logit_log_softmax, batch_loss = self.get_logits_and_loss(outputs, label)
+        generation_config = GenerationConfig(
+            max_new_tokens=self.args.max_new_tokens,  
+            pad_token_id = self.LLM_tokenizer.eos_token_id,
+            do_sample=False,
+            num_return_sequences=1, 
+            # temperature=self.args.temperature,
+            # top_p=self.args.top_p,
+            # length_penalty=self.args.length_penalty,
+            # num_beams=self.args.num_beams,
+            return_dict_in_generate=True, 
+            output_scores=True,
+        )
 
-        for index, (input, output, answer) in enumerate(zip(inputs["input_ids"], outputs["sequences"], batch_answer)):
+        outputs = self.LLM.generate(**inputs, generation_config=generation_config)
+        outputs_scores = torch.stack(outputs["scores"]).permute(1,0,2)
+        batch_loss = 0
+        logit_log_softmax = []
+        for index, (outputs_score, output, answer, label) in enumerate(zip(outputs_scores, outputs["sequences"], batch_answer, labels)):
             generation = self.LLM_tokenizer.decode(output, skip_special_tokens=True)
-            pred, id_pred, hallucination_cnt = self.pasrse_record_res(my_input_list[index], label[index], generation, answer, training_flag, record_flag)
+            pred, id_pred, hallucination_cnt = self.pasrse_record_res(my_input_list[index], label, generation, answer, training_flag, record_flag)
+
+            label = torch.LongTensor(label).to(outputs_score[0].device)
+            process_score =  F.log_softmax(outputs_score[:len(label)])
+            batch_loss += self.loss_fct(-process_score, label.view(-1))
+            
+            logit_log_softmax.append(process_score)
             batch_pred.append(pred)
             batch_id_pred.append(id_pred)
             batch_hallucination_cnt+=hallucination_cnt
 
-        return batch_pred, batch_id_pred, batch_hallucination_cnt, save_doc_num, batch_loss, logit_log_softmax
+        logit_log_softmax = torch.stack(logit_log_softmax)
+        return batch_pred, batch_id_pred, batch_hallucination_cnt, save_doc_num, batch_loss/len(labels), logit_log_softmax
 
-    def get_logits_and_loss(self, outputs, label):
-        last_hidden_states = outputs["hidden_states"][0][-1]
-        logit = self.LLM.lm_head(last_hidden_states)[:, -1, :]
-        logit_log_softmax = F.log_softmax(logit, dim=-1)
-
-        label = torch.LongTensor(label).to(logit_log_softmax.device)
-        loss_fct = nn.NLLLoss(reduction="none")
-        batch_loss = loss_fct(logit_log_softmax, label.view(-1))
-
-        return logit_log_softmax, batch_loss
-    
     def pasrse_record_res(self, my_input, label, generation, answer, training_flag, record_flag):
         pred, id_pred, hallucination_cnt = extracted_token_id_label(generation, label, self.LLM_tokenizer, self.args.dataset, self.prompt, self.args.LLM)
 

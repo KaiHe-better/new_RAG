@@ -1,9 +1,8 @@
 # -*- coding:utf-8 -*-
 import torch
 import torch.nn as nn
-from torch.nn import TransformerEncoderLayer, Linear
+from torch.nn import TransformerEncoderLayer, MultiheadAttention, Linear, Dropout, LayerNorm, TransformerEncoder
 import torch.nn.functional as F
-from transformers import BertConfig, BertModel
 from utils.utils import combine_doc
 from sklearn.metrics import  accuracy_score
 from langchain.docstore.document import Document
@@ -14,21 +13,19 @@ class My_MI_learner(nn.Module):
         nn.Module.__init__(self)
         self.args = args
 
-        config = BertConfig(
-                hidden_size=self.args.d_model,  
-                num_attention_heads=self.args.nhead,  
-                hidden_dropout_prob=self.args.dropout,  
-                attention_probs_dropout_prob=self.args.dropout  )
-
-
         self.trans_ques = TransformerEncoderLayer(self.args.d_model, self.args.nhead, dropout=self.args.dropout, batch_first=True).to(self.args.device)
         self.trans_doc = TransformerEncoderLayer(self.args.d_model, self.args.nhead, dropout=self.args.dropout, batch_first=True).to(self.args.device)
-
 
         self.multi_head_ques = MultiLayerCrossAttention(args, num_layers=self.args.num_layers).to(self.args.device)
         self.multi_head_doc = MultiLayerCrossAttention(args, num_layers=self.args.num_layers).to(self.args.device)
 
+        # self.linear_mse = Linear(self.args.d_model, 1).to(self.args.device)
+        # self.linear_kl = Linear(self.args.d_model, vocab_size).to(self.args.device)
+        # new change
+        self.linear_mse = Linear(self.args.d_model*2, 1).to(self.args.device)
         self.linear_kl = Linear(self.args.d_model*2, vocab_size).to(self.args.device)
+
+        self.len_loss_function = nn.MSELoss()
         self.kl_loss = nn.KLDivLoss(reduction="batchmean", log_target=True)
         self.kl_loss_hard = nn.NLLLoss()
         
@@ -40,13 +37,14 @@ class My_MI_learner(nn.Module):
         chunks = text_splitter.split_documents(new_doc_list)
         new_bag_list = [i.page_content for i in chunks]
         return new_bag_list
-    
+
     def forward(self, query_emb, ques_att_masks, bags_list, batch_logit_log_softmax, one_hot_labels, batch_loss, retriever, train_flag):
         total_mse_logit = []
         total_kl_logit = []
         select_doc = []
         select_doc_num = []
-        for bag, raw_ques_emb, raw_ques_att_mask in zip(bags_list, query_emb, ques_att_masks):
+        att_weights_list = []
+        for bag, raw_ques_emb, ques_att_mask in zip(bags_list, query_emb, ques_att_masks):
             if self.args.if_hierarchical_retrieval:
                 text_splitter = RecursiveCharacterTextSplitter.from_huggingface_tokenizer(retriever.tokenizer, 
                                                                                 chunk_size=int(self.args.chunk_size/self.args.hierarchical_ratio), 
@@ -54,29 +52,29 @@ class My_MI_learner(nn.Module):
                 bag = self.return_hierarchical_bag(bag, text_splitter)
 
             with torch.no_grad():
-                raw_doc_emb, _, raw_doc_attention_mask = retriever.embed_queries(self.args, bag)
+                # doc_input = retriever.tokenizer(bag, truncation=True, return_tensors='pt', max_length=self.args.chunk_size, padding=True).to(self.args.device)
+                # raw_doc_emb = retriever.embed_queries(self.args, bag).last_hidden_state
+                raw_doc_emb, _, doc_att_mask = retriever.embed_queries(self.args, bag)
 
-            ques_att_mask =(1- raw_ques_att_mask).bool() 
-            doc_att_mask = (1- raw_doc_attention_mask).bool()
-            raw_ques_emb = self.trans_ques(raw_ques_emb, src_key_padding_mask=ques_att_mask)
-            raw_doc_emb  = self.trans_doc(raw_doc_emb, src_key_padding_mask=doc_att_mask)
-
-            raw_ques_emb_mask = raw_ques_emb*raw_ques_att_mask.unsqueeze(-1).expand(-1, raw_ques_emb.size(-1))
-            raw_doc_emb_mask  = raw_doc_emb*raw_doc_attention_mask.unsqueeze(-1).expand(-1, -1, raw_doc_emb.size(-1))                                                                
-            raw_ques_emb = torch.mean(raw_ques_emb_mask, dim=0).unsqueeze(0)
-            raw_doc_emb = torch.mean(raw_doc_emb_mask, dim=1)
+            ques_att_mask =(1- ques_att_mask).bool() 
+            doc_att_mask = (1- doc_att_mask).bool()
+            raw_ques_emb = self.trans_ques(raw_ques_emb, src_key_padding_mask=ques_att_mask)[0, :].unsqueeze(0).unsqueeze(0)
+            raw_doc_emb  = self.trans_doc(raw_doc_emb, src_key_padding_mask=doc_att_mask)[:, 0, :].unsqueeze(0)
 
             que_emb, att_weights  = self.multi_head_ques(raw_ques_emb, raw_doc_emb)
+            att_weights_list.append(att_weights)
+
             doc_emb, _  = self.multi_head_doc(raw_doc_emb, raw_ques_emb)
 
             select_index = torch.where( att_weights.squeeze() >= 1/len(bag)* self.args.quantile_num )[0]
-            select_doc = select_doc + combine_doc([[bag[i] for i in select_index ]]) 
+            select_doc.append( combine_doc([[bag[i] for i in select_index ]])[0] )
             select_doc_num.append(len(select_index))
            
             if train_flag:
-                doc_emb = torch.mean(doc_emb, dim=0).squeeze()
+                doc_emb = torch.mean(doc_emb, dim=1).squeeze()
                 # new change
                 doc_emb = torch.cat((doc_emb, que_emb.squeeze()), dim=0)
+
 
                 if "kl" in self.args.loss_list:
                     kl_logit = self.linear_kl(doc_emb) 
@@ -85,10 +83,15 @@ class My_MI_learner(nn.Module):
 
 
         total_loss = 0
-        mse_loss = 0
+        len_penalty_loss = 0
         kl_soft_loss = 0
         kl_hard_loss = 0
         if train_flag:
+            if "len_penalty" in self.args.loss_list:
+                len_penalty_logit = torch.stack(att_weights_list).squeeze()
+                len_penalty_label = (torch.ones(len_penalty_logit.size())*1/len(bags_list[0])).to(len_penalty_logit.device)
+                len_penalty_loss = self.len_loss_function(len_penalty_logit , len_penalty_label) 
+                len_penalty_loss = self.args.len_penalty_weight * len_penalty_loss
 
             if "kl_soft" in self.args.loss_list:
                 kl_soft_loss = self.kl_loss(torch.stack(total_kl_logit), batch_logit_log_softmax.to(MI_logit_log_softmax.device)) 
@@ -99,8 +102,8 @@ class My_MI_learner(nn.Module):
                 kl_hard_loss = self.kl_loss_hard(torch.stack(total_kl_logit), label) 
                 kl_hard_loss = self.args.hard_weight * kl_hard_loss
 
-        total_loss = mse_loss+kl_soft_loss+kl_hard_loss
-        return  [mse_loss, kl_soft_loss, kl_hard_loss, total_loss], select_doc, select_doc_num
+        total_loss = len_penalty_loss+kl_soft_loss+kl_hard_loss
+        return  [len_penalty_loss, kl_soft_loss, kl_hard_loss, total_loss], select_doc, select_doc_num
 
 class CrossAttentionLayer(nn.Module):
     def __init__(self, args):

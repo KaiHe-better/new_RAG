@@ -7,10 +7,10 @@ from dotenv import load_dotenv
 parser = argparse.ArgumentParser()
 
 # system settings
-parser.add_argument("--config", type=str, default="mistral_USMLE_MI_RA.yaml", help="Path to the config file")
+parser.add_argument("--config", type=str, default="llama2-7b_USMLE_MI_RA.yaml", help="Path to the config file")
 parser.add_argument('--gpu', default="4", type=str, help='gpu device numbers')
 parser.add_argument('--ID', type=str, default='7', help='run ID')
-parser.add_argument("--test_code_flag", type=bool, default=False, help="if retrieval augmented")
+parser.add_argument("--test_code_flag", type=bool, default=True, help="if retrieval augmented")
 parser.add_argument('--seed', default=42, help='trandom seed')
 parser.add_argument('--num_workers', default=16, type=int, help='data_loader_work')
 parser.add_argument("--loading_ckpt_path", type=str, default=None, help="loading_ckpt_path, None ")
@@ -21,8 +21,8 @@ parser.add_argument("--if_MI_RA", type=bool,  help="if_MI_RA")
 parser.add_argument("--LLM", type=str, help="LLM to use")
 # train
 parser.add_argument('--dataset', type=str, default="USMLE", choices=["USMLE", "MedMCQA", "HEADQA", "MMLU", "OTTQA"], help='train_file_path')
-parser.add_argument('--train_batch_size', type=int, default=1, help='train_batch_size')
-parser.add_argument('--test_batch_size', type=int, default=1, help='train_batch_size')
+parser.add_argument('--train_batch_size', type=int, default=2, help='train_batch_size')
+parser.add_argument('--test_batch_size', type=int, default=2, help='train_batch_size')
 parser.add_argument('--accumulation_steps', type=int, default=1, help='accumulation_steps')
 parser.add_argument('--demonstration', type=bool, default=False, help='in_context learning')
 parser.add_argument('--demons_cnt', type=int, default=1, help='demonstration number')
@@ -42,25 +42,25 @@ parser.add_argument('--layer_norm_eps', type=float, default=1e-5, help='MI_learn
 parser.add_argument('--nhead', type=int, default=8, help='MI_learner nhead')
 parser.add_argument('--dropout', type=float, default=0.1, help='MI_learner dropout')
 # loss
-parser.add_argument('--loss_list', type=str, default="kl_hard", help='kl_soft+kl_hard+mse')
+parser.add_argument('--loss_list', type=str, default="", help='kl_soft+kl_hard+len_penalty')
+parser.add_argument('--len_penalty_weight', type=float, default=100, help='soft_weight')
 parser.add_argument('--soft_weight', type=float, default=1, help='soft_weight')
 parser.add_argument('--hard_weight', type=float, default=1, help='hard_weight')
 # decoding
-parser.add_argument('--do_sample', type=bool, default=False, help='do_sample')
+parser.add_argument('--do_sample', type=bool, default=True, help='do_sample')
 parser.add_argument("--temperature", type=float, default=1e-9, help="Temperature for decoding")
 parser.add_argument("--top_p", type=float, default=0, help="Nucleus sampling top-p")
-parser.add_argument("--max_new_tokens", type=int, default=3, help="Max number of new tokens to generate in one step")
-# parser.add_argument("--max_length", type=int, default=2048, help="Max length the model can take. Should set properly wrt the model to avoid position overflow.")
+parser.add_argument("--max_new_tokens", type=int, default=1, help="Max number of new tokens to generate in one step")
 # my_retrieval
 parser.add_argument('--infer_add_gold_retrieval', type=bool, default=False, help='max_document_num')
 parser.add_argument('--multi_query', type=bool, default=False, help='multi_query, using open AI')
 parser.add_argument('--rewrite_num', type=int, default=1, help='1 or 2')
-
+parser.add_argument('--chunk_size', type=int, default=512, help='chunk_sizen, not token length')
 parser.add_argument('--if_hierarchical_retrieval', type=bool, default=False, help='if_hierarchical_retrieval')
 parser.add_argument('--hierarchical_ratio', type=float, default=1.4, help='hierarchical_ratio, 1-2')
 parser.add_argument('--quantile_num', type=float, default=0.95, help='quantile_num, 0.8-1.1')
 # retriever
-parser.add_argument("--n_docs", type=int, default=1, help="Number of documents to retrieve per questions")
+parser.add_argument("--n_docs", type=int, default=5, help="Number of documents to retrieve per questions")
 parser.add_argument("--model_name_or_path", type=str,  default="facebook/contriever-msmarco", choices=["facebook/dragon-plus-query-encoder", "facebook/contriever-msmarco"], help="triever to use")
 parser.add_argument("--question_maxlength", type=int, default=512, help="Maximum number of tokens in a question")
 parser.add_argument("--passages", type=str, default="datasets/Retrieval_corpus/enwiki_2020_dec_intro_only.jsonl", help="Path to passages (.tsv file)")
@@ -118,8 +118,7 @@ if args.if_train is True and args.if_MI_RA is False:
 dir_path = make_log_dir()
 args.dir_path = dir_path
 args.print_logger = get_logger(dir_path, "print")
-args.test_result_logger = get_logger(dir_path, "test_result")
-args.train_result_logger = get_logger(dir_path, "train_result")
+
 
 def custom_excepthook(exc_type, exc_value, exc_traceback):
     args.print_logger.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
@@ -149,6 +148,8 @@ def main(args):
     LLM, LLM_tokenizer = load_LLM(args)
     train_data_loader, dev_data_loader, test_data_loader = get_loader(args, LLM_tokenizer)
     
+    # for llama3
+    # MI_learner = My_MI_learner(args, LLM_tokenizer.vocab_size+len(LLM_tokenizer.added_tokens_encoder) if args.LLM != "chatGPT" else 32000)
     MI_learner = My_MI_learner(args, LLM_tokenizer.vocab_size if args.LLM != "chatGPT" else 32000)
     
     if args.loading_ckpt_path is not None:
