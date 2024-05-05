@@ -15,8 +15,24 @@ nohup python run.py --ID USMLE_07_Loss --gpu 4 --config llama2-7b_USMLE_MI_RA.ya
 问题:保留了所有的检索结果
 2024-05-04 09:42:01,634 test: acc 38.18, f1 38.1, precision 38.18, recall 38.58, old_doc_len:1253.7511773940346, new_doc_len:1253.256671899529, hallucination: 0.0 
 
-
 nohup python run.py --ID USMLE_0 --gpu 4 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --loss_list kl_soft+len_penalty --len_penalty_weight 100 >/dev/null 2>&1 &
+问题:保留了所有的检索结果
+2024-05-05 01:34:19,214 test: acc 38.41, f1 38.31, precision 38.34, recall 38.8, old_doc_len:1253.7511773940346, new_doc_len:1214.9207221350077, hallucination: 0.0 
+
 nohup python run.py --ID USMLE_1 --gpu 7 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --loss_list kl_hard+len_penalty --len_penalty_weight 100 >/dev/null 2>&1 &
+问题:保留了所有的检索结果
+2024-05-05 01:44:45,764 test: acc 38.26, f1 38.16, precision 38.23, recall 38.63, old_doc_len:1253.7511773940346, new_doc_len:1227.541601255887, hallucination: 0.0 
+
 nohup python run.py --ID USMLE_2 --gpu 4 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --loss_list kl_soft+kl_hard+len_penalty --soft_weight 1 --hard_weight 1     --len_penalty_weight 100 >/dev/null 2>&1 &
+问题:保留了所有的检索结果
+2024-05-05 06:38:47,023 test: acc 38.41, f1 38.33, precision 38.42, recall 38.8, old_doc_len:1253.7511773940346, new_doc_len:1247.513343799058, hallucination: 0.0 
+
 nohup python run.py --ID USMLE_2 --gpu 7 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --loss_list kl_soft+kl_hard+len_penalty --soft_weight 0.7 --hard_weight 0.3 --len_penalty_weight 100 >/dev/null 2>&1 &
+问题:保留了所有的检索结果
+2024-05-05 05:17:11,951 test: acc 38.33, f1 38.26, precision 38.36, recall 38.74, old_doc_len:1253.7511773940346, new_doc_len:1240.298273155416, hallucination: 0.0 
+
+
+nohup python run.py --ID USMLE_0 --gpu 4 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --loss_list kl_soft+len_penalty --len_penalty_weight 10 >/dev/null 2>&1 &
+nohup python run.py --ID USMLE_1 --gpu 7 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --loss_list kl_hard+len_penalty --len_penalty_weight 10 >/dev/null 2>&1 &
+nohup python run.py --ID USMLE_2 --gpu 4 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --loss_list kl_soft+kl_hard+len_penalty --soft_weight 1 --hard_weight 1     --len_penalty_weight 10 >/dev/null 2>&1 &
+nohup python run.py --ID USMLE_3 --gpu 7 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --loss_list kl_soft+kl_hard+len_penalty --soft_weight 0.7 --hard_weight 0.3 --len_penalty_weight 10 >/dev/null 2>&1 &

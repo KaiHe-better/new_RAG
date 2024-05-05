@@ -231,7 +231,8 @@ def empty_logger_file(logger):
 def get_logger(dir, name):
     
     logger = logging.getLogger(name)
-
+    logger.handlers.clear()
+    
     if name == "test_result":
         # 创建一个handler，用于写入日志文件
         filename = f'{datetime.now().date()}_{name}.log'

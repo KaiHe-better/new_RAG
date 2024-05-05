@@ -168,7 +168,6 @@ class My_Trainer:
         best_performce = 0
         eval_num = 0
         for epoch_num in range(self.args.epoch):
-            self.test_result_logger = get_logger(self.args.dir_path, "test_result")
             self.train_result_logger = get_logger(self.args.dir_path, "train_result")
             for data_item in train_data_loader:
                 self.MI_learner.train()
@@ -205,14 +204,15 @@ class My_Trainer:
                         # self.scheduler.step()
                     self.optimizer.zero_grad()
 
-                if (step_num % self.args.train_eval==0) and step_num>1:
-                # if (step_num % 2==0) :
+                # if (step_num % self.args.train_eval==0) and step_num>1:
+                if (step_num % 2==0) :
                     eval_num +=1
                     self.train_result_logger = empty_logger_file(self.train_result_logger)
 
                     break_cnt = 2 if self.args.test_code_flag else None
                     with torch.no_grad():
                         self.MI_learner.eval()
+                        self.test_result_logger = get_logger(self.args.dir_path, "test_result")
                         test_performce = self.test_proc(test_data_loader, dev_data_loader, step_num, break_cnt=break_cnt)
                         self.MI_learner.train()
 
@@ -231,6 +231,7 @@ class My_Trainer:
     def test_proc(self, test_data_loader, dev_data_loader, eval_num=0, break_cnt=None):
             
         self.print_logger.info("\n Start test ...  ")
+        
         start_time = time.time()
 
         all_test_labels = []
@@ -388,7 +389,8 @@ class My_Trainer:
             pred, id_pred, hallucination_cnt = self.pasrse_record_res(my_input_list[index], label, generation, answer, training_flag, record_flag)
 
             label = torch.LongTensor(label).to(outputs_score[0].device)
-            process_score =  F.log_softmax(outputs_score[:len(label)])
+
+            process_score =  F.log_softmax(outputs_score[:len(label)], dim=-1)
             batch_loss += self.loss_fct(-process_score, label.view(-1))
             
             logit_log_softmax.append(process_score)
