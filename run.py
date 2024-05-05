@@ -139,6 +139,7 @@ def main(args):
             args.print_logger.info("Loading retriever ...")
             if args.test_code_flag==True:
                 args.passages_embeddings = "datasets/Retrieval_corpus/enwiki_dec_2020_contriever_intro/passages_00"
+                args.train_eval==2
 
             retriever = Retriever(args)
             retriever.setup_retriever()

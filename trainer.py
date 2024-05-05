@@ -204,8 +204,7 @@ class My_Trainer:
                         # self.scheduler.step()
                     self.optimizer.zero_grad()
 
-                # if (step_num % self.args.train_eval==0) and step_num>1:
-                if (step_num % 2==0) :
+                if (step_num % self.args.train_eval==0) and step_num>1:
                     eval_num +=1
                     self.train_result_logger = empty_logger_file(self.train_result_logger)
 
