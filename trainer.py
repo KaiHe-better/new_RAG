@@ -225,7 +225,7 @@ class My_Trainer:
 
                 self.print_logger.info(f"epoch_num: {epoch_num}, training process num: {step_num}/{total_batch},  gate_loss: {round(float(loss_list[0]), 4)}, len_loss: {round(float(loss_list[1]), 4)}, kl_soft_loss: {round(float(loss_list[2]), 4)}, kl_hard_loss: {round(float(loss_list[3]), 4)},  \
                                        \n gate_acc:{gate_acc}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, label_0_0:{label_0_0}, label_0_1:{label_0_1}, label_1_0:{label_1_0}, label_1_1:{label_1_1}, \
-                                       \n best_step:{best_step}, best_performce: {best_performce} \n")
+                                       \n best_step:{best_step}, best_performce: {best_performce},  gate_res: {str(gate_res)}\n")
                                        
                 if (step_num + 1) % self.args.accumulation_steps == 0:
                     self.optimizer.step()
@@ -356,7 +356,7 @@ class My_Trainer:
             test_acc, test_precision, test_recall, test_f1 = self.my_metrics.acc_PRF(all_test_labels, all_test_prediction_ids)
             total_hallucination_cnt = round(total_hallucination_cnt/len(test_data_loader.dataset)*100, 2)
             self.args.print_logger.info(f"test: acc {test_acc}, f1 {test_f1}, precision {test_precision}, recall {test_recall}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, hallucination: {total_hallucination_cnt} ")
-            self.args.print_logger.info(f"cost_time: {cost_time} , gate_res_list: {sum(gate_res_list)/ len(gate_res_list) } \n ")
+            self.args.print_logger.info(f"cost_time: {cost_time} , gate_res_list: {sum(gate_res_list) / len(gate_res_list)}, {sum(gate_res_list)} / {len(gate_res_list)} \n ")
             record_performance = test_acc
 
             self.writer.add_scalar('Performance/test/acc', test_acc, eval_num )
