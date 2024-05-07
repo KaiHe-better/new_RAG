@@ -8,27 +8,88 @@ from sklearn.metrics import  accuracy_score
 from langchain.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
+
+class My_gate(nn.Module):
+    def __init__(self, args):
+        nn.Module.__init__(self)
+        self.args = args
+
+        encoder_layer_gate = nn.TransformerEncoderLayer(d_model=3, nhead=1, dropout=0, batch_first=True).to(self.args.device)
+        self.trans_gate = nn.TransformerEncoder(encoder_layer_gate, num_layers=1)
+        self.gate_linear = Linear(3, 2).to(self.args.device)
+        self.gate_loss = nn.CrossEntropyLoss()
+
+    def get_new_lable(self, general_batch_pred, batch_pred, batch_answer):
+        new_label_list = []
+        label_0_0=0
+        label_0_1=0
+        label_1_0=0
+        label_1_1=0
+        for general_batch_pred_item, batch_pred_item, batch_answer_item in zip(general_batch_pred, batch_pred, batch_answer):
+            if (batch_answer_item != batch_pred_item) and (batch_answer_item != general_batch_pred_item):
+                new_label_list.append(0)
+                label_0_0+=1
+
+            if (batch_answer_item == batch_pred_item) and (batch_answer_item != general_batch_pred_item):
+                new_label_list.append(1)
+                label_0_1+=1
+
+            if (batch_answer_item != batch_pred_item) and (batch_answer_item == general_batch_pred_item):
+                new_label_list.append(0)
+                label_1_0+=1
+
+            if (batch_answer_item == batch_pred_item) and (batch_answer_item == general_batch_pred_item):
+                new_label_list.append(0)
+                label_1_1+=1
+
+        return new_label_list, [label_0_0, label_0_1, label_1_0, label_1_1]
+
+    def make_gate_input(self, batch_loss, general_batch_loss, batch_logit_log_softmax, general_batch_logit_log_softmax, raw_ques_emb_list, raw_doc_emb_list):
+        batch_logit_log_softmax = -torch.max(batch_logit_log_softmax, dim=-1)[0]
+        general_batch_logit_log_softmax = -torch.max(general_batch_logit_log_softmax, dim=-1)[0]
+        # gate_input = torch.cat((batch_loss, general_batch_loss, batch_logit_log_softmax, general_batch_logit_log_softmax), dim=-1)
+        gate_input = torch.cat((general_batch_loss, batch_logit_log_softmax, general_batch_logit_log_softmax), dim=-1)
+        return gate_input
+    
+    def forward(self, general_batch_pred, batch_pred, batch_answer, batch_loss, 
+                  raw_ques_emb_list, raw_doc_emb_list, general_batch_loss, 
+                  batch_logit_log_softmax, general_batch_logit_log_softmax):
+        
+        gate_input = self.make_gate_input(batch_loss, general_batch_loss, batch_logit_log_softmax, general_batch_logit_log_softmax, raw_ques_emb_list, raw_doc_emb_list)
+        gate_logit = self.trans_gate(gate_input)
+        gate_logit = self.gate_linear(gate_logit)
+        gate_res = torch.argmax(gate_logit, dim=-1)
+
+        if batch_pred is not None:
+            new_lable, new_label_count_list = self.get_new_lable(general_batch_pred, batch_pred, batch_answer, )
+            gate_loss = self.gate_loss(gate_logit, torch.LongTensor(new_lable).to(gate_logit.device) )
+        else:
+            gate_loss = 0
+
+        return gate_loss, gate_res, new_lable, new_label_count_list
+    
+
 class My_MI_learner(nn.Module):
     def __init__(self, args, vocab_size):
         nn.Module.__init__(self)
         self.args = args
 
-        self.trans_ques = TransformerEncoderLayer(self.args.d_model, self.args.nhead, dropout=self.args.dropout, batch_first=True).to(self.args.device)
-        self.trans_doc = TransformerEncoderLayer(self.args.d_model, self.args.nhead, dropout=self.args.dropout, batch_first=True).to(self.args.device)
+        encoder_layer_ques = nn.TransformerEncoderLayer(d_model=self.args.d_model, nhead=self.args.nhead, dropout=self.args.dropout, batch_first=True).to(self.args.device)
+        self.trans_ques = nn.TransformerEncoder(encoder_layer_ques, num_layers=2)
+
+        encoder_layer_doc = nn.TransformerEncoderLayer(d_model=self.args.d_model, nhead=self.args.nhead, dropout=self.args.dropout, batch_first=True).to(self.args.device)
+        self.trans_doc = nn.TransformerEncoder(encoder_layer_doc, num_layers=2)
 
         self.multi_head_ques = MultiLayerCrossAttention(args, num_layers=self.args.num_layers).to(self.args.device)
         self.multi_head_doc = MultiLayerCrossAttention(args, num_layers=self.args.num_layers).to(self.args.device)
 
-        # self.linear_mse = Linear(self.args.d_model, 1).to(self.args.device)
-        # self.linear_kl = Linear(self.args.d_model, vocab_size).to(self.args.device)
         # new change
-        self.linear_mse = Linear(self.args.d_model*2, 1).to(self.args.device)
         self.linear_kl = Linear(self.args.d_model*2, vocab_size).to(self.args.device)
 
         self.len_loss_function = nn.MSELoss()
         self.kl_loss = nn.KLDivLoss(reduction="batchmean", log_target=True)
         self.kl_loss_hard = nn.NLLLoss()
-        
+
     def return_hierarchical_bag(self, bag, text_splitter):
         new_bag_list =[]
         new_doc_list =[]
@@ -38,12 +99,13 @@ class My_MI_learner(nn.Module):
         new_bag_list = [i.page_content for i in chunks]
         return new_bag_list
 
-    def forward(self, query_emb, ques_att_masks, bags_list, batch_logit_log_softmax, one_hot_labels, batch_loss, retriever, train_flag):
-        total_mse_logit = []
+    def forward(self, bags_list, query_emb, ques_att_masks, retriever, train_flag, one_hot_labels, batch_logit_log_softmax):
         total_kl_logit = []
         select_doc = []
         select_doc_num = []
         att_weights_list = []
+        raw_ques_emb_list = []
+        raw_doc_emb_list = []
         for bag, raw_ques_emb, ques_att_mask in zip(bags_list, query_emb, ques_att_masks):
             if self.args.if_hierarchical_retrieval:
                 text_splitter = RecursiveCharacterTextSplitter.from_huggingface_tokenizer(retriever.tokenizer, 
@@ -52,9 +114,10 @@ class My_MI_learner(nn.Module):
                 bag = self.return_hierarchical_bag(bag, text_splitter)
 
             with torch.no_grad():
-                # doc_input = retriever.tokenizer(bag, truncation=True, return_tensors='pt', max_length=self.args.chunk_size, padding=True).to(self.args.device)
-                # raw_doc_emb = retriever.embed_queries(self.args, bag).last_hidden_state
                 raw_doc_emb, _, doc_att_mask = retriever.embed_queries(self.args, bag)
+
+            raw_ques_emb_list.append(raw_ques_emb[0])
+            raw_doc_emb_list.append(torch.mean(raw_doc_emb[:, 0, :], dim=0))
 
             ques_att_mask =(1- ques_att_mask).bool() 
             doc_att_mask = (1- doc_att_mask).bool()
@@ -75,12 +138,10 @@ class My_MI_learner(nn.Module):
                 # new change
                 doc_emb = torch.cat((doc_emb, que_emb.squeeze()), dim=0)
 
-
                 if "kl" in self.args.loss_list:
                     kl_logit = self.linear_kl(doc_emb) 
                     MI_logit_log_softmax = F.log_softmax(kl_logit, dim=0)
                     total_kl_logit.append(MI_logit_log_softmax)
-
 
         total_loss = 0
         len_penalty_loss = 0
@@ -103,7 +164,13 @@ class My_MI_learner(nn.Module):
                 kl_hard_loss = self.args.hard_weight * kl_hard_loss
 
         total_loss = len_penalty_loss+kl_soft_loss+kl_hard_loss
-        return  [len_penalty_loss, kl_soft_loss, kl_hard_loss, total_loss], select_doc, select_doc_num
+
+        raw_ques_emb_list = torch.stack(raw_ques_emb_list)
+        raw_doc_emb_list  = torch.stack(raw_doc_emb_list)
+
+        return [len_penalty_loss, kl_soft_loss, kl_hard_loss, total_loss], select_doc, select_doc_num, raw_ques_emb_list, raw_doc_emb_list
+
+
 
 class CrossAttentionLayer(nn.Module):
     def __init__(self, args):

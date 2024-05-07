@@ -20,7 +20,7 @@ from utils.utils import extracted_token_id_label, LineListOutputParser, empty_lo
 
 class My_Trainer:
 
-    def __init__(self, args, MI_learner, LLM, LLM_tokenizer, device, retriever):
+    def __init__(self, args, MI_learner, my_gate, LLM, LLM_tokenizer, device, retriever):
         self.args = args
         self.print_logger = args.print_logger
         # self.test_result_logger = args.test_result_logger
@@ -29,6 +29,7 @@ class My_Trainer:
 
         self.device = device
         self.MI_learner = MI_learner
+        self.my_gate = my_gate
 
         self.LLM = LLM
         self.LLM_tokenizer = LLM_tokenizer
@@ -44,7 +45,8 @@ class My_Trainer:
 
             if self.args.if_train:
                 param_list_MI_learner = list(self.MI_learner.parameters())
-                self.optimizer = torch.optim.Adam( param_list_MI_learner, lr=self.args.lr, weight_decay=self.args.l2_coef)
+                param_list_my_gate = list(self.my_gate.parameters())
+                self.optimizer = torch.optim.Adam( param_list_MI_learner+param_list_my_gate, lr=self.args.lr, weight_decay=self.args.l2_coef)
                 
                 lr_lambda = lambda step: 1 if step < self.args.init_lr_num else self.args.lr_decay ** ((step - self.args.init_lr_num) // self.args.lr_decay_interval)
                 self.scheduler = torch.optim.lr_scheduler.LambdaLR(self.optimizer, lr_lambda)
@@ -61,20 +63,16 @@ class My_Trainer:
         self.print_logger.info(f"prompt_format: {prompt_format} \n")    
             
         with open(self.args.prompt_file, "r") as f:
-            prompt_text = json.load(f)[prompt_format]
+            prompt_data = json.load(f)
+            general_prompt_text = prompt_data["general-prompt"]
+            prompt_text = prompt_data[prompt_format]
 
         self.prompt = PromptTemplate.from_template(prompt_text)
-        if args.LLM != "chatGPT":
-            self.pipe = pipeline(
-                    "text-generation",
-                    model=LLM,
-                    tokenizer=self.LLM_tokenizer,
-                    max_new_tokens=args.max_new_tokens,
-                    device_map="auto",
-                    output_scores=True, 
-                    return_dict_in_generate=True ) 
-        else:
+        self.general_prompt = PromptTemplate.from_template(general_prompt_text)
+
+        if args.LLM == "chatGPT":
             self.pipe = LLMChain(prompt=self.prompt, llm=LLM)
+            self.general_pipe = LLMChain(prompt=self.general_prompt, llm=LLM)
 
     def random_select_demonstration(self, data_loader, batch_size):
         demon_prompt_list = []
@@ -168,6 +166,12 @@ class My_Trainer:
         best_performce = 0
         eval_num = 0
         for epoch_num in range(self.args.epoch):
+            label_0_0=0
+            label_0_1=0
+            label_1_0=0
+            label_1_1=0
+            total_gate_res = []
+            total_new_lable = []
             self.train_result_logger = get_logger(self.args.dir_path, "train_result")
             for data_item in train_data_loader:
                 self.MI_learner.train()
@@ -176,27 +180,52 @@ class My_Trainer:
                 labels = data_item['label']
                 one_hot_labels = data_item['one_hot_label']
                 batch_answer = data_item["answer"]
-
+                
+                with torch.no_grad():
+                    general_input_dict = {'question': data_item["question"], 'options': data_item["options"]}
+                    general_batch_my_input_list, general_batch_pred, _, _, _, general_batch_loss_list, general_batch_logit_log_softmax = self.pipeline_inference(self.general_prompt,
+                                                                                                general_input_dict, labels, batch_answer, training_flag=True, record_flag=False)
+                    
                 query = self.get_multi_query_input(question, data_item)
                 query_emb_list, attention_mask_list, bags_list = self.retriever.search_document(query) 
                 retrieve_docs = combine_doc(bags_list)
                 input_dict = self.return_input_dict(dev_data_loader, data_item, retrieve_docs)
                 
                 with torch.no_grad():
-                    _, _,  _, _, batch_loss, batch_logit_log_softmax = self.pipeline_inference(input_dict, labels, batch_answer, training_flag=True, record_flag=False)
+                    batch_my_input_list, batch_pred, _, _, _, batch_loss, batch_logit_log_softmax = self.pipeline_inference(self.prompt, input_dict, labels, batch_answer, training_flag=True, record_flag=False)
+                    
+                loss_list, new_retrieve_docs, select_doc_num, raw_ques_emb_list, raw_doc_emb_list\
+                      = self.MI_learner(bags_list, query_emb_list, attention_mask_list, self.retriever, True, one_hot_labels, batch_logit_log_softmax)
 
-                loss_list, new_retrieve_docs, _ = self.MI_learner(query_emb_list, attention_mask_list, bags_list, batch_logit_log_softmax, one_hot_labels, batch_loss, self.retriever, True)
-                total_loss = loss_list[-1]+batch_loss
+                MI_learner_loss = loss_list[-1]
 
-                total_loss.backward()
-                # new
+                if self.args.if_MI_RA_gate:
+                    gate_loss, gate_res, new_lable, new_label_count_list = self.my_gate(general_batch_pred, batch_pred, batch_answer, batch_loss, 
+                                                                raw_ques_emb_list, raw_doc_emb_list, general_batch_loss_list,  batch_logit_log_softmax, general_batch_logit_log_softmax)
+                
+                label_0_0 += new_label_count_list[0]
+                label_0_1 += new_label_count_list[1]
+                label_1_0 += new_label_count_list[2]
+                label_1_1 += new_label_count_list[3]
+
+                total_gate_res+=gate_res.tolist()
+                total_new_lable+=new_lable
+
+                gate_acc = sum(1 for true_label, predicted_label in zip(total_new_lable, total_gate_res) if true_label == predicted_label) / len(total_new_lable)
+
+                MI_learner_loss.backward()
+                gate_loss.backward()
+
                 old_doc_len =  sum([len(i) for i in self.LLM_tokenizer(retrieve_docs)["input_ids"]]) / len(retrieve_docs)
                 new_doc_len =  sum([len(i) for i in self.LLM_tokenizer(new_retrieve_docs)["input_ids"]]) / len(retrieve_docs)
 
-                self.writer.add_scalar('Loss/total_loss', round(float(total_loss), 4), step_num)
+                self.writer.add_scalar('Loss/MI_learner_loss', round(float(MI_learner_loss), 4), step_num)
+                self.writer.add_scalar('Loss/gate_loss', round(float(loss_list[0]), 4), step_num)
                 self.writer.add_scalar('LR', self.optimizer.param_groups[0]['lr'], step_num)
 
-                self.print_logger.info(f"epoch_num: {epoch_num}, training process num: {step_num}/{total_batch}, len_loss: {round(float(loss_list[0]), 4)}, kl_soft_loss: {round(float(loss_list[1]), 4)}, kl_hard_loss: {round(float(loss_list[2]), 4)}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, best_step:{best_step}, best_performce: {best_performce}")
+                self.print_logger.info(f"epoch_num: {epoch_num}, training process num: {step_num}/{total_batch},  gate_loss: {round(float(loss_list[0]), 4)}, len_loss: {round(float(loss_list[1]), 4)}, kl_soft_loss: {round(float(loss_list[2]), 4)}, kl_hard_loss: {round(float(loss_list[3]), 4)},  \
+                                       \n gate_acc:{gate_acc}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, label_0_0:{label_0_0}, label_0_1:{label_0_1}, label_1_0:{label_1_0}, label_1_1:{label_1_1}, \
+                                       \n best_step:{best_step}, best_performce: {best_performce} \n")
                                        
                 if (step_num + 1) % self.args.accumulation_steps == 0:
                     self.optimizer.step()
@@ -211,10 +240,11 @@ class My_Trainer:
                     break_cnt = 2 if self.args.test_code_flag else None
                     with torch.no_grad():
                         self.MI_learner.eval()
-                        self.test_result_logger = get_logger(self.args.dir_path, "test_result")
+                        self.my_gate.eval()
                         test_performce = self.test_proc(test_data_loader, dev_data_loader, step_num, break_cnt=break_cnt)
                         self.MI_learner.train()
-
+                        self.my_gate.train()
+ 
                     if test_performce>best_performce:
                         best_performce = test_performce
                         best_step = step_num
@@ -230,7 +260,7 @@ class My_Trainer:
     def test_proc(self, test_data_loader, dev_data_loader, eval_num=0, break_cnt=None):
             
         self.print_logger.info("\n Start test ...  ")
-        
+        self.test_result_logger = get_logger(self.args.dir_path, "test_result")
         start_time = time.time()
 
         all_test_labels = []
@@ -247,6 +277,7 @@ class My_Trainer:
             question = data_item['question']
             batch_label = data_item["label"]
             batch_answer = data_item["answer"]
+            labels = data_item['label']
 
             if self.args.if_RA:
                 query = self.get_multi_query_input(question, data_item)
@@ -257,17 +288,47 @@ class My_Trainer:
                 if self.args.infer_add_gold_retrieval:
                     retrieve_docs = self.add_gold_retrieval(retrieve_docs, data_item)
 
-                old_doc_len +=  sum([len(i) for i in self.LLM_tokenizer(retrieve_docs)["input_ids"]]) / len(retrieve_docs)
+                old_doc_len +=  sum([len(i) for i in self.LLM_tokenizer(retrieve_docs)["input_ids"]]) / self.args.test_batch_size
                 if self.args.if_MI_RA:
-                    _, retrieve_docs, _ = self.MI_learner(query_emb_list, attention_mask_list, bags_list, "batch_logit_log_softmax", "one_hot_labels", "batch_loss", self.retriever,  False)
-                    new_doc_len +=  sum([len(i) for i in self.LLM_tokenizer(retrieve_docs)["input_ids"]]) / len(retrieve_docs)
+                    general_input_dict = {'question': data_item["question"], 'options': data_item["options"]}
+                    general_batch_my_input_list, general_batch_pred, general_batch_id_pred, general_batch_hallucination_cnt, general_save_doc_num, general_batch_loss_list, general_batch_logit_log_softmax \
+                          = self.pipeline_inference(self.general_prompt, general_input_dict, labels, batch_answer, training_flag=False, record_flag=False)
+
+                    loss_list, retrieve_docs, select_doc_num, raw_ques_emb_list, raw_doc_emb_list\
+                      = self.MI_learner(bags_list, query_emb_list, attention_mask_list, self.retriever, False, "one_hot_labels", "batch_logit_log_softmax")
             else:
                 retrieve_docs = ""
 
             input_dict = self.return_input_dict(dev_data_loader, data_item, retrieve_docs)
-            batch_pred, batch_id_pred, batch_hallucination_cnt, _, _, _ = self.pipeline_inference(input_dict, batch_label, batch_answer, training_flag=False, record_flag=True)
-            total_hallucination_cnt+=batch_hallucination_cnt
+            formal_batch_my_input_list, formal_batch_pred, formal_batch_id_pred, formal_batch_hallucination_cnt, formal_save_doc_num, formal_batch_loss_list, formal_batch_logit_log_softmax \
+                  = self.pipeline_inference(self.prompt, input_dict, batch_label, batch_answer, training_flag=False, record_flag=True)
+            
+            if self.args.if_MI_RA_gate:
+                gate_loss, gate_res, new_lable, new_label_count_list = self.my_gate(general_batch_pred, formal_batch_pred, batch_answer, formal_batch_loss_list, 
+                                                raw_ques_emb_list, raw_doc_emb_list, general_batch_loss_list,  formal_batch_logit_log_softmax, general_batch_logit_log_softmax)
+                
+                batch_hallucination_cnt = []
+                batch_id_pred = []
+                batch_pred = []
+                for index, res in enumerate(gate_res):
+                    if res ==1:
+                        batch_hallucination_cnt.append(formal_batch_hallucination_cnt[index])
+                        batch_id_pred.append(formal_batch_id_pred[index])
+                        batch_pred.append(formal_batch_pred[index])
 
+                        self.recored_res(formal_batch_pred[index], formal_batch_my_input_list[index], batch_answer[index], training_flag=False, record_flag=True)
+                    else:
+                        retrieve_docs = ""
+                        batch_hallucination_cnt.append(general_batch_hallucination_cnt[index])
+                        batch_id_pred.append(general_batch_id_pred[index])
+                        batch_pred.append(general_batch_pred[index])
+
+                        self.recored_res(general_batch_pred[index], general_batch_my_input_list[index], batch_answer[index], training_flag=False, record_flag=True)
+
+            if retrieve_docs != "":
+                new_doc_len +=  sum([len(i) for i in self.LLM_tokenizer(retrieve_docs)["input_ids"]]) / self.args.test_batch_size
+                
+            total_hallucination_cnt+=sum(batch_hallucination_cnt)
             all_test_labels+=batch_label
             all_test_prediction_ids+=batch_id_pred
 
@@ -304,14 +365,14 @@ class My_Trainer:
 
         return record_performance
          
-    def pipeline_inference(self, input_dict, label, batch_answer, training_flag=False, record_flag=True):
+    def pipeline_inference(self, used_prompt, input_dict, label, batch_answer, training_flag=False, record_flag=True):
         if self.args.LLM == "chatGPT":
             batch_pred, batch_id_pred, batch_hallucination_cnt, save_doc_num = self.non_local_llm_infer(input_dict, label, batch_answer, training_flag, record_flag)
             batch_loss, batch_logit_log_softmax = 0, 0
         else:
-            batch_pred, batch_id_pred, batch_hallucination_cnt, save_doc_num, batch_loss, batch_logit_log_softmax= self.local_llm_infer(input_dict, label, batch_answer, training_flag, record_flag)
+            batch_my_input_list, batch_pred, batch_id_pred, batch_hallucination_cnt, save_doc_num, batch_loss_list, batch_logit_log_softmax= self.local_llm_infer(used_prompt, input_dict, label, batch_answer, training_flag, record_flag)
 
-        return batch_pred, batch_id_pred, batch_hallucination_cnt, save_doc_num, batch_loss, batch_logit_log_softmax
+        return batch_my_input_list, batch_pred, batch_id_pred, batch_hallucination_cnt, save_doc_num, batch_loss_list, batch_logit_log_softmax
 
     def non_local_llm_infer(self, input_dict, label, batch_answer, training_flag=False, record_flag=True):
         batch_pred = []
@@ -344,26 +405,28 @@ class My_Trainer:
                         save_doc_num[index2] = 5
 
             pred = pred["text"]
-            pred, id_pred, hallucination_cnt = self.pasrse_record_res(self.prompt.format(**current_inputs) , label[index2], pred, batch_answer[index2], training_flag, record_flag) 
+            my_input = self.prompt.format(**current_inputs)
+            pred, id_pred, hallucination_cnt = extracted_token_id_label(my_input , label[index2], pred, batch_answer[index2], training_flag, record_flag) 
+
             batch_pred.append(pred)  
             batch_id_pred.append(id_pred)
             batch_hallucination_cnt+=hallucination_cnt
 
         return batch_pred, batch_id_pred, batch_hallucination_cnt, save_doc_num
     
-    def local_llm_infer(self, input_dict, labels, batch_answer, training_flag=False, record_flag=True):
+    def local_llm_infer(self, used_prompt, input_dict, labels, batch_answer, training_flag=False, record_flag=True):
         save_doc_num = [self.args.n_docs]*len(labels)
        
         my_input_list = []
         keys = input_dict.keys()
         for values in zip(*input_dict.values()):
             current_inputs = dict(zip(keys, values))
-            my_input = self.prompt.format(**current_inputs)
+            my_input = used_prompt.format(**current_inputs)
             my_input_list.append(my_input)
         
         batch_id_pred = []
         batch_pred = []
-        batch_hallucination_cnt = 0
+        batch_hallucination_cnt = []
 
         inputs = self.LLM_tokenizer(my_input_list, return_tensors="pt", padding=True).to(self.args.device)
         generation_config = GenerationConfig(
@@ -381,41 +444,40 @@ class My_Trainer:
 
         outputs = self.LLM.generate(**inputs, generation_config=generation_config)
         outputs_scores = torch.stack(outputs["scores"]).permute(1,0,2)
-        batch_loss = 0
+        batch_loss_list = []
         logit_log_softmax = []
         for index, (outputs_score, output, answer, label) in enumerate(zip(outputs_scores, outputs["sequences"], batch_answer, labels)):
             generation = self.LLM_tokenizer.decode(output, skip_special_tokens=True)
-            pred, id_pred, hallucination_cnt = self.pasrse_record_res(my_input_list[index], label, generation, answer, training_flag, record_flag)
-
+            pred, id_pred, hallucination_cnt = extracted_token_id_label(generation, label, self.LLM_tokenizer, self.args.dataset, used_prompt, self.args.LLM)
+           
             label = torch.LongTensor(label).to(outputs_score[0].device)
 
             process_score =  F.log_softmax(outputs_score[:len(label)], dim=-1)
-            batch_loss += self.loss_fct(-process_score, label.view(-1))
+            batch_loss_list.append( self.loss_fct(process_score, label.view(-1)) )
             
+
             logit_log_softmax.append(process_score)
             batch_pred.append(pred)
             batch_id_pred.append(id_pred)
-            batch_hallucination_cnt+=hallucination_cnt
+            batch_hallucination_cnt.append(hallucination_cnt)
 
         logit_log_softmax = torch.stack(logit_log_softmax)
-        return batch_pred, batch_id_pred, batch_hallucination_cnt, save_doc_num, batch_loss/len(labels), logit_log_softmax
+        batch_loss_list = torch.stack(batch_loss_list)
+        return my_input_list, batch_pred, batch_id_pred, batch_hallucination_cnt, save_doc_num, batch_loss_list, logit_log_softmax
 
-    def pasrse_record_res(self, my_input, label, generation, answer, training_flag, record_flag):
-        pred, id_pred, hallucination_cnt = extracted_token_id_label(generation, label, self.LLM_tokenizer, self.args.dataset, self.prompt, self.args.LLM)
-
+    def recored_res(self, pred, my_input, answer, training_flag, record_flag):
         if training_flag:
             result_logger = self.train_result_logger
         else:    
             result_logger = self.test_result_logger
 
         if record_flag:
+
             result_logger.info(f"my_input: {my_input}")
             result_logger.info(f"answer:   {answer} ")
             result_logger.info(f"pred:   {pred} ")
             result_logger.info(f"=================================================================================================================================================================================================\n\n")
             # result_logger.info(f"label:   {[self.LLM_tokenizer._convert_id_to_token(int(label_i))   for label_i in label] } ")
             # result_logger.info(f"id_pred: {[self.LLM_tokenizer._convert_id_to_token(id_pred_i) for id_pred_i in id_pred] } "+ "\n========================================================================================================================")
-        return pred, id_pred, hallucination_cnt
-    
-
+        
    

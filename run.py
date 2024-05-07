@@ -18,6 +18,7 @@ parser.add_argument("--loading_ckpt_path", type=str, default=None, help="loading
 parser.add_argument("--if_train", type=bool, help="if retrieval augmented")
 parser.add_argument("--if_RA", type=bool,  help="if retrieval augmented")
 parser.add_argument("--if_MI_RA", type=bool,  help="if_MI_RA")
+parser.add_argument("--if_MI_RA_gate", type=bool, default=True, help="if_MI_RA")
 parser.add_argument("--LLM", type=str, help="LLM to use")
 # train
 parser.add_argument('--dataset', type=str, default="USMLE", choices=["USMLE", "MedMCQA", "HEADQA", "MMLU", "OTTQA"], help='train_file_path')
@@ -98,7 +99,7 @@ from dataloader.data_loader import get_loader
 from trainer import My_Trainer
 import torch
 from utils.utils import load_LLM, get_logger, make_log_dir, seed_everything
-from models.my_model import My_MI_learner
+from models.my_model import My_MI_learner, My_gate
 from src.passage_retrieval import Retriever
 
 if torch.cuda.is_available():
@@ -139,7 +140,7 @@ def main(args):
             args.print_logger.info("Loading retriever ...")
             if args.test_code_flag==True:
                 args.passages_embeddings = "datasets/Retrieval_corpus/enwiki_dec_2020_contriever_intro/passages_00"
-                args.train_eval==2
+                args.train_eval=2
 
             retriever = Retriever(args)
             retriever.setup_retriever()
@@ -152,12 +153,13 @@ def main(args):
     # for llama3
     # MI_learner = My_MI_learner(args, LLM_tokenizer.vocab_size+len(LLM_tokenizer.added_tokens_encoder) if args.LLM != "chatGPT" else 32000)
     MI_learner = My_MI_learner(args, LLM_tokenizer.vocab_size if args.LLM != "chatGPT" else 32000)
+    my_gate = My_gate(args)
     
     if args.loading_ckpt_path is not None:
         args.print_logger.info(f"loading ckpt from {args.loading_ckpt_path} ! \n=================\n")
         MI_learner.load_state_dict(torch.load(args.loading_ckpt_path))
 
-    trainer = My_Trainer(args, MI_learner, LLM, LLM_tokenizer, device, retriever)
+    trainer = My_Trainer(args, MI_learner, my_gate, LLM, LLM_tokenizer, device, retriever)
     
     if args.if_train and args.if_RA and args.if_MI_RA and (args.dataset!= "MMLU"):
         trainer.train_proc(train_data_loader, dev_data_loader, test_data_loader)
