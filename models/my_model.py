@@ -17,7 +17,7 @@ class My_gate(nn.Module):
         encoder_layer_gate = nn.TransformerEncoderLayer(d_model=3, nhead=1, dropout=0, batch_first=True).to(self.args.device)
         self.trans_gate = nn.TransformerEncoder(encoder_layer_gate, num_layers=1)
         self.gate_linear = Linear(3, 2).to(self.args.device)
-        self.gate_loss = nn.CrossEntropyLoss()
+        self.gate_loss = nn.CrossEntropyLoss(weight=torch.tensor([1, 5], dtype=torch.float32).to(args.device))
 
     def get_new_lable(self, general_batch_pred, batch_pred, batch_answer):
         new_label_list = []

@@ -270,7 +270,7 @@ class My_Trainer:
         old_doc_len = 0
         new_doc_len = 0
         total_hallucination_cnt = 0
-
+        gate_res_list = []
         for index, data_item in enumerate(test_data_loader):
             if index%200==0:
                 self.print_logger.info(f"testing process num: {index}")
@@ -310,20 +310,21 @@ class My_Trainer:
                 batch_hallucination_cnt = []
                 batch_id_pred = []
                 batch_pred = []
-                for index, res in enumerate(gate_res):
+                gate_res_list+=gate_res.tolist()
+                for gate_index, res in enumerate(gate_res):
                     if res ==1:
-                        batch_hallucination_cnt.append(formal_batch_hallucination_cnt[index])
-                        batch_id_pred.append(formal_batch_id_pred[index])
-                        batch_pred.append(formal_batch_pred[index])
+                        batch_hallucination_cnt.append(formal_batch_hallucination_cnt[gate_index])
+                        batch_id_pred.append(formal_batch_id_pred[gate_index])
+                        batch_pred.append(formal_batch_pred[gate_index])
 
-                        self.recored_res(formal_batch_pred[index], formal_batch_my_input_list[index], batch_answer[index], training_flag=False, record_flag=True)
+                        self.recored_res(formal_batch_pred[gate_index], formal_batch_my_input_list[gate_index], batch_answer[gate_index], training_flag=False, record_flag=True)
                     else:
                         retrieve_docs = ""
-                        batch_hallucination_cnt.append(general_batch_hallucination_cnt[index])
-                        batch_id_pred.append(general_batch_id_pred[index])
-                        batch_pred.append(general_batch_pred[index])
+                        batch_hallucination_cnt.append(general_batch_hallucination_cnt[gate_index])
+                        batch_id_pred.append(general_batch_id_pred[gate_index])
+                        batch_pred.append(general_batch_pred[gate_index])
 
-                        self.recored_res(general_batch_pred[index], general_batch_my_input_list[index], batch_answer[index], training_flag=False, record_flag=True)
+                        self.recored_res(general_batch_pred[gate_index], general_batch_my_input_list[gate_index], batch_answer[gate_index], training_flag=False, record_flag=True)
 
             if retrieve_docs != "":
                 new_doc_len +=  sum([len(i) for i in self.LLM_tokenizer(retrieve_docs)["input_ids"]]) / self.args.test_batch_size
@@ -355,7 +356,7 @@ class My_Trainer:
             test_acc, test_precision, test_recall, test_f1 = self.my_metrics.acc_PRF(all_test_labels, all_test_prediction_ids)
             total_hallucination_cnt = round(total_hallucination_cnt/len(test_data_loader.dataset)*100, 2)
             self.args.print_logger.info(f"test: acc {test_acc}, f1 {test_f1}, precision {test_precision}, recall {test_recall}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, hallucination: {total_hallucination_cnt} ")
-            self.args.print_logger.info(f"cost_time: {cost_time} \n ")
+            self.args.print_logger.info(f"cost_time: {cost_time} , gate_res_list: {sum(gate_res_list)/ len(gate_res_list) } \n ")
             record_performance = test_acc
 
             self.writer.add_scalar('Performance/test/acc', test_acc, eval_num )
