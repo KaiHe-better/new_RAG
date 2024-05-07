@@ -225,7 +225,7 @@ class My_Trainer:
 
                 self.print_logger.info(f"epoch_num: {epoch_num}, training process num: {step_num}/{total_batch},  gate_loss: {round(float(loss_list[0]), 4)}, len_loss: {round(float(loss_list[1]), 4)}, kl_soft_loss: {round(float(loss_list[2]), 4)}, kl_hard_loss: {round(float(loss_list[3]), 4)},  \
                                        \n gate_acc:{gate_acc}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, label_0_0:{label_0_0}, label_0_1:{label_0_1}, label_1_0:{label_1_0}, label_1_1:{label_1_1}, \
-                                       \n best_step:{best_step}, best_performce: {best_performce},  gate_res: {str(gate_res)}\n")
+                                       \n best_step:{best_step}, best_performce: {best_performce},  gate_res: {str(gate_res.tolist())}\n")
                                        
                 if (step_num + 1) % self.args.accumulation_steps == 0:
                     self.optimizer.step()

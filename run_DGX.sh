@@ -74,6 +74,6 @@ nohup python run.py --ID USMLE_3 --gpu 7 --config llama2-7b_USMLE_MI_RA.yaml --d
 
 # new llama2-7b_USMLE_MI_RA  --n_docs 10
 
-nohup python run.py --ID USMLE_0 --gpu 4 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 10 --loss_list kl_soft+kl_hard+len_penalty --soft_weight 1 --hard_weight 1 --gate_weight 10  --len_penalty_weight 4 >/dev/null 2>&1 &
-nohup python run.py --ID USMLE_3 --gpu 7 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 10 --loss_list kl_soft+kl_hard+len_penalty --soft_weight 1 --hard_weight 1 --gate_weight 50  --len_penalty_weight 4 >/dev/null 2>&1 &
+nohup python run.py --ID USMLE_0 --gpu 4 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 10 --loss_list kl_soft+kl_hard+len_penalty --soft_weight 1 --hard_weight 1 --gate_weight 1  --len_penalty_weight 4 >/dev/null 2>&1 &
+nohup python run.py --ID USMLE_3 --gpu 7 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 10 --loss_list kl_soft+kl_hard+len_penalty --soft_weight 1 --hard_weight 1 --gate_weight 2  --len_penalty_weight 4 >/dev/null 2>&1 &
 
