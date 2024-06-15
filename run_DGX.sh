@@ -75,5 +75,73 @@ nohup python run.py --ID USMLE_3 --gpu 7 --config llama2-7b_USMLE_MI_RA.yaml --d
 # new llama2-7b_USMLE_MI_RA  --n_docs 10
 
 nohup python run.py --ID USMLE_0 --gpu 4 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 10 --loss_list kl_soft+kl_hard+len_penalty --soft_weight 1 --hard_weight 1 --gate_weight 1  --len_penalty_weight 4 >/dev/null 2>&1 &
-nohup python run.py --ID USMLE_3 --gpu 7 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 10 --loss_list kl_soft+kl_hard+len_penalty --soft_weight 1 --hard_weight 1 --gate_weight 2  --len_penalty_weight 4 >/dev/null 2>&1 &
+2024-05-07 23:29:31,590 test: acc 49.49, f1 47.4, precision 48.63, recall 48.87, old_doc_len:2480.0533751962325, new_doc_len:872.234693877551, hallucination: 0.08 
+2024-05-07 23:29:31,590 cost_time: 29.669101238250732 , gate_res_list: 0.648075412411626, 825 / 1273 
 
+nohup python run.py --ID USMLE_3 --gpu 7 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 10 --loss_list kl_soft+kl_hard+len_penalty --soft_weight 1 --hard_weight 1 --gate_weight 2  --len_penalty_weight 4 >/dev/null 2>&1 &
+2024-05-08 03:41:56,168 test: acc 49.49, f1 47.37, precision 48.63, recall 48.82, old_doc_len:2480.0533751962325, new_doc_len:892.6883830455259, hallucination: 0.08 
+2024-05-08 03:41:56,168 cost_time: 50.711981503168744 , gate_res_list: 0.6543597800471328, 833 / 1273 
+
+nohup python run.py --ID USMLE_0 --gpu 4 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 10 --loss_list kl_soft+kl_hard             --soft_weight 1 --hard_weight 1  >/dev/null 2>&1 &
+2024-05-09 08:05:25,223 test: acc 49.57, f1 47.46, precision 48.66, recall 48.36, old_doc_len:2480.0533751962325, new_doc_len:808.4748822605966, hallucination: 0.0 
+2024-05-09 08:05:25,223 cost_time: 29.41408345301946 , gate_res_list: 0.6575019638648861, 837 / 1273 
+
+nohup python run.py --ID USMLE_1 --gpu 4 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 10 --loss_list kl_soft+kl_hard+len_penalty --soft_weight 1 --hard_weight 1 --len_penalty_weight 1 >/dev/null 2>&1 &
+2024-05-10 03:37:33,006 test: acc 49.33, f1 47.21, precision 48.49, recall 48.41, old_doc_len:2480.0533751962325, new_doc_len:951.1287284144427, hallucination: 0.0 
+2024-05-10 03:37:33,006 cost_time: 44.86397190888723 , gate_res_list: 0.6622152395915161, 843 / 1273 
+
+nohup python run.py --ID USMLE_2 --gpu 7 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 10 --loss_list kl_soft+kl_hard+len_penalty --soft_weight 1 --hard_weight 1 --len_penalty_weight 2 >/dev/null 2>&1 &
+2024-05-08 19:45:30,506 test: acc 49.49, f1 47.37, precision 48.57, recall 48.78, old_doc_len:2480.0533751962325, new_doc_len:846.4073783359497, hallucination: 0.0 
+2024-05-08 19:45:30,506 cost_time: 32.293471018473305 , gate_res_list: 0.6567164179104478, 836 / 1273 
+
+nohup python run.py --ID USMLE_3 --gpu 7 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 10 --loss_list kl_soft+kl_hard+len_penalty --soft_weight 1 --hard_weight 1 --len_penalty_weight 3 >/dev/null 2>&1 &
+2024-05-08 20:41:18,559 test: acc 49.65, f1 47.55, precision 48.72, recall 48.99, old_doc_len:2480.0533751962325, new_doc_len:864.5368916797488, hallucination: 0.08 
+2024-05-08 20:41:18,559 cost_time: 35.15572950442632 , gate_res_list: 0.6567164179104478, 836 / 1273 
+
+
+
+# new llama2-7b_USMLE_MI_RA  --n_docs 5
+
+nohup python run.py --ID USMLE_0 --gpu 4 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 5 --loss_list kl_soft+kl_hard             --soft_weight 1 --hard_weight 1  >/dev/null 2>&1 &
+2024-05-11 14:14:03,076 test: acc 50.27, f1 48.28, precision 49.24, recall 48.98, old_doc_len:1252.7605965463108, new_doc_len:542.4568288854003, hallucination: 0.0 
+2024-05-11 14:14:03,077 cost_time: 26.357947031656902 , gate_res_list: 0.6614296936370778, 842 / 1273 
+
+nohup python run.py --ID USMLE_1 --gpu 4 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 5 --loss_list kl_soft+kl_hard+len_penalty --soft_weight 1 --hard_weight 1 --len_penalty_weight 5 >/dev/null 2>&1 &
+2024-05-10 23:00:17,128 test: acc 50.2, f1 48.16, precision 49.14, recall 48.92, old_doc_len:1252.7605965463108, new_doc_len:536.6758241758242, hallucination: 0.0 
+2024-05-10 23:00:17,128 cost_time: 29.71108977397283 , gate_res_list: 0.6575019638648861, 837 / 1273 
+
+nohup python run.py --ID USMLE_2 --gpu 7 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 5 --loss_list kl_soft+kl_hard+len_penalty --soft_weight 1 --hard_weight 1 --len_penalty_weight 8 >/dev/null 2>&1 &
+2024-05-10 21:50:18,816 test: acc 50.2, f1 48.16, precision 49.14, recall 48.92, old_doc_len:1252.7605965463108, new_doc_len:536.6758241758242, hallucination: 0.0 
+2024-05-10 21:50:18,816 cost_time: 26.213221351305645 , gate_res_list: 0.6575019638648861, 837 / 1273 
+
+nohup python run.py --ID USMLE_3 --gpu 7 --config llama2-7b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 5 --loss_list kl_soft+kl_hard+len_penalty --soft_weight 1 --hard_weight 1 --len_penalty_weight 10 >/dev/null 2>&1 &
+2024-05-10 22:30:25,900 test: acc 50.2, f1 48.16, precision 49.14, recall 48.92, old_doc_len:1252.7605965463108, new_doc_len:536.6758241758242, hallucination: 0.0 
+2024-05-10 22:30:25,900 cost_time: 29.351856935024262 , gate_res_list: 0.6575019638648861, 837 / 1273 
+
+
+# new llama3-8b_USMLE_MI_RA 
+
+
+nohup python run.py --ID USMLE_0 --gpu 4 --config llama3-8b_USMLE_RA.yaml --dataset USMLE --n_docs 5   >/dev/null 2>&1 &
+2024-05-12 19:57:45,893 test: acc 53.73, f1 53.62, precision 53.79, recall 54.13, old_doc_len:1021.0675039246468, new_doc_len:1021.0675039246468, hallucination: 10.68 
+
+nohup python run.py --ID USMLE_01 --gpu 7 --config llama3-8b_USMLE_RA.yaml --dataset USMLE --n_docs 10  >/dev/null 2>&1 &
+2024-05-12 20:01:40,753 test: acc 59.86, f1 59.69, precision 59.88, recall 59.95, old_doc_len:2020.9819466248039, new_doc_len:2020.9819466248039, hallucination: 0.31 
+
+
+
+nohup python run.py --ID USMLE_2 --gpu 7 --config llama3-8b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 5  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 10 >/dev/null 2>&1 &
+2024-05-13 01:25:04,476 test: acc 64.89, f1 64.67, precision 64.93, recall 64.97, old_doc_len:1021.0675039246468, new_doc_len:190.43720565149135, hallucination: 5.97 
+
+nohup python run.py --ID USMLE_3 --gpu 4 --config llama3-8b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 10 >/dev/null 2>&1 &
+2024-05-15 09:42:19,157 test: acc 66.93, f1 66.69, precision 66.9, recall 66.79, old_doc_len:2020.9819466248039, new_doc_len:381.6773940345369, hallucination: 0.39 
+
+
+# 这两个训练时间太长，这2个貌似没区别， 000比001稍好
+nohup python run.py --ID USMLE_000 --gpu 4 --config llama3-8b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 >/dev/null 2>&1 &
+2024-05-23 08:18:46,111 test: acc 67.48, f1 67.26, precision 67.48, recall 67.33, old_doc_len:2020.9819466248039, new_doc_len:290.8006279434851, hallucination: 1.73 
+67.01
+
+nohup python run.py --ID USMLE_001 --gpu 5 --config llama3-8b_USMLE_MI_RA.yaml --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard >/dev/null 2>&1 &
+2024-05-23 04:23:07,022 test: acc 67.48, f1 67.25, precision 67.45, recall 67.32, old_doc_len:2020.9819466248039, new_doc_len:347.8689167974882, hallucination: 0.39 
+67.01

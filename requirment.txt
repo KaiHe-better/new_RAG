@@ -1,4 +1,4 @@
-torch==2.0.0+cu117
+pytorch==2.2.2
 transformers==4.35.2
 langchain==0.0.339
 pandas==2.1.2
@@ -7,4 +7,5 @@ tensorboard==2.15.1
 accelerate==0.24.1
 chromadb==0.4.18
 sentencepiece==0.1.99
+
 

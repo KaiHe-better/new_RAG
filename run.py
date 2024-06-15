@@ -30,7 +30,7 @@ parser.add_argument('--demons_cnt', type=int, default=1, help='demonstration num
 parser.add_argument('--l2_coef', type=float, default=0, help='l2')
 parser.add_argument('--train_eval', type=int, default=100, help='lr for retriever')
 parser.add_argument('--epoch', type=int, default=99999, help='lr for retriever')
-parser.add_argument('--gate_weight', type=int, default=20, help='lr for retriever')
+parser.add_argument('--gate_weight', type=int, default=2, help='lr for retriever')
 # lr
 parser.add_argument('--lr', type=float, default=1e-4, help='lr for retriever')
 parser.add_argument('--init_lr_num', type=int, default=500, help='lr for retriever')
@@ -44,8 +44,8 @@ parser.add_argument('--layer_norm_eps', type=float, default=1e-5, help='MI_learn
 parser.add_argument('--nhead', type=int, default=8, help='MI_learner nhead')
 parser.add_argument('--dropout', type=float, default=0.1, help='MI_learner dropout')
 # loss
-parser.add_argument('--loss_list', type=str, default="", help='kl_soft+kl_hard+len_penalty')
-parser.add_argument('--len_penalty_weight', type=float, default=100, help='soft_weight')
+parser.add_argument('--loss_list', type=str, default="kl_soft+kl_hard+len_penalty", help='kl_soft+kl_hard+len_penalty')
+parser.add_argument('--len_penalty_weight', type=float, default=10, help='soft_weight')
 parser.add_argument('--soft_weight', type=float, default=1, help='soft_weight')
 parser.add_argument('--hard_weight', type=float, default=1, help='hard_weight')
 # decoding
@@ -113,6 +113,9 @@ seed_everything(int(args.seed))
 
 args.prompt_file = "prompts/" + args.dataset + ".json"
 
+if args.if_MI_RA is False:
+    args.if_MI_RA_gate = False
+
 if args.if_train is True and args.if_MI_RA is False:
     raise Exception("if if_train is true, if_MI_RA have to be true ! ")
 
@@ -152,8 +155,8 @@ def main(args):
     train_data_loader, dev_data_loader, test_data_loader = get_loader(args, LLM_tokenizer)
     
     # for llama3
-    # MI_learner = My_MI_learner(args, LLM_tokenizer.vocab_size+len(LLM_tokenizer.added_tokens_encoder) if args.LLM != "chatGPT" else 32000)
-    MI_learner = My_MI_learner(args, LLM_tokenizer.vocab_size if args.LLM != "chatGPT" else 32000)
+    MI_learner = My_MI_learner(args, LLM_tokenizer.vocab_size+len(LLM_tokenizer.added_tokens_encoder) if args.LLM != "chatGPT" else 32000)
+    # MI_learner = My_MI_learner(args, LLM_tokenizer.vocab_size if args.LLM != "chatGPT" else 32000)
     my_gate = My_gate(args)
     
     if args.loading_ckpt_path is not None:
