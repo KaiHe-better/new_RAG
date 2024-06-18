@@ -7,21 +7,18 @@ from dotenv import load_dotenv
 parser = argparse.ArgumentParser()
 
 # system settings
-parser.add_argument("--config", type=str, default="llama2-7b_USMLE_MI_RA.yaml", help="Path to the config file")
-parser.add_argument('--gpu', default="4", type=str, help='gpu device numbers')
-parser.add_argument('--ID', type=str, default='7', help='run ID')
-parser.add_argument("--test_code_flag", type=bool, default=False, help="if retrieval augmented")
+# parser.add_argument("--config", type=str, default="llama3-8b_USMLE_MI_RA.yaml", help="Path to the config file")
+parser.add_argument('--gpu', default="6", type=str, help='gpu device numbers')
+parser.add_argument('--ID', type=str, default='6', help='run ID')
+parser.add_argument("--test_code_flag", type=bool, default=True, help="if retrieval augmented")
 parser.add_argument('--seed', default=42, help='trandom seed')
 parser.add_argument('--num_workers', default=16, type=int, help='data_loader_work')
 parser.add_argument("--loading_ckpt_path", type=str, default=None, help="loading_ckpt_path, None ")
 # In config
-parser.add_argument("--if_train", type=bool, help="if retrieval augmented")
-parser.add_argument("--if_RA", type=bool,  help="if retrieval augmented")
-parser.add_argument("--if_MI_RA", type=bool,  help="if_MI_RA")
-parser.add_argument("--if_MI_RA_gate", type=bool, default=True, help="if_MI_RA")
-parser.add_argument("--LLM", type=str, help="LLM to use")
+parser.add_argument("--RA_method", type=str,  default="Gate_MI_RA", choices=["No_RA", "Only_RA", "Gate_RA", "MI_RA", "Gate_MI_RA"], help="RA_method")
+parser.add_argument("--LLM", type=str, default="meta-llama/Meta-Llama-3-8B-Instruct", help="[meta-llama/Meta-Llama-3-8B-Instruct, meta-llama/Llama-2-7b-chat-hf]")  
 # train
-parser.add_argument('--dataset', type=str, default="USMLE", choices=["USMLE", "MedMCQA", "HEADQA", "MMLU", "OTTQA"], help='train_file_path')
+parser.add_argument('--dataset', type=str, default="MedMCQA", choices=["USMLE", "MedMCQA", "HEADQA", "MMLU", ], help='train_file_path')
 parser.add_argument('--train_batch_size', type=int, default=2, help='train_batch_size')
 parser.add_argument('--test_batch_size', type=int, default=2, help='train_batch_size')
 parser.add_argument('--accumulation_steps', type=int, default=1, help='accumulation_steps')
@@ -84,9 +81,9 @@ parser.add_argument("--indexing_batch_size", type=int, default=1000000, help="Ba
 # parser.add_argument("--output_dir", type=str, default=None, help="Results are written to outputdir with data suffix")
 
 args = parser.parse_args()
-args.config = "configs/"+args.dataset+ "/"+args.config
-config = yaml.safe_load(open(args.config)) 
-parser.set_defaults(**config)
+# args.config = "configs/"+args.dataset+ "/"+args.config
+# config = yaml.safe_load(open(args.config)) 
+# parser.set_defaults(**config)
 args = parser.parse_args()
 
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
@@ -113,11 +110,7 @@ seed_everything(int(args.seed))
 
 args.prompt_file = "prompts/" + args.dataset + ".json"
 
-if args.if_MI_RA is False:
-    args.if_MI_RA_gate = False
 
-if args.if_train is True and args.if_MI_RA is False:
-    raise Exception("if if_train is true, if_MI_RA have to be true ! ")
 
 
 dir_path = make_log_dir()
@@ -137,40 +130,48 @@ args.print_logger.info("**************** Configuration **************** \n\n")
 
 
 def main(args):
-    if args.if_RA or args.if_MI_RA:
-        if not args.if_RA:
-            return "", ""
-        else:
-            args.print_logger.info("Loading retriever ...")
-            if args.test_code_flag==True:
-                args.passages_embeddings = "datasets/Retrieval_corpus/enwiki_dec_2020_contriever_intro/passages_00"
-                args.train_eval=2
-
-            retriever = Retriever(args)
-            retriever.setup_retriever()
-    else:
+   
+    if args.RA_method == "No_RA":
         retriever = None
+    else:    
+        args.print_logger.info("Loading retriever ...")
+        
+        if args.test_code_flag==True:
+            args.passages_embeddings = "datasets/Retrieval_corpus/enwiki_dec_2020_contriever_intro/passages_00"
+            args.train_eval=2
+
+        retriever = Retriever(args)
+        retriever.setup_retriever()
+    
 
     LLM, LLM_tokenizer = load_LLM(args)
     train_data_loader, dev_data_loader, test_data_loader = get_loader(args, LLM_tokenizer)
     
-    # for llama3
-    MI_learner = My_MI_learner(args, LLM_tokenizer.vocab_size+len(LLM_tokenizer.added_tokens_encoder) if args.LLM != "chatGPT" else 32000)
-    # MI_learner = My_MI_learner(args, LLM_tokenizer.vocab_size if args.LLM != "chatGPT" else 32000)
-    my_gate = My_gate(args)
-    
+    if args.RA_method in ["Gate_RA", "Gate_MI_RA"]:
+        my_gate = My_gate(args)
+    else:
+        my_gate = None
+
+    if args.RA_method in ["Gate_MI_RA", "MI_RA"]: 
+        if args.LLM == "meta-llama/Meta-Llama-3-8B-Instruct":
+            MI_learner = My_MI_learner(args, LLM_tokenizer.vocab_size+len(LLM_tokenizer.added_tokens_encoder) if args.LLM != "chatGPT" else 32000)
+        else:
+            MI_learner = My_MI_learner(args, LLM_tokenizer.vocab_size if args.LLM != "chatGPT" else 32000)
+    else:
+        MI_learner = None
+
     if args.loading_ckpt_path is not None:
         args.print_logger.info(f"loading ckpt from {args.loading_ckpt_path} ! \n=================\n")
         MI_learner.load_state_dict(torch.load(args.loading_ckpt_path))
 
     trainer = My_Trainer(args, MI_learner, my_gate, LLM, LLM_tokenizer, device, retriever)
     
-    if args.if_train and args.if_RA and args.if_MI_RA and (args.dataset!= "MMLU"):
+    if args.RA_method in ["Gate_RA", "Gate_MI_RA", "MI_RA"]:
         trainer.train_proc(train_data_loader, dev_data_loader, test_data_loader)
+    elif args.RA_method in ["No_RA", "Only_RA"]:
+        trainer.test_proc(test_data_loader, dev_data_loader)  
     else:
-        # test_data_loader = dev_data_loader
-        trainer.test_proc(test_data_loader, dev_data_loader)
-    
+        raise Exception("wrong RA_method")
 
 
 
