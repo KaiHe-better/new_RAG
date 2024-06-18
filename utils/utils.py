@@ -304,7 +304,8 @@ def load_LLM(args, dtype=torch.bfloat16):
     else:
         model_name_or_path = os.path.join(args.LLM)
         if model_name_or_path == "meta-llama/Llama-2-7b-chat-hf":
-            model_name_or_path = "../LLM_models/llama2/Llama-2-7b-chat-hf"
+            #model_name_or_path = "../LLM_models/llama2/Llama-2-7b-chat-hf"
+            model_name_or_path = "meta-llama/Llama-2-7b-chat-hf"
 
         # Load the FP16 modelargs.triever
         args.print_logger.info(f"Loading {model_name_or_path} in {dtype}...")

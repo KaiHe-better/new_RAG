@@ -258,8 +258,14 @@ class My_Trainer:
                         
 
     def test_proc(self, test_data_loader, dev_data_loader, eval_num=0, break_cnt=None):
-            
+        if self.args.device=="hpu":
+            from habana_frameworks.torch.hpu import wrap_in_hpu_graph
+            self.LLM.to("hpu")
+            self.LLM.eval()
+            self.LLM = wrap_in_hpu_graph(self.LLM)
+
         self.print_logger.info("\n Start test ...  ")
+
         self.test_result_logger = get_logger(self.args.dir_path, "test_result")
         start_time = time.time()
 
@@ -271,7 +277,7 @@ class My_Trainer:
         new_doc_len = 0
         total_hallucination_cnt = 0
         gate_res_list = []
-        for index, data_item in enumerate(test_data_loader):
+        for index, data_item in enumerate(tqdm(test_data_loader)):
             if index%200==0:
                 self.print_logger.info(f"testing process num: {index}")
             question = data_item['question']

@@ -77,6 +77,7 @@ parser.add_argument("--projection_size", type=int, default=768)
 parser.add_argument("--n_subquantizers", type=int, default=0, help="Number of subquantizer used for vector quantization, if 0 flat index is used")
 parser.add_argument("--n_bits", type=int, default=8, help="Number of bits per subquantizer")
 parser.add_argument("--indexing_batch_size", type=int, default=1000000, help="Batch size of the number of passages indexed")
+parser.add_argument("--gaudi", type=bool, help="run llm on gaudi")
 
 # parser.add_argument("--lang", nargs="+")
 # parser.add_argument("--dataset", type=str, default="none")
@@ -94,7 +95,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 load_dotenv(".env")
-os.environ["OPENAI_API_KEY"] = os.getenv('OPENAI_API_KEY')
+#os.environ["OPENAI_API_KEY"] = os.getenv('OPENAI_API_KEY')
 
 from dataloader.data_loader import get_loader  
 from trainer import My_Trainer
@@ -107,6 +108,9 @@ if torch.cuda.is_available():
     device = "cuda"
 else:
     device = "cpu"
+if args.gaudi:
+    device = "hpu"
+    import habana_frameworks.torch.core as htcore
 args.device = device
 
 seed_everything(int(args.seed))
