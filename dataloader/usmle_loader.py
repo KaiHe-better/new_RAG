@@ -73,6 +73,7 @@ def get_loader_USMLE(args, triever_tokenizer, train_file_path, dev_file_path, te
                                    shuffle=False,
                                    pin_memory=True,
                                    num_workers=args.num_workers,
+                                   prefetch_factor=16,
                                    collate_fn=collate_fn_USMLE,
                                   )       
 
@@ -83,6 +84,7 @@ def get_loader_USMLE(args, triever_tokenizer, train_file_path, dev_file_path, te
                                  shuffle=False,
                                  pin_memory=True,
                                  num_workers=args.num_workers,
+                                 prefetch_factor=16,
                                  collate_fn=collate_fn_USMLE,
                                 ) 
     
@@ -93,6 +95,7 @@ def get_loader_USMLE(args, triever_tokenizer, train_file_path, dev_file_path, te
                                   shuffle=False,
                                   pin_memory=True,
                                   num_workers=args.num_workers,
+                                  prefetch_factor=16,
                                   collate_fn=collate_fn_USMLE,
                                  )    
 

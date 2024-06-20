@@ -43,6 +43,20 @@ nohup python run.py --ID USMLE_001 --gpu 5 --config llama3-8b_USMLE_MI_RA.yaml -
 
 ===================================================================================================================================================================================================
 # USMLE
+nohup  python run.py --ID USMLE_5 --gpu 6 --RA_method No_RA   --dataset USMLE --n_docs 10    >/dev/null 2>&1 &
+2024-06-17 22:57:06,374 test: acc 58.99, f1 58.79, precision 59.05, recall 59.42, old_doc_len:0.0, new_doc_len:0.0, hallucination: 2.44 
+
+nohup  python run.py --ID USMLE_4 --gpu 4 --RA_method Only_RA --dataset USMLE --n_docs 10   >/dev/null 2>&1 &
+2024-06-18 17:49:55,992 test: acc 60.25, f1 60.08, precision 60.25, recall 60.32, old_doc_len:0.0, new_doc_len:0.0, hallucination: 0.39 
+
+
+
+nohup  python run.py --ID USMLE_3 --gpu 5 --RA_method Gate_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 100  >/dev/null 2>&1 &
+2024-06-18 14:31:52,449 test: acc 65.83, f1 65.58, precision 65.77, recall 65.74, old_doc_len:0.0, new_doc_len:0.0, hallucination: 0.55 
+
+nohup  python run.py --ID USMLE_2 --gpu 4 --RA_method MI_RA   --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 100   >/dev/null 2>&1 &
+2024-06-18 02:39:12,299 test: acc 60.25, f1 60.09, precision 60.27, recall 60.35, old_doc_len:2022.56, new_doc_len:2010.06, hallucination: 0.39 
+
 
 nohup  python run.py --ID USMLE_0 --gpu 4 --RA_method Gate_MI_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 100   >/dev/null 2>&1 &
 2024-06-17 20:35:35,726 test: acc 66.06, f1 65.83, precision 66.04, recall 65.98, old_doc_len:2022.56, new_doc_len:2022.56, hallucination: 0.39 
@@ -50,25 +64,43 @@ nohup  python run.py --ID USMLE_0 --gpu 4 --RA_method Gate_MI_RA --dataset USMLE
 nohup  python run.py --ID USMLE_1 --gpu 5 --RA_method Gate_MI_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 1000  >/dev/null 2>&1 &
 2024-06-17 14:33:01,976 test: acc 67.16, f1 66.92, precision 67.11, recall 67.02, old_doc_len:2022.56, new_doc_len:2022.56, hallucination: 0.39 
 
-nohup  python run.py --ID USMLE_2 --gpu 4 --RA_method MI_RA   --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 100   >/dev/null 2>&1 &
-2024-06-18 02:39:12,299 test: acc 60.25, f1 60.09, precision 60.27, recall 60.35, old_doc_len:2022.56, new_doc_len:2010.06, hallucination: 0.39 
 
 
-nohup  python run.py --ID USMLE_3 --gpu 5 --RA_method Gate_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 100  >/dev/null 2>&1 &
-2024-06-18 14:31:52,449 test: acc 65.83, f1 65.58, precision 65.77, recall 65.74, old_doc_len:0.0, new_doc_len:0.0, hallucination: 0.55 
 
-nohup  python run.py --ID USMLE_4 --gpu 4 --RA_method Only_RA --dataset USMLE --n_docs 10   >/dev/null 2>&1 &
-2024-06-18 17:49:55,992 test: acc 60.25, f1 60.08, precision 60.25, recall 60.32, old_doc_len:0.0, new_doc_len:0.0, hallucination: 0.39 
+nohup  python run.py --ID USMLE_0 --gpu 4 --RA_method MI_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 1000   >/dev/null 2>&1 &
 
-nohup  python run.py --ID USMLE_5 --gpu 6 --RA_method No_RA   --dataset USMLE --n_docs 10    >/dev/null 2>&1 &
-2024-06-17 22:57:06,374 test: acc 58.99, f1 58.79, precision 59.05, recall 59.42, old_doc_len:0.0, new_doc_len:0.0, hallucination: 2.44 
+nohup  python run.py --ID USMLE_1 --gpu 5 --RA_method MI_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 --train_eval 1000  >/dev/null 2>&1 &
+
+nohup  python run.py --ID USMLE_2 --gpu 6 --RA_method MI_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard   --train_eval 1000  >/dev/null 2>&1 &
+
+nohup  python run.py --ID USMLE_4 --gpu 7 --RA_method MI_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard   --train_eval 1000  --quantile_num 1 >/dev/null 2>&1 &
+
+
 
 
 ===================================================================================================================================================================================================
 # MedMCQA
 
-nohup  python run.py --ID MedMCQA_1 --gpu 4 --RA_method Gate_MI_RA --dataset MedMCQA --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 1000  >/dev/null 2>&1 &
 
-nohup  python run.py --ID HEADQA_1  --gpu 5 --RA_method Gate_MI_RA --dataset HEADQA  --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 1000  >/dev/null 2>&1 &
+nohup  python run.py --ID MedMCQA_1 --gpu 4 --RA_method MI_RA --dataset MedMCQA --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 1000  >/dev/null 2>&1 &
+ best_step:2000, best_performce: 
 
-nohup  python run.py --ID MMLU_1    --gpu 6 --RA_method Gate_MI_RA --dataset MMLU    --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 1000  >/dev/null 2>&1 &
+nohup  python run.py --ID MedMCQA_2 --gpu 5 --RA_method Gate_MI_RA --dataset MedMCQA --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 1000  >/dev/null 2>&1 &
+best_step:2000, best_performce: 
+
+
+
+
+
+===================================================================================================================================================================================================
+# HEADQA
+
+
+nohup  python run.py --ID HEADQA_1  --gpu 6 --RA_method MI_RA --dataset HEADQA  --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 1000  >/dev/null 2>&1 &
+ best_step:2000, best_performce: 44.97 
+
+nohup  python run.py --ID HEADQA_2  --gpu 7 --RA_method Gate_MI_RA --dataset HEADQA  --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 1000  >/dev/null 2>&1 &
+ best_step:2000, best_performce: 63.89 
+
+nohup  python run.py --ID HEADQA_3  --gpu 7 --RA_method MI_RA --dataset HEADQA  --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 1000  >/dev/null 2>&1 &
+

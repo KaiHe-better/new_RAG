@@ -25,7 +25,7 @@ class MMLU(Dataset):
         answ = data_item[-1].replace("\n", "")
         
         # label = [self.LLM_tokenizer._convert_token_to_id(answ)]
-        label = self.LLM_tokenizer._convert_token_to_id_with_added_voc(answ)
+        label = [self.LLM_tokenizer._convert_token_to_id_with_added_voc(answ)]
         one_hot_label = torch.zeros(self.LLM_tokenizer.vocab_size)
         one_hot_label.index_fill_(0, torch.tensor(label), torch.tensor(1))
 
