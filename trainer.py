@@ -463,16 +463,16 @@ class My_Trainer:
                 total_old_doc_len += old_doc_len
                 total_new_doc_len += new_doc_len
 
-                all_test_input_list+=batch_input_list
+                all_test_input_list+=RA_batch_input_list
                 for gate_index, res in enumerate(gate_res):
                     if res ==1:
-                        all_hallucination += RA_batch_hallucination_cnt[gate_index]
+                        all_hallucination.append(RA_batch_hallucination_cnt[gate_index])
                         all_test_prediction_ids.append(RA_batch_id_pred[gate_index])
                         all_test_predictions.append(RA_batch_pred[gate_index])
                         # self.recored_res(RA_batch_pred[gate_index], RA_batch_input_list[gate_index], batch_answer[gate_index], training_flag=False, record_flag=True)
                     else:
                         retrieve_docs = ""
-                        all_hallucination += general_batch_hallucination_cnt[gate_index]
+                        all_hallucination.append(general_batch_hallucination_cnt[gate_index])
                         all_test_prediction_ids.append(general_batch_id_pred[gate_index])
                         all_test_predictions.append(general_batch_pred[gate_index])
                         # self.recored_res(general_batch_pred[gate_index], general_batch_input_list[gate_index], batch_answer[gate_index], training_flag=False, record_flag=True)

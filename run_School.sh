@@ -65,17 +65,28 @@ nohup  python run.py --ID USMLE_1 --gpu 5 --RA_method Gate_MI_RA --dataset USMLE
 2024-06-17 14:33:01,976 test: acc 67.16, f1 66.92, precision 67.11, recall 67.02, old_doc_len:2022.56, new_doc_len:2022.56, hallucination: 0.39 
 
 
+nohup  python run.py --ID USMLE_0 --gpu 4 --RA_method Gate_MI_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 100  --quantile_num 0.97  >/dev/null 2>&1 &
+
+
 
 
 nohup  python run.py --ID USMLE_0 --gpu 4 --RA_method MI_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 1000   >/dev/null 2>&1 &
+ best_step:2000, best_performce: 60.25 
 
 nohup  python run.py --ID USMLE_1 --gpu 5 --RA_method MI_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 --train_eval 1000  >/dev/null 2>&1 &
+ best_step:2000, best_performce: 60.41 
 
 nohup  python run.py --ID USMLE_2 --gpu 6 --RA_method MI_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard   --train_eval 1000  >/dev/null 2>&1 &
+ best_step:5000, best_performce: 60.02 
 
 nohup  python run.py --ID USMLE_4 --gpu 7 --RA_method MI_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard   --train_eval 1000  --quantile_num 1 >/dev/null 2>&1 &
+ best_step:3000, best_performce: 54.75 
 
 
+
+nohup  python run.py --ID USMLE_1 --gpu 5 --RA_method MI_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 30 --train_eval 100 --quantile_num 0.97  >/dev/null 2>&1 &
+
+nohup  python run.py --ID USMLE_2 --gpu 6 --RA_method MI_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 100 --quantile_num 0.97  >/dev/null 2>&1 &
 
 
 ===================================================================================================================================================================================================
