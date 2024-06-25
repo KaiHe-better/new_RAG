@@ -19,6 +19,12 @@ class Indexer(object):
             self.index = faiss.IndexPQ(vector_sz, n_subquantizers, n_bits, faiss.METRIC_INNER_PRODUCT)
         else:
             self.index = faiss.IndexFlatIP(vector_sz)
+
+
+        assert faiss.StandardGpuResources,  "FAISS was not compiled with GPU support, or loading _swigfaiss_gpu.so failed"
+        res = faiss.StandardGpuResources()
+        self.index = faiss.index_cpu_to_gpu(res, 0, self.index)
+
         #self.index_id_to_db_id = np.empty((0), dtype=np.int64)
         self.index_id_to_db_id = []
 

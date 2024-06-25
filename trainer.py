@@ -33,7 +33,7 @@ class My_Trainer:
         self.LLM_tokenizer = LLM_tokenizer
 
         self.my_metrics = My_Metrics()
-        self.writer = SummaryWriter(args.dir_path+"/runs/")
+        # self.writer = SummaryWriter(args.dir_path+"/runs/")
 
         if self.args.RA_method in ["Only_RA", "Gate_RA", "Gate_MI_RA", "MI_RA"]:
             prompt_format = "retrieve-prompt"
@@ -294,13 +294,13 @@ class My_Trainer:
 
             total_gate_res = []
             total_new_lable = []
-            self.train_result_logger = get_logger(self.args.dir_path, "train_result")
+            # self.train_result_logger = get_logger(self.args.dir_path, "train_result")
             
             for tmp_step, data_item in enumerate(train_data_loader):
-                if self.args.RA_method in ["Gate_MI_RA", "MI_RA"]:
-                    self.MI_learner.train()
-                if self.args.RA_method in ["Gate_RA", "Gate_MI_RA"]:
-                    self.my_gate.train()
+                # if self.args.RA_method in ["Gate_MI_RA", "MI_RA"]:
+                #     self.MI_learner.train()
+                # if self.args.RA_method in ["Gate_RA", "Gate_MI_RA"]:
+                #     self.my_gate.train()
 
                 step_num+=1
                 question = data_item['question']
@@ -351,25 +351,28 @@ class My_Trainer:
 
                 if (step_num % self.args.train_eval==0) and step_num>1:
                     eval_num +=1
-                    self.train_result_logger = empty_logger_file(self.train_result_logger)
+                    # self.train_result_logger = empty_logger_file(self.train_result_logger)
 
                     break_cnt = 2 if self.args.test_code_flag else None
                     with torch.no_grad():
-                        if self.args.RA_method in ["Gate_MI_RA", "MI_RA"]:
-                            self.MI_learner.eval()
-                        if self.args.RA_method in ["Gate_RA", "Gate_MI_RA"]:
-                            self.my_gate.eval()
+                        # if self.args.RA_method in ["Gate_MI_RA", "MI_RA"]:
+                        #     self.MI_learner.eval()
+                        # if self.args.RA_method in ["Gate_RA", "Gate_MI_RA"]:
+                        #     self.my_gate.eval()
 
-                        test_performce = self.test_proc(test_data_loader, dev_data_loader, step_num, break_cnt=break_cnt)
+                        test_performce, all_test_predictions, all_test_input_list, all_test_answers = self.test_proc(test_data_loader, dev_data_loader, step_num, break_cnt=break_cnt)
 
-                        if self.args.RA_method in ["Gate_MI_RA", "MI_RA"]:
-                            self.MI_learner.train()
-                        if self.args.RA_method in ["Gate_RA", "Gate_MI_RA"]:
-                            self.my_gate.train()
+                        # if self.args.RA_method in ["Gate_MI_RA", "MI_RA"]:
+                        #     self.MI_learner.train()
+                        # if self.args.RA_method in ["Gate_RA", "Gate_MI_RA"]:
+                        #     self.my_gate.train()
  
                     if test_performce>best_performce:
                         best_performce = test_performce
                         best_step = step_num
+
+                        for batch_pred, batch_input, batch_answer in zip(all_test_predictions, all_test_input_list, all_test_answers):
+                            self.recored_res(batch_pred, batch_input, batch_answer, training_flag=False, record_flag=True)     
 
                         # if step_num>10:
                         #     torch.save(self.MI_learner.state_dict(), self.args.dir_path+'/MI_' +str(best_performce)+'.pkl') 
@@ -417,19 +420,17 @@ class My_Trainer:
                 label_0_0, label_0_1, label_1_0, label_1_1, total_gate_res, total_new_lable  \
                     = self.Gate_RA(total_gate_res, total_new_lable, data_item, labels, batch_answer, question)
 
-                all_test_input_list+=batch_input_list
+                all_test_input_list+=RA_batch_input_list
                 for gate_index, res in enumerate(gate_res):
                     if res ==1:
-                        all_hallucination += RA_batch_hallucination_cnt[gate_index]
+                        all_hallucination.append(RA_batch_hallucination_cnt[gate_index])
                         all_test_prediction_ids.append(RA_batch_id_pred[gate_index])
                         all_test_predictions.append(RA_batch_pred[gate_index])
-                        # self.recored_res(RA_batch_pred[gate_index], RA_batch_input_list[gate_index], batch_answer[gate_index], training_flag=False, record_flag=True)
                     else:
                         retrieve_docs = ""
-                        all_hallucination += general_batch_hallucination_cnt[gate_index]
+                        all_hallucination.append(general_batch_hallucination_cnt[gate_index])
                         all_test_prediction_ids.append(general_batch_id_pred[gate_index])
                         all_test_predictions.append(general_batch_pred[gate_index])
-                        # self.recored_res(general_batch_pred[gate_index], general_batch_input_list[gate_index], batch_answer[gate_index], training_flag=False, record_flag=True)
                 
             elif self.args.RA_method == "MI_RA":
                 # if self.args.infer_add_gold_retrieval:
@@ -446,9 +447,6 @@ class My_Trainer:
                 all_hallucination += batch_hallucination_cnt
                 all_test_prediction_ids+=batch_id_pred
                 all_test_predictions+=batch_pred
-                
-                # for tmp_i in range(len(batch_pred)):
-                #     self.recored_res(batch_pred[tmp_i], batch_input_list[tmp_i], batch_answer[tmp_i], training_flag=False, record_flag=True)
 
             elif self.args.RA_method == "Gate_MI_RA":
                 # if self.args.infer_add_gold_retrieval:
@@ -469,13 +467,11 @@ class My_Trainer:
                         all_hallucination.append(RA_batch_hallucination_cnt[gate_index])
                         all_test_prediction_ids.append(RA_batch_id_pred[gate_index])
                         all_test_predictions.append(RA_batch_pred[gate_index])
-                        # self.recored_res(RA_batch_pred[gate_index], RA_batch_input_list[gate_index], batch_answer[gate_index], training_flag=False, record_flag=True)
                     else:
                         retrieve_docs = ""
                         all_hallucination.append(general_batch_hallucination_cnt[gate_index])
                         all_test_prediction_ids.append(general_batch_id_pred[gate_index])
                         all_test_predictions.append(general_batch_pred[gate_index])
-                        # self.recored_res(general_batch_pred[gate_index], general_batch_input_list[gate_index], batch_answer[gate_index], training_flag=False, record_flag=True)
             
             elif self.args.RA_method == "Only_RA":
                 batch_input_list, batch_pred, batch_id_pred, batch_hallucination_cnt, \
@@ -486,9 +482,6 @@ class My_Trainer:
                 all_test_prediction_ids+=batch_id_pred
                 all_test_predictions+=batch_pred
 
-                # for tmp_i in range(len(batch_pred)):
-                #     self.recored_res(batch_pred[tmp_i], batch_input_list[tmp_i], batch_answer[tmp_i], training_flag=False, record_flag=True)
-
             elif self.args.RA_method == "No_RA":
                 batch_input_list, batch_pred, batch_id_pred, \
                     batch_hallucination_cnt, general_save_doc_num, general_batch_loss_list, \
@@ -498,9 +491,6 @@ class My_Trainer:
                 all_hallucination+=batch_hallucination_cnt
                 all_test_prediction_ids+=batch_id_pred
                 all_test_predictions+=batch_pred
-
-                # for tmp_i in range(len(batch_pred)):
-                #     self.recored_res(batch_pred[tmp_i], batch_input_list[tmp_i], batch_answer[tmp_i], training_flag=False, record_flag=True)
             
             else:
                 raise Exception("no need train !")
@@ -509,9 +499,6 @@ class My_Trainer:
             if break_cnt is not None and break_cnt<index:
                 break
         
-        for batch_pred, batch_input, batch_answer in zip(all_test_predictions, all_test_input_list, all_test_answers):
-            self.recored_res(batch_pred, batch_input, batch_answer, training_flag=False, record_flag=True)        
-
         old_doc_len = round(total_old_doc_len / len(test_data_loader), 2)
         new_doc_len = round(total_new_doc_len / len(test_data_loader), 2)  
 
@@ -528,12 +515,12 @@ class My_Trainer:
 
         record_performance = test_acc
 
-        self.writer.add_scalar('Performance/test/acc', test_acc, eval_num )
-        self.writer.add_scalar('Performance/test/precision', test_precision, eval_num )
-        self.writer.add_scalar('Performance/test/recall', test_recall, eval_num )
-        self.writer.add_scalar('Performance/test/f1', test_f1, eval_num )
+        # self.writer.add_scalar('Performance/test/acc', test_acc, eval_num )
+        # self.writer.add_scalar('Performance/test/precision', test_precision, eval_num )
+        # self.writer.add_scalar('Performance/test/recall', test_recall, eval_num )
+        # self.writer.add_scalar('Performance/test/f1', test_f1, eval_num )
 
-        return record_performance
+        return record_performance, all_test_predictions, all_test_input_list, all_test_answers
          
     def pipeline_inference(self, used_prompt, input_dict, label, batch_answer, training_flag=False, record_flag=True):
         if self.args.LLM == "chatGPT":
@@ -637,7 +624,8 @@ class My_Trainer:
 
     def recored_res(self, pred, my_input, answer, training_flag, record_flag):
         if training_flag:
-            result_logger = self.train_result_logger
+            # result_logger = self.train_result_logger
+            pass
         else:    
             result_logger = self.test_result_logger
 

@@ -26,19 +26,19 @@ class My_gate(nn.Module):
         label_1_0=0
         label_1_1=0
         for general_batch_pred_item, batch_pred_item, batch_answer_item in zip(general_batch_pred, batch_pred, batch_answer):
-            if (batch_answer_item != batch_pred_item) and (batch_answer_item != general_batch_pred_item):
+            if (batch_answer_item != general_batch_pred_item) and (batch_answer_item != batch_pred_item) :
                 new_label_list.append(1)
                 label_0_0+=1
 
-            if (batch_answer_item == batch_pred_item) and (batch_answer_item != general_batch_pred_item):
+            if (batch_answer_item != general_batch_pred_item) and (batch_answer_item == batch_pred_item) :
                 new_label_list.append(1)
                 label_0_1+=1
 
-            if (batch_answer_item != batch_pred_item) and (batch_answer_item == general_batch_pred_item):
+            if (batch_answer_item == general_batch_pred_item) and  (batch_answer_item != batch_pred_item) :
                 new_label_list.append(0)
                 label_1_0+=1
 
-            if (batch_answer_item == batch_pred_item) and (batch_answer_item == general_batch_pred_item):
+            if (batch_answer_item == general_batch_pred_item) and (batch_answer_item == batch_pred_item):
                 new_label_list.append(0)
                 label_1_1+=1
 
