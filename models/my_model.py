@@ -4,6 +4,7 @@ import torch.nn as nn
 from torch.nn import TransformerEncoderLayer, MultiheadAttention, Linear, Dropout, LayerNorm, TransformerEncoder
 import torch.nn.functional as F
 from utils.utils import combine_doc
+from utils.cluster_utils import perform_clustering
 from sklearn.metrics import  accuracy_score
 from langchain.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -47,7 +48,6 @@ class My_gate(nn.Module):
     def make_gate_input(self, batch_loss, general_batch_loss, batch_logit_log_softmax, general_batch_logit_log_softmax, raw_ques_emb_list, raw_doc_emb_list):
         batch_logit_log_softmax = -torch.max(batch_logit_log_softmax, dim=-1)[0]
         general_batch_logit_log_softmax = -torch.max(general_batch_logit_log_softmax, dim=-1)[0]
-        # gate_input = torch.cat((batch_loss, general_batch_loss, batch_logit_log_softmax, general_batch_logit_log_softmax), dim=-1)
         gate_input = torch.cat((general_batch_loss, batch_logit_log_softmax, general_batch_logit_log_softmax), dim=-1)
         return gate_input
     
@@ -124,10 +124,10 @@ class My_MI_learner(nn.Module):
             raw_ques_emb = self.trans_ques(raw_ques_emb, src_key_padding_mask=ques_att_mask)[0, :].unsqueeze(0).unsqueeze(0)
             raw_doc_emb  = self.trans_doc(raw_doc_emb, src_key_padding_mask=doc_att_mask)[:, 0, :].unsqueeze(0)
 
-            que_emb, att_weights  = self.multi_head_ques(raw_ques_emb, raw_doc_emb)
+            que_emb, att_weights  = self.multi_head_ques(raw_ques_emb, raw_doc_emb)  # raw_ques_emb (1,1,768)  raw_doc_emb (1,24,768) att_weights (1,1,24)
             att_weights_list.append(att_weights)
 
-            doc_emb, _  = self.multi_head_doc(raw_doc_emb, raw_ques_emb)
+            doc_emb, _  = self.multi_head_doc(raw_doc_emb, raw_ques_emb) # doc_emb (1,24,768)
 
             select_index = torch.where( att_weights.squeeze() >= 1/len(bag)* self.args.quantile_num )[0]
             select_doc.append( combine_doc([[bag[i] for i in select_index ]])[0] )
@@ -148,11 +148,6 @@ class My_MI_learner(nn.Module):
         kl_soft_loss = 0
         kl_hard_loss = 0
         if train_flag:
-            if "len_penalty" in self.args.loss_list:
-                len_penalty_logit = torch.stack(att_weights_list).squeeze()
-                len_penalty_label = (torch.ones(len_penalty_logit.size())*1/len(bags_list[0])).to(len_penalty_logit.device)
-                len_penalty_loss = self.len_loss_function(len_penalty_logit , len_penalty_label) 
-                len_penalty_loss = self.args.len_penalty_weight * len_penalty_loss
 
             if "kl_soft" in self.args.loss_list:
                 kl_soft_loss = self.kl_loss(torch.stack(total_kl_logit), batch_logit_log_softmax.to(MI_logit_log_softmax.device)) 
@@ -163,7 +158,7 @@ class My_MI_learner(nn.Module):
                 kl_hard_loss = self.kl_loss_hard(torch.stack(total_kl_logit), label) 
                 kl_hard_loss = self.args.hard_weight * kl_hard_loss
 
-        total_loss = len_penalty_loss+kl_soft_loss+kl_hard_loss
+        total_loss = kl_soft_loss+kl_hard_loss
 
         raw_ques_emb_list = torch.stack(raw_ques_emb_list)
         raw_doc_emb_list  = torch.stack(raw_doc_emb_list)

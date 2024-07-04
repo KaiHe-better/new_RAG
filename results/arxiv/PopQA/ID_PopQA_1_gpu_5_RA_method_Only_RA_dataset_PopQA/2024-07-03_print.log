@@ -1,0 +1,80 @@
+2024-07-03 15:24:49,810 **************** Configuration **************** 
+2024-07-03 15:24:49,810 gpu: 5
+2024-07-03 15:24:49,810 test_code_flag: False
+2024-07-03 15:24:49,810 ID: PopQA_1
+2024-07-03 15:24:49,810 seed: 42
+2024-07-03 15:24:49,810 num_workers: 48
+2024-07-03 15:24:49,810 loading_ckpt_path: None
+2024-07-03 15:24:49,810 RA_method: Only_RA
+2024-07-03 15:24:49,810 LLM: meta-llama/Meta-Llama-3-8B-Instruct
+2024-07-03 15:24:49,810 dataset: PopQA
+2024-07-03 15:24:49,810 train_batch_size: 2
+2024-07-03 15:24:49,811 test_batch_size: 2
+2024-07-03 15:24:49,811 accumulation_steps: 1
+2024-07-03 15:24:49,811 demonstration: False
+2024-07-03 15:24:49,811 demons_cnt: 1
+2024-07-03 15:24:49,811 l2_coef: 0
+2024-07-03 15:24:49,811 train_eval: 500
+2024-07-03 15:24:49,811 total_step: 25000
+2024-07-03 15:24:49,811 gate_weight: 2
+2024-07-03 15:24:49,811 lr: 0.0001
+2024-07-03 15:24:49,811 init_lr_num: 500
+2024-07-03 15:24:49,811 lr_decay: 0.9
+2024-07-03 15:24:49,811 lr_decay_interval: 400
+2024-07-03 15:24:49,811 num_layers: 1
+2024-07-03 15:24:49,811 d_model: 768
+2024-07-03 15:24:49,811 dim_feedforward: 2048
+2024-07-03 15:24:49,811 layer_norm_eps: 1e-05
+2024-07-03 15:24:49,811 nhead: 8
+2024-07-03 15:24:49,811 dropout: 0.1
+2024-07-03 15:24:49,811 loss_list: kl_soft+kl_hard
+2024-07-03 15:24:49,811 len_penalty_weight: 10
+2024-07-03 15:24:49,811 soft_weight: 1
+2024-07-03 15:24:49,811 hard_weight: 1
+2024-07-03 15:24:49,811 do_sample: True
+2024-07-03 15:24:49,811 temperature: 1e-09
+2024-07-03 15:24:49,811 top_p: 0
+2024-07-03 15:24:49,811 max_new_tokens: 40
+2024-07-03 15:24:49,811 infer_add_gold_retrieval: False
+2024-07-03 15:24:49,811 multi_query: False
+2024-07-03 15:24:49,812 rewrite_num: 1
+2024-07-03 15:24:49,812 chunk_size: 512
+2024-07-03 15:24:49,812 chunk_overlap: 20
+2024-07-03 15:24:49,812 if_hierarchical_retrieval: True
+2024-07-03 15:24:49,812 hierarchical_ratio: 1.4
+2024-07-03 15:24:49,812 quantile_num: 0.99
+2024-07-03 15:24:49,812 n_docs: 10
+2024-07-03 15:24:49,812 model_name_or_path: facebook/contriever-msmarco
+2024-07-03 15:24:49,812 question_maxlength: 512
+2024-07-03 15:24:49,812 passages: datasets/Retrieval_corpus/enwiki_2020_dec_intro_only.jsonl
+2024-07-03 15:24:49,812 passages_embeddings: datasets/Retrieval_corpus/enwiki_dec_2020_contriever_intro/*
+2024-07-03 15:24:49,812 lowercase: False
+2024-07-03 15:24:49,812 normalize_text: False
+2024-07-03 15:24:49,812 save_or_load_index: False
+2024-07-03 15:24:49,812 no_fp16: True
+2024-07-03 15:24:49,812 projection_size: 768
+2024-07-03 15:24:49,812 n_subquantizers: 0
+2024-07-03 15:24:49,812 n_bits: 8
+2024-07-03 15:24:49,812 indexing_batch_size: 30000000
+2024-07-03 15:24:49,812 device: cuda
+2024-07-03 15:24:49,812 prompt_file: prompts/PopQA.json
+2024-07-03 15:24:49,812 dir_path: ./results/output/ID_PopQA_1_gpu_5_RA_method_Only_RA_dataset_PopQA
+2024-07-03 15:24:49,812 print_logger: <Logger print (DEBUG)>
+2024-07-03 15:24:49,812 **************** Configuration **************** 
+
+
+2024-07-03 15:24:49,812 Loading retriever ...
+2024-07-03 15:25:47,820 Loading meta-llama/Meta-Llama-3-8B-Instruct in torch.bfloat16...
+2024-07-03 15:25:54,924 Finish loading in 0.12 mins.
+2024-07-03 15:25:56,079 Loading data ...
+2024-07-03 15:25:56,170 prompt_format: retrieve-prompt 
+
+2024-07-03 15:25:56,170 
+ Start test ...  
+2024-07-03 15:26:05,722 testing process num: 0
+2024-07-03 15:31:14,550 testing process num: 200
+2024-07-03 15:36:10,954 testing process num: 400
+2024-07-03 15:41:07,622 testing process num: 600
+2024-07-03 15:43:56,184 test: f1 36.09, EM : 26.77, old_doc_len:0.0, new_doc_len:0.0
+2024-07-03 15:43:56,185 cost_time: 18.00024369160334  
+ 

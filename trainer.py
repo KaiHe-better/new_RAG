@@ -34,7 +34,8 @@ class My_Trainer:
 
         self.my_metrics = My_Metrics()
         # self.writer = SummaryWriter(args.dir_path+"/runs/")
-
+        self.test_result_logger = get_logger(self.args.dir_path, "test_result")
+        
         if self.args.RA_method in ["Only_RA", "Gate_RA", "Gate_MI_RA", "MI_RA"]:
             prompt_format = "retrieve-prompt"
             self.retriever =  retriever
@@ -75,9 +76,15 @@ class My_Trainer:
 
     def return_input_dict(self, data_item, retrieve_docs):
         if self.args.RA_method in ["Only_RA", "Gate_RA", "MI_RA", "Gate_MI_RA"]:
-            input_dict = {'question': data_item["question"], 'options': data_item["options"], "context": retrieve_docs}
+            if self.args.dataset in ["USMLE", "MedMCQA", "HEADQA"]:
+                input_dict = {'question': data_item["question"], 'options': data_item["options"], "context": retrieve_docs}
+            else:
+                input_dict = {'question': data_item["question"],  "context": retrieve_docs}
         else:
-            input_dict = {'question': data_item["question"], 'options': data_item["options"]}
+            if self.args.dataset in ["USMLE", "MedMCQA", "HEADQA"]:
+                input_dict = {'question': data_item["question"], 'options': data_item["options"]}
+            else:
+                input_dict = {'question': data_item["question"]}
         return input_dict
     
     def add_gold_retrieval(self, retrieve_docs, data_item):
@@ -122,7 +129,11 @@ class My_Trainer:
 
     def general_input_loop(self, data_item, labels, batch_answer):
         with torch.no_grad():
-            general_input_dict = {'question': data_item["question"], 'options': data_item["options"]}
+            if self.args.dataset in ["USMLE", "MedMCQA", "HEADQA"]:
+                general_input_dict = {'question': data_item["question"], 'options': data_item["options"]}
+            else:
+                general_input_dict = {'question': data_item["question"]}
+            
             general_batch_input_list, general_batch_pred, general_batch_id_pred, general_batch_hallucination_cnt, general_save_doc_num, general_batch_loss_list, general_batch_logit_log_softmax \
                 = self.pipeline_inference(self.general_prompt, general_input_dict, labels, batch_answer, training_flag=True, record_flag=False)
         return general_batch_input_list, general_batch_pred, general_batch_id_pred, general_batch_hallucination_cnt, general_save_doc_num, general_batch_loss_list, general_batch_logit_log_softmax
@@ -167,12 +178,6 @@ class My_Trainer:
         raw_ques_emb_list = []
         raw_doc_emb_list = []
         for bag, raw_ques_emb, ques_att_mask in zip(bags_list, query_emb_list, attention_mask_list):
-            if self.args.if_hierarchical_retrieval:
-                text_splitter = RecursiveCharacterTextSplitter.from_huggingface_tokenizer(self.retriever.tokenizer, 
-                                                                                chunk_size=int(self.args.chunk_size/self.args.hierarchical_ratio), 
-                                                                                chunk_overlap=int(self.args.chunk_overlap/self.args.hierarchical_ratio))
-                bag = self.return_hierarchical_bag(bag, text_splitter)
-
             with torch.no_grad():
                 raw_doc_emb, _, doc_att_mask = self.retriever.embed_queries(self.args, bag)
 
@@ -181,7 +186,7 @@ class My_Trainer:
         raw_ques_emb_list = torch.stack(raw_ques_emb_list)
         raw_doc_emb_list  = torch.stack(raw_doc_emb_list)
 
-        gate_loss, gate_res, new_lable, new_label_count_list  = self.my_gate(general_batch_pred, RA_batch_pred,batch_answer, 
+        gate_loss, gate_res, new_lable, new_label_count_list  = self.my_gate(general_batch_pred, RA_batch_pred, batch_answer, 
                                                                              RA_batch_loss,raw_ques_emb_list, 
                                                                             raw_doc_emb_list, general_batch_loss_list,  
                                                                             RA_batch_logit_log_softmax, general_batch_logit_log_softmax)
@@ -289,7 +294,7 @@ class My_Trainer:
         best_step = 0
         best_performce = 0
         eval_num = 0
-        for epoch_num in range(self.args.epoch):
+        for epoch_num in range(99999999):
             label_0_0, label_0_1, label_1_0, label_1_1 = 0, 0, 0, 0
 
             total_gate_res = []
@@ -349,7 +354,7 @@ class My_Trainer:
                     self.optimizer.step()
                     self.optimizer.zero_grad()
 
-                if (step_num % self.args.train_eval==0) and step_num>1:
+                if (step_num % self.args.train_eval==0) and step_num>1 and step_num < self.args.total_step:
                     eval_num +=1
                     # self.train_result_logger = empty_logger_file(self.train_result_logger)
 
@@ -371,6 +376,7 @@ class My_Trainer:
                         best_performce = test_performce
                         best_step = step_num
 
+                        self.test_result_logger = get_logger(self.args.dir_path, "test_result")
                         for batch_pred, batch_input, batch_answer in zip(all_test_predictions, all_test_input_list, all_test_answers):
                             self.recored_res(batch_pred, batch_input, batch_answer, training_flag=False, record_flag=True)     
 
@@ -380,6 +386,10 @@ class My_Trainer:
                         with open(self.args.dir_path+'/MI_' +str(best_performce)+'.txt', "w") as f:
                             f.writelines(" ")
 
+                if step_num == self.args.total_step :
+                    with open(self.args.dir_path+'/Finsh' +'.txt', "w") as f:
+                            f.writelines(" ")
+
                 break_cnt = 2 if self.args.test_code_flag else None
                 if break_cnt is not None and break_cnt<step_num:
                     break
@@ -387,7 +397,7 @@ class My_Trainer:
     def test_proc(self, test_data_loader, dev_data_loader, eval_num=0, break_cnt=None):
             
         self.print_logger.info("\n Start test ...  ")
-        self.test_result_logger = get_logger(self.args.dir_path, "test_result")
+        
         start_time = time.time()
 
         all_test_labels = []
@@ -502,18 +512,21 @@ class My_Trainer:
         old_doc_len = round(total_old_doc_len / len(test_data_loader), 2)
         new_doc_len = round(total_new_doc_len / len(test_data_loader), 2)  
 
-        test_acc, test_precision, test_recall, test_f1 = self.my_metrics.acc_PRF(all_test_labels, all_test_prediction_ids)
-        all_hallucination = round(sum(all_hallucination)/len(test_data_loader.dataset)*100, 2)
-        self.args.print_logger.info(f"test: acc {test_acc}, f1 {test_f1}, precision {test_precision}, recall {test_recall}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, hallucination: {all_hallucination} ")
-        
-        
+        if self.args.dataset in ["USMLE", "MedMCQA", "HEADQA"]:
+            test_acc, test_precision, test_recall, test_f1 = self.my_metrics.acc_PRF(all_test_labels, all_test_prediction_ids)
+            all_hallucination = round(sum(all_hallucination)/len(test_data_loader.dataset)*100, 2)
+            self.args.print_logger.info(f"test: acc {test_acc}, f1 {test_f1}, precision {test_precision}, recall {test_recall}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, hallucination: {all_hallucination} ")
+            record_performance = test_acc
+        else:
+            test_f1, test_EM = self.my_metrics.F_EM(all_test_answers, all_test_predictions)
+            self.args.print_logger.info(f"test: f1 {test_f1}, EM : {test_EM}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}")
+            record_performance = test_EM
+
         cost_time  = (time.time() - start_time)/60
         if self.args.RA_method in ["Gate_RA", "Gate_MI_RA"]:
             self.args.print_logger.info(f"cost_time: {cost_time} , gate_res_list: { round(sum(total_gate_res) / len(total_gate_res), 2) }, {sum(total_gate_res)} / {len(total_gate_res)} \n ")
         else:
             self.args.print_logger.info(f"cost_time: {cost_time}  \n ")
-
-        record_performance = test_acc
 
         # self.writer.add_scalar('Performance/test/acc', test_acc, eval_num )
         # self.writer.add_scalar('Performance/test/precision', test_precision, eval_num )
@@ -606,12 +619,22 @@ class My_Trainer:
         for index, (outputs_score, output, answer, label) in enumerate(zip(outputs_scores, outputs["sequences"], batch_answer, labels)):
             generation = self.LLM_tokenizer.decode(output, skip_special_tokens=True)
             pred, id_pred, hallucination_cnt = extracted_token_id_label(generation, label, self.LLM_tokenizer, self.args.dataset, used_prompt, self.args.LLM)
-           
-            label = torch.LongTensor([label]).to(outputs_score[0].device)
 
-            process_score =  F.log_softmax(outputs_score[:len(label)], dim=-1)
-            batch_loss_list.append( self.loss_fct(process_score, label.view(-1)) )
-            
+            if self.args.dataset in ["USMLE", "MedMCQA", "HEADQA"]:
+                label = torch.LongTensor([label]).to(outputs_score[0].device)
+                process_score =  F.log_softmax(outputs_score[:len(label)], dim=-1)
+                batch_loss_list.append( self.loss_fct(process_score, label.view(-1)) )
+            else:
+                temp_loss = []
+                temp_process_score = []
+                for lab in label:
+                    lab = torch.LongTensor([lab[:self.args.max_new_tokens]]).to(outputs_score[0].device)
+                    process_score =  F.log_softmax(outputs_score[:len(lab[0])], dim=-1)
+                    temp_loss.append(torch.mean(self.loss_fct(process_score, lab.view(-1))))
+                    temp_process_score.append(torch.sum(process_score, dim=0))
+
+                batch_loss_list.append( torch.mean(torch.stack(temp_loss)).reshape(1) )
+                process_score = torch.mean(torch.stack(temp_process_score), dim=0).unsqueeze(0)
 
             logit_log_softmax.append(process_score)
             batch_pred.append(pred)

@@ -47,25 +47,40 @@ class My_Metrics():
             return []
         return self.normalize_answer(s).split()
 
-    def compute_exact(self, a_gold, a_pred):
-        return int(self.normalize_answer(a_gold) == self.normalize_answer(a_pred))
+    def compute_exact(self, a_gold_list, a_pred):
+        res_list = []
+        a_pred = self.normalize_answer(a_pred)
+        for a_gold in a_gold_list:
+            res = int(a_pred == self.normalize_answer(a_gold) )
+            # res = int(a_pred in self.normalize_answer(a_gold) )
+            if res ==1:
+                return 1
+        return res
 
-    def compute_f1(self, a_gold, a_pred):
-        gold_toks = self.get_tokens(a_gold)
-        pred_toks = self.get_tokens(a_pred)
-        common = collections.Counter(gold_toks) & collections.Counter(pred_toks)
-        num_same = sum(common.values())
-        if len(gold_toks) == 0 or len(pred_toks) == 0:
-            # If either is no-answer, then F1 is 1 if they agree, 0 otherwise
-            return int(gold_toks == pred_toks)
-        if num_same == 0:
-            return 0
-        precision = 1.0 * num_same / len(pred_toks)
-        recall = 1.0 * num_same / len(gold_toks)
-        f1 = (2 * precision * recall) / (precision + recall)
-        return f1
+    def compute_f1(self, a_gold_list, a_pred):
+        f1_list = []
+        for a_gold in a_gold_list:
+            gold_toks = self.get_tokens(a_gold)
+            pred_toks = self.get_tokens(a_pred)
+            common = collections.Counter(gold_toks) & collections.Counter(pred_toks)
+            num_same = sum(common.values())
+            
+            if len(gold_toks) == 0 or len(pred_toks) == 0:
+                # If either is no-answer, then F1 is 1 if they agree, 0 otherwise
+                f1_list.append(int(gold_toks == pred_toks))
+                continue
+            if num_same == 0:
+                f1_list.append(0)
+                continue
 
-    def get_raw_scores(self, examples, reference):
+            precision = 1.0 * num_same / len(pred_toks)
+            recall = 1.0 * num_same / len(gold_toks)
+            f1 = (2 * precision * recall) / (precision + recall)
+
+            f1_list.append(f1)
+        return max(f1_list)
+
+    def F_EM(self, reference, examples):
         """
         reference = label,  examples = preds
         """
@@ -73,6 +88,7 @@ class My_Metrics():
         f1_scores_list = []
         
         for pred, label in zip(examples, reference):
+            pred = pred.split(". \n")[0] 
             exact_scores = self.compute_exact(label, pred)
             f1_scores = self.compute_f1(label, pred) 
             

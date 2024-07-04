@@ -8,8 +8,8 @@ parser = argparse.ArgumentParser()
 
 # system settings
 # parser.add_argument("--config", type=str, default="llama3-8b_USMLE_MI_RA.yaml", help="Path to the config file")
-parser.add_argument('--gpu', default="7", type=str, help='gpu device numbers')
-parser.add_argument("--test_code_flag", type=bool, default=False, help="if retrieval augmented")
+parser.add_argument('--gpu', default="4", type=str, help='gpu device numbers')
+parser.add_argument("--test_code_flag", type=bool, default=True, help="if retrieval augmented")
 parser.add_argument('--ID', type=str, default='7', help='run ID')
 parser.add_argument('--seed', default=42, help='trandom seed')
 parser.add_argument('--num_workers', default=48, type=int, help='data_loader_work')
@@ -18,7 +18,7 @@ parser.add_argument("--loading_ckpt_path", type=str, default=None, help="loading
 parser.add_argument("--RA_method", type=str,  default="Gate_MI_RA", choices=["No_RA", "Only_RA", "Gate_RA", "MI_RA", "Gate_MI_RA"], help="RA_method")
 parser.add_argument("--LLM", type=str, default="meta-llama/Meta-Llama-3-8B-Instruct", help="[meta-llama/Meta-Llama-3-8B-Instruct, meta-llama/Llama-2-7b-chat-hf]")  
 # train
-parser.add_argument('--dataset', type=str, default="MedMCQA", choices=["USMLE", "MedMCQA", "HEADQA", "MMLU", ], help='train_file_path')
+parser.add_argument('--dataset', type=str, default="PopQA", choices=["USMLE", "MedMCQA", "HEADQA", "MMLU", "PopQA"], help='train_file_path')
 parser.add_argument('--train_batch_size', type=int, default=2, help='train_batch_size')
 parser.add_argument('--test_batch_size', type=int, default=2, help='train_batch_size')
 parser.add_argument('--accumulation_steps', type=int, default=1, help='accumulation_steps')
@@ -26,7 +26,7 @@ parser.add_argument('--demonstration', type=bool, default=False, help='in_contex
 parser.add_argument('--demons_cnt', type=int, default=1, help='demonstration number')
 parser.add_argument('--l2_coef', type=float, default=0, help='l2')
 parser.add_argument('--train_eval', type=int, default=500, help='lr for retriever')
-parser.add_argument('--epoch', type=int, default=99999, help='lr for retriever')
+parser.add_argument('--total_step', type=int, default=25000, help='lr for retriever')
 parser.add_argument('--gate_weight', type=int, default=2, help='lr for retriever')
 # lr
 parser.add_argument('--lr', type=float, default=1e-4, help='lr for retriever')
@@ -49,16 +49,16 @@ parser.add_argument('--hard_weight', type=float, default=1, help='hard_weight')
 parser.add_argument('--do_sample', type=bool, default=True, help='do_sample')
 parser.add_argument("--temperature", type=float, default=1e-9, help="Temperature for decoding")
 parser.add_argument("--top_p", type=float, default=0, help="Nucleus sampling top-p")
-parser.add_argument("--max_new_tokens", type=int, default=1, help="Max number of new tokens to generate in one step")
+parser.add_argument("--max_new_tokens", type=int, default=40, help="Max number of new tokens to generate in one step， popqa=40")
 # my_retrieval
 parser.add_argument('--infer_add_gold_retrieval', type=bool, default=False, help='max_document_num')
 parser.add_argument('--multi_query', type=bool, default=False, help='multi_query, using open AI')
 parser.add_argument('--rewrite_num', type=int, default=1, help='1 or 2')
 parser.add_argument('--chunk_size', type=int, default=512, help='chunk_sizen, not token length')
 parser.add_argument('--chunk_overlap', type=int, default=20, help='chunk_sizen, not token length')
-parser.add_argument('--if_hierarchical_retrieval', type=bool, default=False, help='if_hierarchical_retrieval')
+parser.add_argument('--if_hierarchical_retrieval', type=bool, default=True, help='if_hierarchical_retrieval')
 parser.add_argument('--hierarchical_ratio', type=float, default=1.4, help='hierarchical_ratio, 1-2')
-parser.add_argument('--quantile_num', type=float, default=0.95, help='quantile_num, 0.8-1.1')
+parser.add_argument('--quantile_num', type=float, default=0.99, help='quantile_num, 0.8-1.1')
 # retriever
 parser.add_argument("--n_docs", type=int, default=10, help="Number of documents to retrieve per questions")
 parser.add_argument("--model_name_or_path", type=str,  default="facebook/contriever-msmarco", choices=["facebook/dragon-plus-query-encoder", "facebook/contriever-msmarco"], help="triever to use")
@@ -111,8 +111,10 @@ seed_everything(int(args.seed))
 
 args.prompt_file = "prompts/" + args.dataset + ".json"
 
-
-
+if args.dataset in ["USMLE", "MedMCQA", "HEADQA"]:
+    args.max_new_tokens = 1
+else:
+    args.max_new_tokens = 40
 
 dir_path = make_log_dir()
 args.dir_path = dir_path
@@ -143,7 +145,8 @@ def main(args):
 
         retriever = Retriever(args)
         retriever.setup_retriever()
-    
+
+    # retriever =None
 
     LLM, LLM_tokenizer = load_LLM(args)
     train_data_loader, dev_data_loader, test_data_loader = get_loader(args, LLM_tokenizer)
@@ -170,7 +173,12 @@ def main(args):
     if args.RA_method in ["Gate_RA", "Gate_MI_RA", "MI_RA"]:
         trainer.train_proc(train_data_loader, dev_data_loader, test_data_loader)
     elif args.RA_method in ["No_RA", "Only_RA"]:
-        trainer.test_proc(test_data_loader, dev_data_loader)  
+        test_performce, all_test_predictions, all_test_input_list, all_test_answers = trainer.test_proc(test_data_loader, dev_data_loader)  
+
+        test_result_logger = get_logger(args.dir_path, "test_result")
+        for batch_pred, batch_input, batch_answer in zip(all_test_predictions, all_test_input_list, all_test_answers):
+            trainer.recored_res(batch_pred, batch_input, batch_answer, training_flag=False, record_flag=True) 
+
     else:
         raise Exception("wrong RA_method")
 

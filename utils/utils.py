@@ -121,40 +121,33 @@ class LineListOutputParser(PydanticOutputParser):
         return lines
 
 def extracted_token_id_label(res, label, tokenizer, dataset, prompt, LLM):
-
-    # if dataset == "OTTQA":
-    #     if LLM !="chatGPT":
-    #         position = res.find(prompt.template[-10:])
-    #         res = res[(position + 10):].strip()
-    #         res = res[3:] if (res[:3] == ': \n') else res
-    #         res = remove_substring_and_after(res.strip(), 'Explanation:')
-    #         res_tokenize = tokenizer(res, add_special_tokens=False)["input_ids"]
-    #     else:
-    #         res = res
-    #         res_tokenize = tokenizer(res, add_special_tokens=False)["input_ids"]
+    if dataset in ["USMLE", "MedMCQA", "HEADQA"]:
+        res = res[-3:]
+        label_list = [tokenizer._convert_token_to_id_with_added_voc("A"), tokenizer._convert_token_to_id_with_added_voc("B"),tokenizer._convert_token_to_id_with_added_voc("C"),tokenizer._convert_token_to_id_with_added_voc("D")]
         
-    #     return res, res_tokenize, 0 
+        if "A" in res:
+            return "A", [label_list[0]], 0 
+        if "B" in res:
+            return "B", [label_list[1]], 0
+        if "C" in res:
+            return "C", [label_list[2]], 0
+        if "D" in res:
+            return "D", [label_list[3]], 0
+        
+        if int(label[0]) in label_list:
+            label_list.remove(int(label[0]))
 
- 
-    res = res[-3:]
-    
-    # label_list = [tokenizer._convert_token_to_id("A"), tokenizer._convert_token_to_id("B"),tokenizer._convert_token_to_id("C"),tokenizer._convert_token_to_id("D")]
-    label_list = [tokenizer._convert_token_to_id_with_added_voc("A"), tokenizer._convert_token_to_id_with_added_voc("B"),tokenizer._convert_token_to_id_with_added_voc("C"),tokenizer._convert_token_to_id_with_added_voc("D")]
-    
-    if "A" in res:
-        return "A", [label_list[0]], 0 
-    if "B" in res:
-        return "B", [label_list[1]], 0
-    if "C" in res:
-        return "C", [label_list[2]], 0
-    if "D" in res:
-        return "D", [label_list[3]], 0
-    
-    if int(label[0]) in label_list:
-        label_list.remove(int(label[0]))
+        hall_label = random.choice(label_list)
+        return res, [hall_label] , 1 
 
-    hall_label = random.choice(label_list)
-    return res, [hall_label] , 1 
+    else:
+        
+        res = res.split(prompt.template[-10:])[1].strip()
+        label = tokenizer(res, add_special_tokens=False)["input_ids"]
+
+        return res, label , 0
+
+   
     
 
   
