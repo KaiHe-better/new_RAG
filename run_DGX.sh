@@ -304,10 +304,66 @@ nohup  python run.py --ID PopQA_0  --gpu 4 --RA_method No_RA   --dataset PopQA  
 nohup  python run.py --ID PopQA_1  --gpu 5 --RA_method Only_RA --dataset PopQA   >/dev/null 2>&1 &
 2024-07-03 15:43:56,184 test: f1 36.09, EM : 26.77, old_doc_len:0.0, new_doc_len:0.0
 
-nohup  python run.py --ID PopQA_2  --gpu 4 --RA_method MI_RA --dataset PopQA   >/dev/null 2>&1 &
+nohup  python run.py --ID PopQA_2_6_2  --gpu 4 --RA_method MI_RA --dataset PopQA --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+2024-07-09 19:50:43,301 test: f1 37.72, EM : 29.64, old_doc_len:1126.01, new_doc_len:813.65
+ best_step:3000
 
-nohup  python run.py --ID PopQA_3  --gpu 6 --RA_method Gate_RA --dataset PopQA   >/dev/null 2>&1 &
 
-nohup  python run.py --ID PopQA_4  --gpu 7 --RA_method Gate_MI_RA --dataset PopQA   >/dev/null 2>&1 &
+# nohup  python run.py --ID PopQA_2_6_2  --gpu 7 --RA_method MI_RA --dataset PopQA --quantile_num 0.7    >/dev/null 2>&1 &
+# 2024-07-08 20:15:38,553 test: f1 37.79, EM : 28.8, old_doc_len:1126.01, new_doc_len:553.76
+#  best_step:3000
+
+# nohup  python run.py --ID PopQA_2_6_3  --gpu 4 --RA_method MI_RA --dataset PopQA --quantile_num 0.64    >/dev/null 2>&1 &
+# 2024-07-08 16:48:00,262 test: f1 37.2, EM : 28.8, old_doc_len:1126.01, new_doc_len:1025.96
+#  best_step:500
+
+
+# nohup  python run.py --ID PopQA_2_4  --gpu 6 --RA_method MI_RA --dataset PopQA --quantile_num 0.70    >/dev/null 2>&1 &
+# 2024-07-05 23:19:47,526 test: f1 37.24, EM : 29.01, old_doc_len:1126.01, new_doc_len:631.77
+#  best_step:2000, best_performce: 29.01 
+
+# nohup  python run.py --ID PopQA_2_5  --gpu 4 --RA_method MI_RA --dataset PopQA --quantile_num 0.68    >/dev/null 2>&1 &
+# 2024-07-06 15:04:38,063 test: f1 38.0, EM : 29.29, old_doc_len:1126.01, new_doc_len:557.57
+#  best_step:3000
+
+# nohup  python run.py --ID PopQA_2_6  --gpu 6 --RA_method MI_RA --dataset PopQA --quantile_num 0.64    >/dev/null 2>&1 &
+# 2024-07-06 17:43:48,031 test: f1 39.31, EM : 30.55, old_doc_len:1126.01, new_doc_len:792.99
+#  best_step:1500
+
+# nohup  python run.py --ID PopQA_2_7  --gpu 7 --RA_method MI_RA --dataset PopQA --quantile_num 0.60    >/dev/null 2>&1 &
+# 2024-07-06 18:26:06,933 test: f1 38.07, EM : 29.43, old_doc_len:1126.01, new_doc_len:721.32
+#  best_step:2000
+
+# nohup  python run.py --ID PopQA_2_6_2  --gpu 4 --RA_method MI_RA --dataset PopQA --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+# 2024-07-09 19:50:43,301 test: f1 37.72, EM : 29.64, old_doc_len:1126.01, new_doc_len:813.65
+#  best_step:3000
+
+# nohup  python run.py --ID PopQA_3  --gpu 6 --RA_method Gate_RA --dataset PopQA --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+# 2024-07-09 20:51:10,141 test: f1 35.96, EM : 26.63, old_doc_len:0.0, new_doc_len:0.0
+#  best_step:500
+
+# nohup  python run.py --ID PopQA_4  --gpu 7 --RA_method Gate_MI_RA --dataset PopQA --gate_weight_0 4 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1    >/dev/null 2>&1 &
+# 2024-07-09 22:50:39,126 test: f1 37.09, EM : 29.71, old_doc_len:1126.01, new_doc_len:1040.11
+#  best_step:1500
+
+# nohup  python run.py --ID PopQA_2_6  --gpu 6 --RA_method MI_RA --dataset PopQA --quantile_num 0.64    >/dev/null 2>&1 &
+# 2024-07-07 23:25:07,301 test: f1 40.08, EM : 31.39, old_doc_len:1126.01, new_doc_len:1172.55  （ 1172.55 > 1126 ）
+#  best_step:3000
+
+# nohup  python run.py --ID PopQA_3    --gpu 4 --RA_method Gate_RA --dataset PopQA --gate_weight_0 4 --gate_weight_1 1   >/dev/null 2>&1 &
+# 2024-07-08 04:31:38,790 test: f1 41.25, EM : 32.52, old_doc_len:0.0, new_doc_len:0.0  （cannot get）
+#  best_step:9000
+
+
+nohup  python run.py --ID PopQA_3  --gpu 6 --RA_method Gate_RA --dataset PopQA --gate_weight_0 4 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+
+nohup  python run.py --ID PopQA_4  --gpu 7 --RA_method Gate_MI_RA --dataset PopQA --gate_weight_0 4 --gate_weight_1 1 --gate_weight_0 4 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1    >/dev/null 2>&1 &
+
+nohup  python run.py --ID PopQA_4_1  --gpu 4 --RA_method Gate_MI_RA --dataset PopQA --gate_weight_0 3 --gate_weight_1 1 --gate_weight_0 4 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1    >/dev/null 2>&1 &
+
+
+
+===================================================================================================================================================================================================
+
 
 

@@ -13,7 +13,7 @@ from langchain.document_loaders import TextLoader
 import torch
 import torch.nn as nn
 from tqdm import tqdm
-from src.metrics import My_Metrics
+from src.metrics import acc_PRF, F_EM
 from torch.utils.tensorboard import SummaryWriter
 from utils.utils import extracted_token_id_label, LineListOutputParser, empty_logger_file, combine_doc, __dist__, left_pad_loss_logit, get_logger
 
@@ -32,7 +32,6 @@ class My_Trainer:
         self.LLM = LLM
         self.LLM_tokenizer = LLM_tokenizer
 
-        self.my_metrics = My_Metrics()
         # self.writer = SummaryWriter(args.dir_path+"/runs/")
         self.test_result_logger = get_logger(self.args.dir_path, "test_result")
         
@@ -187,11 +186,10 @@ class My_Trainer:
         raw_doc_emb_list  = torch.stack(raw_doc_emb_list)
 
         gate_loss, gate_res, new_lable, new_label_count_list  = self.my_gate(general_batch_pred, RA_batch_pred, batch_answer, 
-                                                                             RA_batch_loss,raw_ques_emb_list, 
-                                                                            raw_doc_emb_list, general_batch_loss_list,  
-                                                                            RA_batch_logit_log_softmax, general_batch_logit_log_softmax)
+                                                                             RA_batch_loss, raw_ques_emb_list, 
+                                                                             raw_doc_emb_list, general_batch_loss_list,  
+                                                                             RA_batch_logit_log_softmax, general_batch_logit_log_softmax)
                                                         
-
         label_0_0 += new_label_count_list[0]
         label_0_1 += new_label_count_list[1]
         label_1_0 += new_label_count_list[2]
@@ -286,7 +284,7 @@ class My_Trainer:
             general_batch_input_list, general_batch_hallucination_cnt, general_batch_id_pred, general_batch_pred,\
             label_0_0, label_0_1, label_1_0, label_1_1, total_gate_res, total_new_lable
 
-    def train_proc(self, train_data_loader, dev_data_loader, test_data_loader):
+    def train_proc(self, train_data_loader, test_data_loader):
         self.print_logger.info("Start training ... \n ")
         
         total_batch = len(train_data_loader)
@@ -329,7 +327,7 @@ class My_Trainer:
                     
                     loss_list[-1].backward()
                     if tmp_step%50==0:
-                        self.print_logger.info(f"epoch_num: {epoch_num}, training process num: {step_num}/{total_batch}, len_loss: {round(float(loss_list[0]), 4)}, kl_soft_loss: {round(float(loss_list[1]), 4)}, kl_hard_loss: {round(float(loss_list[2]), 4)},  \
+                        self.print_logger.info(f"epoch_num: {epoch_num}, training process num: {step_num}/{total_batch},  kl_soft_loss: {round(float(loss_list[1]), 4)}, kl_hard_loss: {round(float(loss_list[2]), 4)},  \
                                             \n old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, \
                                             \n best_step:{best_step}, best_performce: {best_performce} \n")
                     
@@ -342,7 +340,7 @@ class My_Trainer:
                     gate_loss.backward()
 
                     if tmp_step%50==0:
-                        self.print_logger.info(f"epoch_num: {epoch_num}, training process num: {step_num}/{total_batch},  gate_loss: {round(float(gate_loss), 4)}, len_loss: {round(float(loss_list[0]), 4)}, kl_soft_loss: {round(float(loss_list[1]), 4)}, kl_hard_loss: {round(float(loss_list[2]), 4)},  \
+                        self.print_logger.info(f"epoch_num: {epoch_num}, training process num: {step_num}/{total_batch},  gate_loss: {round(float(gate_loss), 4)}, kl_soft_loss: {round(float(loss_list[1]), 4)}, kl_hard_loss: {round(float(loss_list[2]), 4)},  \
                                         \n gate_acc:{gate_acc}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, label_0_0:{label_0_0}, label_0_1:{label_0_1}, label_1_0:{label_1_0}, label_1_1:{label_1_1}, \
                                         \n best_step:{best_step}, best_performce: {best_performce} \n")
         
@@ -365,7 +363,7 @@ class My_Trainer:
                         # if self.args.RA_method in ["Gate_RA", "Gate_MI_RA"]:
                         #     self.my_gate.eval()
 
-                        test_performce, all_test_predictions, all_test_input_list, all_test_answers = self.test_proc(test_data_loader, dev_data_loader, step_num, break_cnt=break_cnt)
+                        test_performce, all_test_predictions, all_test_input_list, all_test_answers = self.test_proc(test_data_loader, step_num, break_cnt=break_cnt)
 
                         # if self.args.RA_method in ["Gate_MI_RA", "MI_RA"]:
                         #     self.MI_learner.train()
@@ -394,7 +392,7 @@ class My_Trainer:
                 if break_cnt is not None and break_cnt<step_num:
                     break
                         
-    def test_proc(self, test_data_loader, dev_data_loader, eval_num=0, break_cnt=None):
+    def test_proc(self, test_data_loader, eval_num=0, break_cnt=None):
             
         self.print_logger.info("\n Start test ...  ")
         
@@ -430,14 +428,16 @@ class My_Trainer:
                 label_0_0, label_0_1, label_1_0, label_1_1, total_gate_res, total_new_lable  \
                     = self.Gate_RA(total_gate_res, total_new_lable, data_item, labels, batch_answer, question)
 
-                all_test_input_list+=RA_batch_input_list
+                
                 for gate_index, res in enumerate(gate_res):
                     if res ==1:
+                        all_test_input_list+=RA_batch_input_list
                         all_hallucination.append(RA_batch_hallucination_cnt[gate_index])
                         all_test_prediction_ids.append(RA_batch_id_pred[gate_index])
                         all_test_predictions.append(RA_batch_pred[gate_index])
                     else:
                         retrieve_docs = ""
+                        all_test_input_list+=general_batch_input_list
                         all_hallucination.append(general_batch_hallucination_cnt[gate_index])
                         all_test_prediction_ids.append(general_batch_id_pred[gate_index])
                         all_test_predictions.append(general_batch_pred[gate_index])
@@ -464,21 +464,22 @@ class My_Trainer:
 
                 MI_learner_loss, gate_loss, gate_acc, old_doc_len, new_doc_len, gate_res, \
                     RA_batch_input_list, RA_batch_pred, RA_batch_id_pred, RA_batch_hallucination_cnt, \
-                        general_batch_my_input_list, general_batch_hallucination_cnt, general_batch_id_pred, general_batch_pred, \
+                        general_batch_input_list, general_batch_hallucination_cnt, general_batch_id_pred, general_batch_pred, \
                         _, _, _, _, total_gate_res, total_new_lable \
                         = self.Gate_MI_RA(total_gate_res, total_new_lable, data_item, labels, batch_answer, question, one_hot_labels)
 
                 total_old_doc_len += old_doc_len
                 total_new_doc_len += new_doc_len
-
-                all_test_input_list+=RA_batch_input_list
+                
                 for gate_index, res in enumerate(gate_res):
                     if res ==1:
+                        all_test_input_list+=RA_batch_input_list
                         all_hallucination.append(RA_batch_hallucination_cnt[gate_index])
                         all_test_prediction_ids.append(RA_batch_id_pred[gate_index])
                         all_test_predictions.append(RA_batch_pred[gate_index])
                     else:
                         retrieve_docs = ""
+                        all_test_input_list+=general_batch_input_list
                         all_hallucination.append(general_batch_hallucination_cnt[gate_index])
                         all_test_prediction_ids.append(general_batch_id_pred[gate_index])
                         all_test_predictions.append(general_batch_pred[gate_index])
@@ -513,12 +514,12 @@ class My_Trainer:
         new_doc_len = round(total_new_doc_len / len(test_data_loader), 2)  
 
         if self.args.dataset in ["USMLE", "MedMCQA", "HEADQA"]:
-            test_acc, test_precision, test_recall, test_f1 = self.my_metrics.acc_PRF(all_test_labels, all_test_prediction_ids)
+            test_acc, test_precision, test_recall, test_f1 = acc_PRF(all_test_labels, all_test_prediction_ids)
             all_hallucination = round(sum(all_hallucination)/len(test_data_loader.dataset)*100, 2)
             self.args.print_logger.info(f"test: acc {test_acc}, f1 {test_f1}, precision {test_precision}, recall {test_recall}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, hallucination: {all_hallucination} ")
             record_performance = test_acc
         else:
-            test_f1, test_EM = self.my_metrics.F_EM(all_test_answers, all_test_predictions)
+            test_f1, test_EM = F_EM(all_test_answers, all_test_predictions)
             self.args.print_logger.info(f"test: f1 {test_f1}, EM : {test_EM}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}")
             record_performance = test_EM
 
@@ -616,6 +617,7 @@ class My_Trainer:
         outputs_scores = torch.stack(outputs["scores"]).permute(1,0,2)
         batch_loss_list = []
         logit_log_softmax = []
+
         for index, (outputs_score, output, answer, label) in enumerate(zip(outputs_scores, outputs["sequences"], batch_answer, labels)):
             generation = self.LLM_tokenizer.decode(output, skip_special_tokens=True)
             pred, id_pred, hallucination_cnt = extracted_token_id_label(generation, label, self.LLM_tokenizer, self.args.dataset, used_prompt, self.args.LLM)
@@ -627,10 +629,12 @@ class My_Trainer:
             else:
                 temp_loss = []
                 temp_process_score = []
+                
                 for lab in label:
                     lab = torch.LongTensor([lab[:self.args.max_new_tokens]]).to(outputs_score[0].device)
                     process_score =  F.log_softmax(outputs_score[:len(lab[0])], dim=-1)
                     temp_loss.append(torch.mean(self.loss_fct(process_score, lab.view(-1))))
+                    
                     temp_process_score.append(torch.sum(process_score, dim=0))
 
                 batch_loss_list.append( torch.mean(torch.stack(temp_loss)).reshape(1) )

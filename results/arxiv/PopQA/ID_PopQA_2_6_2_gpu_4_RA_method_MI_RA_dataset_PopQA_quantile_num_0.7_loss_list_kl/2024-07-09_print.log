@@ -1,0 +1,1333 @@
+2024-07-09 15:28:46,047 **************** Configuration **************** 
+2024-07-09 15:28:46,048 gpu: 4
+2024-07-09 15:28:46,048 test_code_flag: False
+2024-07-09 15:28:46,048 ID: PopQA_2_6_2
+2024-07-09 15:28:46,048 seed: 42
+2024-07-09 15:28:46,048 num_workers: 48
+2024-07-09 15:28:46,048 loading_ckpt_path: None
+2024-07-09 15:28:46,048 RA_method: MI_RA
+2024-07-09 15:28:46,048 LLM: meta-llama/Meta-Llama-3-8B-Instruct
+2024-07-09 15:28:46,048 dataset: PopQA
+2024-07-09 15:28:46,048 train_batch_size: 8
+2024-07-09 15:28:46,048 test_batch_size: 8
+2024-07-09 15:28:46,048 accumulation_steps: 1
+2024-07-09 15:28:46,048 demonstration: False
+2024-07-09 15:28:46,048 demons_cnt: 1
+2024-07-09 15:28:46,048 l2_coef: 0
+2024-07-09 15:28:46,048 train_eval: 500
+2024-07-09 15:28:46,048 total_step: 25000
+2024-07-09 15:28:46,048 gate_weight_0: 1
+2024-07-09 15:28:46,048 gate_weight_1: 2
+2024-07-09 15:28:46,048 lr: 0.0001
+2024-07-09 15:28:46,048 init_lr_num: 500
+2024-07-09 15:28:46,048 lr_decay: 0.9
+2024-07-09 15:28:46,048 lr_decay_interval: 400
+2024-07-09 15:28:46,048 num_layers: 1
+2024-07-09 15:28:46,048 d_model: 768
+2024-07-09 15:28:46,048 dim_feedforward: 2048
+2024-07-09 15:28:46,049 layer_norm_eps: 1e-05
+2024-07-09 15:28:46,049 nhead: 8
+2024-07-09 15:28:46,049 dropout: 0.1
+2024-07-09 15:28:46,049 loss_list: kl_soft+kl_hard+len_penalty
+2024-07-09 15:28:46,049 len_penalty_weight: 1.0
+2024-07-09 15:28:46,049 soft_weight: 1
+2024-07-09 15:28:46,049 hard_weight: 1
+2024-07-09 15:28:46,049 do_sample: True
+2024-07-09 15:28:46,049 temperature: 1e-09
+2024-07-09 15:28:46,049 top_p: 0
+2024-07-09 15:28:46,049 max_new_tokens: 40
+2024-07-09 15:28:46,049 infer_add_gold_retrieval: False
+2024-07-09 15:28:46,049 multi_query: False
+2024-07-09 15:28:46,049 rewrite_num: 1
+2024-07-09 15:28:46,049 chunk_size: 512
+2024-07-09 15:28:46,049 chunk_overlap: 20
+2024-07-09 15:28:46,049 if_hierarchical_retrieval: True
+2024-07-09 15:28:46,049 hierarchical_ratio: 1.4
+2024-07-09 15:28:46,049 quantile_num: 0.7
+2024-07-09 15:28:46,049 n_docs: 10
+2024-07-09 15:28:46,049 model_name_or_path: facebook/contriever-msmarco
+2024-07-09 15:28:46,049 question_maxlength: 512
+2024-07-09 15:28:46,049 passages: datasets/Retrieval_corpus/enwiki_2020_dec_intro_only.jsonl
+2024-07-09 15:28:46,049 passages_embeddings: datasets/Retrieval_corpus/enwiki_dec_2020_contriever_intro/*
+2024-07-09 15:28:46,049 lowercase: False
+2024-07-09 15:28:46,049 normalize_text: False
+2024-07-09 15:28:46,049 save_or_load_index: False
+2024-07-09 15:28:46,049 no_fp16: True
+2024-07-09 15:28:46,050 projection_size: 768
+2024-07-09 15:28:46,050 n_subquantizers: 0
+2024-07-09 15:28:46,050 n_bits: 8
+2024-07-09 15:28:46,050 indexing_batch_size: 30000000
+2024-07-09 15:28:46,050 device: cuda
+2024-07-09 15:28:46,050 prompt_file: prompts/PopQA.json
+2024-07-09 15:28:46,050 dir_path: ./results/output/ID_PopQA_2_6_2_gpu_4_RA_method_MI_RA_dataset_PopQA_quantile_num_0.7_loss_list_kl
+2024-07-09 15:28:46,050 print_logger: <Logger print (DEBUG)>
+2024-07-09 15:28:46,050 **************** Configuration **************** 
+
+
+2024-07-09 15:28:46,050 Loading retriever ...
+2024-07-09 15:29:58,249 Loading meta-llama/Meta-Llama-3-8B-Instruct in torch.bfloat16...
+2024-07-09 15:30:05,838 Finish loading in 0.13 mins.
+2024-07-09 15:30:06,730 Loading data ...
+2024-07-09 15:30:08,086 prompt_format: retrieve-prompt 
+
+2024-07-09 15:30:08,086 Start training ... 
+ 
+2024-07-09 15:30:22,285 epoch_num: 0, training process num: 0/1427,  kl_soft_loss: 0.0141, kl_hard_loss: 11.7885,                                              
+ old_doc_len:1090.25, new_doc_len:1096.38,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-09 15:33:38,374 epoch_num: 0, training process num: 50/1427,  kl_soft_loss: 0.7363, kl_hard_loss: 7.1833,                                              
+ old_doc_len:1183.75, new_doc_len:1217.12,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-09 15:36:55,739 epoch_num: 0, training process num: 100/1427,  kl_soft_loss: 0.0009, kl_hard_loss: 8.5861,                                              
+ old_doc_len:1048.62, new_doc_len:1071.25,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-09 15:40:13,972 epoch_num: 0, training process num: 150/1427,  kl_soft_loss: 0.0003, kl_hard_loss: 8.834,                                              
+ old_doc_len:987.0, new_doc_len:1007.75,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-09 15:43:28,752 epoch_num: 0, training process num: 200/1427,  kl_soft_loss: -0.0002, kl_hard_loss: 10.3343,                                              
+ old_doc_len:1074.25, new_doc_len:1037.88,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-09 15:46:45,308 epoch_num: 0, training process num: 250/1427,  kl_soft_loss: 0.0819, kl_hard_loss: 5.7474,                                              
+ old_doc_len:1131.25, new_doc_len:1148.12,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-09 15:50:04,899 epoch_num: 0, training process num: 300/1427,  kl_soft_loss: 0.0017, kl_hard_loss: 6.5346,                                              
+ old_doc_len:1111.88, new_doc_len:1002.38,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-09 15:53:19,490 epoch_num: 0, training process num: 350/1427,  kl_soft_loss: -0.0, kl_hard_loss: 6.8993,                                              
+ old_doc_len:1204.5, new_doc_len:1213.25,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-09 15:56:35,883 epoch_num: 0, training process num: 400/1427,  kl_soft_loss: -0.0, kl_hard_loss: 6.4643,                                              
+ old_doc_len:1057.75, new_doc_len:1044.25,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-09 15:59:47,965 epoch_num: 0, training process num: 450/1427,  kl_soft_loss: -0.0, kl_hard_loss: 9.4926,                                              
+ old_doc_len:1204.75, new_doc_len:1134.75,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-09 16:03:03,704 epoch_num: 0, training process num: 500/1427,  kl_soft_loss: -0.0, kl_hard_loss: 8.8854,                                              
+ old_doc_len:1119.88, new_doc_len:1120.25,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-09 16:03:03,710 
+ Start test ...  
+2024-07-09 16:03:18,340 testing process num: 0
+2024-07-09 16:14:31,418 test: f1 37.36, EM : 28.38, old_doc_len:1126.01, new_doc_len:1079.48
+2024-07-09 16:14:31,418 cost_time: 11.461800316969553  
+ 
+2024-07-09 16:17:44,286 epoch_num: 0, training process num: 550/1427,  kl_soft_loss: 0.0011, kl_hard_loss: 7.7001,                                              
+ old_doc_len:943.0, new_doc_len:850.5,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 16:20:59,529 epoch_num: 0, training process num: 600/1427,  kl_soft_loss: 0.509, kl_hard_loss: 5.6653,                                              
+ old_doc_len:1335.75, new_doc_len:1312.12,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 16:24:15,747 epoch_num: 0, training process num: 650/1427,  kl_soft_loss: 0.0001, kl_hard_loss: 6.5658,                                              
+ old_doc_len:1220.25, new_doc_len:1085.12,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 16:27:28,987 epoch_num: 0, training process num: 700/1427,  kl_soft_loss: 0.0, kl_hard_loss: 7.9376,                                              
+ old_doc_len:1179.38, new_doc_len:1032.25,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 16:30:42,926 epoch_num: 0, training process num: 750/1427,  kl_soft_loss: 0.0063, kl_hard_loss: 7.586,                                              
+ old_doc_len:905.0, new_doc_len:690.38,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 16:33:54,534 epoch_num: 0, training process num: 800/1427,  kl_soft_loss: -0.0, kl_hard_loss: 5.8885,                                              
+ old_doc_len:1087.12, new_doc_len:885.75,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 16:37:14,261 epoch_num: 0, training process num: 850/1427,  kl_soft_loss: -0.0005, kl_hard_loss: 3.4907,                                              
+ old_doc_len:1260.12, new_doc_len:1069.5,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 16:40:30,315 epoch_num: 0, training process num: 900/1427,  kl_soft_loss: 0.0001, kl_hard_loss: 8.0246,                                              
+ old_doc_len:1086.38, new_doc_len:892.62,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 16:43:42,542 epoch_num: 0, training process num: 950/1427,  kl_soft_loss: 0.0012, kl_hard_loss: 7.1838,                                              
+ old_doc_len:1127.38, new_doc_len:981.5,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 16:46:57,854 epoch_num: 0, training process num: 1000/1427,  kl_soft_loss: 0.0032, kl_hard_loss: 5.5697,                                              
+ old_doc_len:1120.88, new_doc_len:931.12,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 16:46:57,862 
+ Start test ...  
+2024-07-09 16:47:13,683 testing process num: 0
+2024-07-09 16:57:58,346 test: f1 35.32, EM : 27.54, old_doc_len:1126.01, new_doc_len:956.29
+2024-07-09 16:57:58,356 cost_time: 11.008219806353251  
+ 
+2024-07-09 17:01:12,340 epoch_num: 0, training process num: 1050/1427,  kl_soft_loss: 0.0015, kl_hard_loss: 5.8578,                                              
+ old_doc_len:1209.88, new_doc_len:984.12,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 17:04:24,718 epoch_num: 0, training process num: 1100/1427,  kl_soft_loss: -0.0, kl_hard_loss: 7.3501,                                              
+ old_doc_len:1011.75, new_doc_len:925.88,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 17:07:38,972 epoch_num: 0, training process num: 1150/1427,  kl_soft_loss: -0.0001, kl_hard_loss: 5.2734,                                              
+ old_doc_len:1037.62, new_doc_len:927.88,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 17:10:55,640 epoch_num: 0, training process num: 1200/1427,  kl_soft_loss: 5.0906, kl_hard_loss: 6.887,                                              
+ old_doc_len:1049.25, new_doc_len:966.12,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 17:14:09,973 epoch_num: 0, training process num: 1250/1427,  kl_soft_loss: -0.0, kl_hard_loss: 5.2679,                                              
+ old_doc_len:980.38, new_doc_len:854.5,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 17:17:23,900 epoch_num: 0, training process num: 1300/1427,  kl_soft_loss: 0.0001, kl_hard_loss: 4.9392,                                              
+ old_doc_len:1196.12, new_doc_len:1053.25,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 17:20:37,991 epoch_num: 0, training process num: 1350/1427,  kl_soft_loss: 0.0028, kl_hard_loss: 4.9341,                                              
+ old_doc_len:1049.25, new_doc_len:842.25,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 17:23:53,810 epoch_num: 0, training process num: 1400/1427,  kl_soft_loss: 0.0142, kl_hard_loss: 5.091,                                              
+ old_doc_len:1010.75, new_doc_len:893.75,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 17:25:54,996 epoch_num: 1, training process num: 1427/1427,  kl_soft_loss: 0.0042, kl_hard_loss: 5.1452,                                              
+ old_doc_len:1090.25, new_doc_len:931.75,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 17:29:10,134 epoch_num: 1, training process num: 1477/1427,  kl_soft_loss: 0.4422, kl_hard_loss: 3.8845,                                              
+ old_doc_len:1183.75, new_doc_len:1054.25,                                             
+ best_step:500, best_performce: 28.38 
+
+2024-07-09 17:30:41,580 
+ Start test ...  
+2024-07-09 17:30:58,439 testing process num: 0
+2024-07-09 17:42:10,185 test: f1 38.02, EM : 29.08, old_doc_len:1126.01, new_doc_len:1042.56
+2024-07-09 17:42:10,186 cost_time: 11.476741405328115  
+ 
+2024-07-09 17:43:53,312 epoch_num: 1, training process num: 1527/1427,  kl_soft_loss: 0.0008, kl_hard_loss: 5.5187,                                              
+ old_doc_len:1048.62, new_doc_len:878.5,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 17:47:09,226 epoch_num: 1, training process num: 1577/1427,  kl_soft_loss: 0.0003, kl_hard_loss: 4.7027,                                              
+ old_doc_len:987.0, new_doc_len:913.5,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 17:50:22,630 epoch_num: 1, training process num: 1627/1427,  kl_soft_loss: -0.0001, kl_hard_loss: 5.5361,                                              
+ old_doc_len:1074.25, new_doc_len:870.25,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 17:53:39,101 epoch_num: 1, training process num: 1677/1427,  kl_soft_loss: 0.0865, kl_hard_loss: 3.4174,                                              
+ old_doc_len:1131.25, new_doc_len:900.75,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 17:56:56,290 epoch_num: 1, training process num: 1727/1427,  kl_soft_loss: 0.0029, kl_hard_loss: 5.0412,                                              
+ old_doc_len:1111.88, new_doc_len:960.12,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 18:00:09,974 epoch_num: 1, training process num: 1777/1427,  kl_soft_loss: -0.0, kl_hard_loss: 5.1474,                                              
+ old_doc_len:1204.5, new_doc_len:1060.75,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 18:03:26,185 epoch_num: 1, training process num: 1827/1427,  kl_soft_loss: -0.0, kl_hard_loss: 4.6437,                                              
+ old_doc_len:1057.75, new_doc_len:863.5,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 18:06:37,501 epoch_num: 1, training process num: 1877/1427,  kl_soft_loss: 0.0003, kl_hard_loss: 5.5659,                                              
+ old_doc_len:1204.75, new_doc_len:968.62,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 18:09:51,675 epoch_num: 1, training process num: 1927/1427,  kl_soft_loss: -0.0, kl_hard_loss: 6.2085,                                              
+ old_doc_len:1119.88, new_doc_len:891.62,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 18:13:02,656 epoch_num: 1, training process num: 1977/1427,  kl_soft_loss: 0.0011, kl_hard_loss: 5.251,                                              
+ old_doc_len:943.0, new_doc_len:710.62,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 18:14:29,515 
+ Start test ...  
+2024-07-09 18:14:44,468 testing process num: 0
+2024-07-09 18:25:22,423 test: f1 36.64, EM : 28.1, old_doc_len:1126.01, new_doc_len:881.76
+2024-07-09 18:25:22,423 cost_time: 10.881788833936055  
+ 
+2024-07-09 18:27:09,756 epoch_num: 1, training process num: 2027/1427,  kl_soft_loss: 0.5546, kl_hard_loss: 5.0666,                                              
+ old_doc_len:1335.75, new_doc_len:1152.5,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 18:30:26,198 epoch_num: 1, training process num: 2077/1427,  kl_soft_loss: 0.0015, kl_hard_loss: 5.2657,                                              
+ old_doc_len:1220.25, new_doc_len:891.62,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 18:33:38,392 epoch_num: 1, training process num: 2127/1427,  kl_soft_loss: -0.0, kl_hard_loss: 5.5134,                                              
+ old_doc_len:1179.38, new_doc_len:868.88,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 18:36:51,591 epoch_num: 1, training process num: 2177/1427,  kl_soft_loss: 0.0098, kl_hard_loss: 5.7874,                                              
+ old_doc_len:905.0, new_doc_len:568.75,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 18:39:59,865 epoch_num: 1, training process num: 2227/1427,  kl_soft_loss: 0.0, kl_hard_loss: 4.9691,                                              
+ old_doc_len:1087.12, new_doc_len:698.0,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 18:43:18,016 epoch_num: 1, training process num: 2277/1427,  kl_soft_loss: -0.0003, kl_hard_loss: 2.8186,                                              
+ old_doc_len:1260.12, new_doc_len:956.62,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 18:46:31,188 epoch_num: 1, training process num: 2327/1427,  kl_soft_loss: 0.0, kl_hard_loss: 6.3968,                                              
+ old_doc_len:1086.38, new_doc_len:731.62,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 18:49:43,451 epoch_num: 1, training process num: 2377/1427,  kl_soft_loss: 0.0013, kl_hard_loss: 6.0742,                                              
+ old_doc_len:1127.38, new_doc_len:672.38,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 18:52:57,312 epoch_num: 1, training process num: 2427/1427,  kl_soft_loss: 0.0037, kl_hard_loss: 4.2086,                                              
+ old_doc_len:1120.88, new_doc_len:688.75,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 18:56:08,487 epoch_num: 1, training process num: 2477/1427,  kl_soft_loss: 0.0021, kl_hard_loss: 5.1088,                                              
+ old_doc_len:1209.88, new_doc_len:786.75,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 18:57:34,697 
+ Start test ...  
+2024-07-09 18:57:48,959 testing process num: 0
+2024-07-09 19:07:35,913 test: f1 32.98, EM : 24.88, old_doc_len:1126.01, new_doc_len:721.92
+2024-07-09 19:07:35,913 cost_time: 10.02027082045873  
+ 
+2024-07-09 19:09:21,359 epoch_num: 1, training process num: 2527/1427,  kl_soft_loss: -0.0, kl_hard_loss: 4.9046,                                              
+ old_doc_len:1011.75, new_doc_len:633.38,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 19:12:35,136 epoch_num: 1, training process num: 2577/1427,  kl_soft_loss: 0.0002, kl_hard_loss: 4.5511,                                              
+ old_doc_len:1037.62, new_doc_len:670.75,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 19:15:51,376 epoch_num: 1, training process num: 2627/1427,  kl_soft_loss: 4.6769, kl_hard_loss: 4.8924,                                              
+ old_doc_len:1049.25, new_doc_len:745.0,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 19:19:04,317 epoch_num: 1, training process num: 2677/1427,  kl_soft_loss: -0.0, kl_hard_loss: 3.7742,                                              
+ old_doc_len:980.38, new_doc_len:658.25,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 19:22:18,081 epoch_num: 1, training process num: 2727/1427,  kl_soft_loss: 0.0002, kl_hard_loss: 3.6972,                                              
+ old_doc_len:1196.12, new_doc_len:824.0,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 19:25:30,170 epoch_num: 1, training process num: 2777/1427,  kl_soft_loss: 0.0044, kl_hard_loss: 3.7819,                                              
+ old_doc_len:1049.25, new_doc_len:645.5,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 19:28:44,208 epoch_num: 1, training process num: 2827/1427,  kl_soft_loss: 0.0124, kl_hard_loss: 3.4751,                                              
+ old_doc_len:1010.75, new_doc_len:653.38,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 19:30:45,811 epoch_num: 2, training process num: 2854/1427,  kl_soft_loss: 0.006, kl_hard_loss: 3.9119,                                              
+ old_doc_len:1090.25, new_doc_len:683.88,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 19:33:59,232 epoch_num: 2, training process num: 2904/1427,  kl_soft_loss: 0.4372, kl_hard_loss: 3.0419,                                              
+ old_doc_len:1183.75, new_doc_len:835.0,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 19:37:13,157 epoch_num: 2, training process num: 2954/1427,  kl_soft_loss: 0.001, kl_hard_loss: 3.9206,                                              
+ old_doc_len:1048.62, new_doc_len:782.88,                                             
+ best_step:1500, best_performce: 29.08 
+
+2024-07-09 19:40:12,862 
+ Start test ...  
+2024-07-09 19:40:34,246 testing process num: 0
+2024-07-09 19:50:43,301 test: f1 37.72, EM : 29.64, old_doc_len:1126.01, new_doc_len:813.65
+2024-07-09 19:50:43,301 cost_time: 10.507318842411042  
+ 
+2024-07-09 19:50:59,093 epoch_num: 2, training process num: 3004/1427,  kl_soft_loss: 0.0004, kl_hard_loss: 3.0674,                                              
+ old_doc_len:987.0, new_doc_len:631.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 19:54:13,268 epoch_num: 2, training process num: 3054/1427,  kl_soft_loss: -0.0001, kl_hard_loss: 3.4642,                                              
+ old_doc_len:1074.25, new_doc_len:802.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 19:57:29,940 epoch_num: 2, training process num: 3104/1427,  kl_soft_loss: 0.0817, kl_hard_loss: 2.2762,                                              
+ old_doc_len:1131.25, new_doc_len:763.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 20:00:44,688 epoch_num: 2, training process num: 3154/1427,  kl_soft_loss: 0.0027, kl_hard_loss: 4.1063,                                              
+ old_doc_len:1111.88, new_doc_len:655.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 20:03:57,377 epoch_num: 2, training process num: 3204/1427,  kl_soft_loss: -0.0, kl_hard_loss: 3.4876,                                              
+ old_doc_len:1204.5, new_doc_len:923.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 20:07:12,332 epoch_num: 2, training process num: 3254/1427,  kl_soft_loss: -0.0, kl_hard_loss: 2.9943,                                              
+ old_doc_len:1057.75, new_doc_len:800.75,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 20:10:23,454 epoch_num: 2, training process num: 3304/1427,  kl_soft_loss: 0.0006, kl_hard_loss: 3.5664,                                              
+ old_doc_len:1204.75, new_doc_len:843.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 20:13:38,471 epoch_num: 2, training process num: 3354/1427,  kl_soft_loss: -0.0, kl_hard_loss: 4.423,                                              
+ old_doc_len:1119.88, new_doc_len:740.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 20:16:49,936 epoch_num: 2, training process num: 3404/1427,  kl_soft_loss: 0.0017, kl_hard_loss: 3.5362,                                              
+ old_doc_len:943.0, new_doc_len:609.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 20:20:03,390 epoch_num: 2, training process num: 3454/1427,  kl_soft_loss: 0.5016, kl_hard_loss: 3.7953,                                              
+ old_doc_len:1335.75, new_doc_len:867.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 20:23:01,922 
+ Start test ...  
+2024-07-09 20:23:17,706 testing process num: 0
+2024-07-09 20:32:50,986 test: f1 33.91, EM : 26.0, old_doc_len:1126.01, new_doc_len:689.79
+2024-07-09 20:32:50,986 cost_time: 9.81772190729777  
+ 
+2024-07-09 20:33:07,049 epoch_num: 2, training process num: 3504/1427,  kl_soft_loss: 0.0013, kl_hard_loss: 3.4496,                                              
+ old_doc_len:1220.25, new_doc_len:597.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 20:36:19,420 epoch_num: 2, training process num: 3554/1427,  kl_soft_loss: -0.0, kl_hard_loss: 4.3369,                                              
+ old_doc_len:1179.38, new_doc_len:703.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 20:39:33,443 epoch_num: 2, training process num: 3604/1427,  kl_soft_loss: 0.0139, kl_hard_loss: 3.7541,                                              
+ old_doc_len:905.0, new_doc_len:520.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 20:42:41,526 epoch_num: 2, training process num: 3654/1427,  kl_soft_loss: 0.0, kl_hard_loss: 3.4243,                                              
+ old_doc_len:1087.12, new_doc_len:557.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 20:45:59,664 epoch_num: 2, training process num: 3704/1427,  kl_soft_loss: -0.0001, kl_hard_loss: 2.1751,                                              
+ old_doc_len:1260.12, new_doc_len:730.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 20:49:12,984 epoch_num: 2, training process num: 3754/1427,  kl_soft_loss: 0.0, kl_hard_loss: 4.1982,                                              
+ old_doc_len:1086.38, new_doc_len:575.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 20:52:24,002 epoch_num: 2, training process num: 3804/1427,  kl_soft_loss: 0.001, kl_hard_loss: 4.7227,                                              
+ old_doc_len:1127.38, new_doc_len:598.75,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 20:55:38,731 epoch_num: 2, training process num: 3854/1427,  kl_soft_loss: 0.0041, kl_hard_loss: 3.1931,                                              
+ old_doc_len:1120.88, new_doc_len:637.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 20:58:49,313 epoch_num: 2, training process num: 3904/1427,  kl_soft_loss: 0.0034, kl_hard_loss: 3.4228,                                              
+ old_doc_len:1209.88, new_doc_len:721.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 21:01:59,537 epoch_num: 2, training process num: 3954/1427,  kl_soft_loss: 0.0, kl_hard_loss: 2.7751,                                              
+ old_doc_len:1011.75, new_doc_len:557.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 21:04:58,226 
+ Start test ...  
+2024-07-09 21:05:13,925 testing process num: 0
+2024-07-09 21:14:16,185 test: f1 33.76, EM : 26.21, old_doc_len:1126.01, new_doc_len:602.76
+2024-07-09 21:14:16,185 cost_time: 9.299300638834636  
+ 
+2024-07-09 21:14:31,576 epoch_num: 2, training process num: 4004/1427,  kl_soft_loss: 0.0006, kl_hard_loss: 3.5741,                                              
+ old_doc_len:1037.62, new_doc_len:592.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 21:17:46,144 epoch_num: 2, training process num: 4054/1427,  kl_soft_loss: 4.6002, kl_hard_loss: 2.49,                                              
+ old_doc_len:1049.25, new_doc_len:604.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 21:20:59,848 epoch_num: 2, training process num: 4104/1427,  kl_soft_loss: -0.0, kl_hard_loss: 2.173,                                              
+ old_doc_len:980.38, new_doc_len:528.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 21:24:12,504 epoch_num: 2, training process num: 4154/1427,  kl_soft_loss: 0.0002, kl_hard_loss: 2.1413,                                              
+ old_doc_len:1196.12, new_doc_len:712.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 21:27:25,831 epoch_num: 2, training process num: 4204/1427,  kl_soft_loss: 0.0067, kl_hard_loss: 2.2979,                                              
+ old_doc_len:1049.25, new_doc_len:549.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 21:30:39,257 epoch_num: 2, training process num: 4254/1427,  kl_soft_loss: 0.013, kl_hard_loss: 1.6094,                                              
+ old_doc_len:1010.75, new_doc_len:578.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 21:32:41,963 epoch_num: 3, training process num: 4281/1427,  kl_soft_loss: 0.0092, kl_hard_loss: 2.3876,                                              
+ old_doc_len:1090.25, new_doc_len:594.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 21:35:54,763 epoch_num: 3, training process num: 4331/1427,  kl_soft_loss: 0.4985, kl_hard_loss: 1.9947,                                              
+ old_doc_len:1183.75, new_doc_len:737.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 21:39:10,429 epoch_num: 3, training process num: 4381/1427,  kl_soft_loss: 0.0014, kl_hard_loss: 3.041,                                              
+ old_doc_len:1048.62, new_doc_len:691.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 21:42:24,572 epoch_num: 3, training process num: 4431/1427,  kl_soft_loss: 0.0005, kl_hard_loss: 1.4205,                                              
+ old_doc_len:987.0, new_doc_len:600.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 21:45:35,404 epoch_num: 3, training process num: 4481/1427,  kl_soft_loss: 0.0, kl_hard_loss: 1.4527,                                              
+ old_doc_len:1074.25, new_doc_len:678.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 21:46:49,465 
+ Start test ...  
+2024-07-09 21:47:04,807 testing process num: 0
+2024-07-09 21:56:36,739 test: f1 33.67, EM : 25.79, old_doc_len:1126.01, new_doc_len:686.82
+2024-07-09 21:56:36,739 cost_time: 9.787891066074371  
+ 
+2024-07-09 21:58:38,040 epoch_num: 3, training process num: 4531/1427,  kl_soft_loss: 0.0893, kl_hard_loss: 1.1632,                                              
+ old_doc_len:1131.25, new_doc_len:674.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 22:01:53,497 epoch_num: 3, training process num: 4581/1427,  kl_soft_loss: 0.0028, kl_hard_loss: 2.511,                                              
+ old_doc_len:1111.88, new_doc_len:626.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 22:05:05,037 epoch_num: 3, training process num: 4631/1427,  kl_soft_loss: -0.0, kl_hard_loss: 1.2153,                                              
+ old_doc_len:1204.5, new_doc_len:820.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 22:08:19,338 epoch_num: 3, training process num: 4681/1427,  kl_soft_loss: -0.0, kl_hard_loss: 1.7341,                                              
+ old_doc_len:1057.75, new_doc_len:565.75,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 22:11:30,349 epoch_num: 3, training process num: 4731/1427,  kl_soft_loss: 0.001, kl_hard_loss: 2.1439,                                              
+ old_doc_len:1204.75, new_doc_len:700.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 22:14:43,483 epoch_num: 3, training process num: 4781/1427,  kl_soft_loss: -0.0, kl_hard_loss: 2.0729,                                              
+ old_doc_len:1119.88, new_doc_len:713.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 22:17:55,645 epoch_num: 3, training process num: 4831/1427,  kl_soft_loss: 0.0032, kl_hard_loss: 1.9068,                                              
+ old_doc_len:943.0, new_doc_len:554.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 22:21:09,492 epoch_num: 3, training process num: 4881/1427,  kl_soft_loss: 0.4515, kl_hard_loss: 1.6214,                                              
+ old_doc_len:1335.75, new_doc_len:784.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 22:24:22,385 epoch_num: 3, training process num: 4931/1427,  kl_soft_loss: 0.0056, kl_hard_loss: 1.4317,                                              
+ old_doc_len:1220.25, new_doc_len:584.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 22:27:34,275 epoch_num: 3, training process num: 4981/1427,  kl_soft_loss: -0.0, kl_hard_loss: 3.1668,                                              
+ old_doc_len:1179.38, new_doc_len:591.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 22:28:48,664 
+ Start test ...  
+2024-07-09 22:29:04,284 testing process num: 0
+2024-07-09 22:38:08,680 test: f1 32.77, EM : 24.67, old_doc_len:1126.01, new_doc_len:621.35
+2024-07-09 22:38:08,680 cost_time: 9.33360007206599  
+ 
+2024-07-09 22:40:06,338 epoch_num: 3, training process num: 5031/1427,  kl_soft_loss: 0.019, kl_hard_loss: 1.5744,                                              
+ old_doc_len:905.0, new_doc_len:461.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 22:43:14,476 epoch_num: 3, training process num: 5081/1427,  kl_soft_loss: 0.0001, kl_hard_loss: 1.6946,                                              
+ old_doc_len:1087.12, new_doc_len:558.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 22:46:30,913 epoch_num: 3, training process num: 5131/1427,  kl_soft_loss: 0.0001, kl_hard_loss: 1.3881,                                              
+ old_doc_len:1260.12, new_doc_len:741.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 22:49:43,780 epoch_num: 3, training process num: 5181/1427,  kl_soft_loss: 0.0, kl_hard_loss: 2.0015,                                              
+ old_doc_len:1086.38, new_doc_len:541.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 22:52:53,820 epoch_num: 3, training process num: 5231/1427,  kl_soft_loss: 0.0011, kl_hard_loss: 3.0382,                                              
+ old_doc_len:1127.38, new_doc_len:537.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 22:56:06,674 epoch_num: 3, training process num: 5281/1427,  kl_soft_loss: 0.0055, kl_hard_loss: 2.2877,                                              
+ old_doc_len:1120.88, new_doc_len:623.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 22:59:17,564 epoch_num: 3, training process num: 5331/1427,  kl_soft_loss: 0.0061, kl_hard_loss: 1.3942,                                              
+ old_doc_len:1209.88, new_doc_len:624.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 23:02:27,739 epoch_num: 3, training process num: 5381/1427,  kl_soft_loss: 0.0, kl_hard_loss: 1.8434,                                              
+ old_doc_len:1011.75, new_doc_len:616.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 23:05:40,396 epoch_num: 3, training process num: 5431/1427,  kl_soft_loss: 0.0012, kl_hard_loss: 1.9496,                                              
+ old_doc_len:1037.62, new_doc_len:551.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 23:08:56,028 epoch_num: 3, training process num: 5481/1427,  kl_soft_loss: 3.8984, kl_hard_loss: 1.9587,                                              
+ old_doc_len:1049.25, new_doc_len:545.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 23:10:08,611 
+ Start test ...  
+2024-07-09 23:10:24,423 testing process num: 0
+2024-07-09 23:19:13,029 test: f1 31.66, EM : 24.32, old_doc_len:1126.01, new_doc_len:593.16
+2024-07-09 23:19:13,030 cost_time: 9.073626041412354  
+ 
+2024-07-09 23:21:14,053 epoch_num: 3, training process num: 5531/1427,  kl_soft_loss: -0.0, kl_hard_loss: 1.0969,                                              
+ old_doc_len:980.38, new_doc_len:470.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 23:24:26,808 epoch_num: 3, training process num: 5581/1427,  kl_soft_loss: 0.0003, kl_hard_loss: 1.6372,                                              
+ old_doc_len:1196.12, new_doc_len:657.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 23:27:37,663 epoch_num: 3, training process num: 5631/1427,  kl_soft_loss: 0.0096, kl_hard_loss: 1.2477,                                              
+ old_doc_len:1049.25, new_doc_len:517.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 23:30:50,071 epoch_num: 3, training process num: 5681/1427,  kl_soft_loss: 0.0136, kl_hard_loss: 0.5502,                                              
+ old_doc_len:1010.75, new_doc_len:544.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 23:32:51,519 epoch_num: 4, training process num: 5708/1427,  kl_soft_loss: 0.0128, kl_hard_loss: 1.3799,                                              
+ old_doc_len:1090.25, new_doc_len:620.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 23:36:03,610 epoch_num: 4, training process num: 5758/1427,  kl_soft_loss: 0.5727, kl_hard_loss: 0.9717,                                              
+ old_doc_len:1183.75, new_doc_len:707.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 23:39:16,690 epoch_num: 4, training process num: 5808/1427,  kl_soft_loss: 0.0026, kl_hard_loss: 1.4295,                                              
+ old_doc_len:1048.62, new_doc_len:619.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 23:42:30,924 epoch_num: 4, training process num: 5858/1427,  kl_soft_loss: 0.0005, kl_hard_loss: 0.7057,                                              
+ old_doc_len:987.0, new_doc_len:568.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 23:45:42,532 epoch_num: 4, training process num: 5908/1427,  kl_soft_loss: 0.0002, kl_hard_loss: 0.4957,                                              
+ old_doc_len:1074.25, new_doc_len:635.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 23:48:56,675 epoch_num: 4, training process num: 5958/1427,  kl_soft_loss: 0.1099, kl_hard_loss: 0.4148,                                              
+ old_doc_len:1131.25, new_doc_len:623.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-09 23:51:40,221 
+ Start test ...  
+2024-07-09 23:51:55,700 testing process num: 0
+2024-07-10 00:01:10,091 test: f1 34.07, EM : 25.86, old_doc_len:1126.01, new_doc_len:640.9
+2024-07-10 00:01:10,091 cost_time: 9.497822594642638  
+ 
+2024-07-10 00:01:40,887 epoch_num: 4, training process num: 6008/1427,  kl_soft_loss: 0.0041, kl_hard_loss: 1.6389,                                              
+ old_doc_len:1111.88, new_doc_len:587.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 00:04:53,614 epoch_num: 4, training process num: 6058/1427,  kl_soft_loss: -0.0, kl_hard_loss: 0.3377,                                              
+ old_doc_len:1204.5, new_doc_len:692.75,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 00:08:08,478 epoch_num: 4, training process num: 6108/1427,  kl_soft_loss: -0.0, kl_hard_loss: 0.4416,                                              
+ old_doc_len:1057.75, new_doc_len:574.75,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 00:11:19,942 epoch_num: 4, training process num: 6158/1427,  kl_soft_loss: 0.0015, kl_hard_loss: 0.767,                                              
+ old_doc_len:1204.75, new_doc_len:772.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 00:14:34,972 epoch_num: 4, training process num: 6208/1427,  kl_soft_loss: 0.0, kl_hard_loss: 0.8211,                                              
+ old_doc_len:1119.88, new_doc_len:702.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 00:17:45,607 epoch_num: 4, training process num: 6258/1427,  kl_soft_loss: 0.004, kl_hard_loss: 0.4016,                                              
+ old_doc_len:943.0, new_doc_len:406.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 00:20:58,321 epoch_num: 4, training process num: 6308/1427,  kl_soft_loss: 0.534, kl_hard_loss: 0.8212,                                              
+ old_doc_len:1335.75, new_doc_len:709.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 00:24:12,756 epoch_num: 4, training process num: 6358/1427,  kl_soft_loss: 0.0091, kl_hard_loss: 0.1701,                                              
+ old_doc_len:1220.25, new_doc_len:627.75,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 00:27:23,988 epoch_num: 4, training process num: 6408/1427,  kl_soft_loss: 0.0, kl_hard_loss: 1.7886,                                              
+ old_doc_len:1179.38, new_doc_len:611.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 00:30:35,191 epoch_num: 4, training process num: 6458/1427,  kl_soft_loss: 0.016, kl_hard_loss: 0.9611,                                              
+ old_doc_len:905.0, new_doc_len:470.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 00:33:12,800 
+ Start test ...  
+2024-07-10 00:33:24,954 testing process num: 0
+2024-07-10 00:42:12,007 test: f1 31.71, EM : 23.9, old_doc_len:1126.01, new_doc_len:586.3
+2024-07-10 00:42:12,008 cost_time: 8.986793875694275  
+ 
+2024-07-10 00:42:42,875 epoch_num: 4, training process num: 6508/1427,  kl_soft_loss: 0.0, kl_hard_loss: 1.1815,                                              
+ old_doc_len:1087.12, new_doc_len:525.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 00:45:59,497 epoch_num: 4, training process num: 6558/1427,  kl_soft_loss: 0.0004, kl_hard_loss: 0.6439,                                              
+ old_doc_len:1260.12, new_doc_len:706.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 00:49:11,946 epoch_num: 4, training process num: 6608/1427,  kl_soft_loss: 0.0001, kl_hard_loss: 0.5543,                                              
+ old_doc_len:1086.38, new_doc_len:589.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 00:52:21,617 epoch_num: 4, training process num: 6658/1427,  kl_soft_loss: 0.0016, kl_hard_loss: 0.5037,                                              
+ old_doc_len:1127.38, new_doc_len:544.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 00:55:33,744 epoch_num: 4, training process num: 6708/1427,  kl_soft_loss: 0.0046, kl_hard_loss: 1.1292,                                              
+ old_doc_len:1120.88, new_doc_len:595.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 00:58:43,478 epoch_num: 4, training process num: 6758/1427,  kl_soft_loss: 0.0098, kl_hard_loss: 0.4839,                                              
+ old_doc_len:1209.88, new_doc_len:471.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 01:01:52,349 epoch_num: 4, training process num: 6808/1427,  kl_soft_loss: 0.0, kl_hard_loss: 0.7822,                                              
+ old_doc_len:1011.75, new_doc_len:481.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 01:05:03,845 epoch_num: 4, training process num: 6858/1427,  kl_soft_loss: 0.002, kl_hard_loss: 0.5432,                                              
+ old_doc_len:1037.62, new_doc_len:496.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 01:08:17,080 epoch_num: 4, training process num: 6908/1427,  kl_soft_loss: 4.544, kl_hard_loss: 2.4372,                                              
+ old_doc_len:1049.25, new_doc_len:476.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 01:11:29,036 epoch_num: 4, training process num: 6958/1427,  kl_soft_loss: -0.0, kl_hard_loss: 0.3296,                                              
+ old_doc_len:980.38, new_doc_len:470.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 01:14:09,818 
+ Start test ...  
+2024-07-10 01:14:21,628 testing process num: 0
+2024-07-10 01:23:16,599 test: f1 33.16, EM : 25.79, old_doc_len:1126.01, new_doc_len:591.58
+2024-07-10 01:23:16,600 cost_time: 9.11301936308543  
+ 
+2024-07-10 01:23:47,977 epoch_num: 4, training process num: 7008/1427,  kl_soft_loss: 0.0003, kl_hard_loss: 1.2811,                                              
+ old_doc_len:1196.12, new_doc_len:658.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 01:26:58,085 epoch_num: 4, training process num: 7058/1427,  kl_soft_loss: 0.0114, kl_hard_loss: 0.3508,                                              
+ old_doc_len:1049.25, new_doc_len:453.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 01:30:11,590 epoch_num: 4, training process num: 7108/1427,  kl_soft_loss: 0.0099, kl_hard_loss: 0.3724,                                              
+ old_doc_len:1010.75, new_doc_len:575.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 01:32:08,718 epoch_num: 5, training process num: 7135/1427,  kl_soft_loss: 0.015, kl_hard_loss: 0.8905,                                              
+ old_doc_len:1090.25, new_doc_len:613.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 01:35:19,952 epoch_num: 5, training process num: 7185/1427,  kl_soft_loss: 0.6456, kl_hard_loss: 0.6942,                                              
+ old_doc_len:1183.75, new_doc_len:616.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 01:38:32,991 epoch_num: 5, training process num: 7235/1427,  kl_soft_loss: 0.0024, kl_hard_loss: 0.8338,                                              
+ old_doc_len:1048.62, new_doc_len:624.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 01:41:47,701 epoch_num: 5, training process num: 7285/1427,  kl_soft_loss: 0.0007, kl_hard_loss: 0.9846,                                              
+ old_doc_len:987.0, new_doc_len:578.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 01:44:58,221 epoch_num: 5, training process num: 7335/1427,  kl_soft_loss: 0.0005, kl_hard_loss: 0.167,                                              
+ old_doc_len:1074.25, new_doc_len:512.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 01:48:11,663 epoch_num: 5, training process num: 7385/1427,  kl_soft_loss: 0.1428, kl_hard_loss: 0.0936,                                              
+ old_doc_len:1131.25, new_doc_len:590.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 01:51:25,349 epoch_num: 5, training process num: 7435/1427,  kl_soft_loss: 0.0056, kl_hard_loss: 0.4807,                                              
+ old_doc_len:1111.88, new_doc_len:573.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 01:54:35,779 epoch_num: 5, training process num: 7485/1427,  kl_soft_loss: -0.0, kl_hard_loss: 0.1476,                                              
+ old_doc_len:1204.5, new_doc_len:652.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 01:55:31,586 
+ Start test ...  
+2024-07-10 01:55:43,023 testing process num: 0
+2024-07-10 02:04:38,364 test: f1 32.89, EM : 25.09, old_doc_len:1126.01, new_doc_len:611.67
+2024-07-10 02:04:38,365 cost_time: 9.112979849179586  
+ 
+2024-07-10 02:06:55,511 epoch_num: 5, training process num: 7535/1427,  kl_soft_loss: -0.0, kl_hard_loss: 0.1784,                                              
+ old_doc_len:1057.75, new_doc_len:506.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 02:10:04,995 epoch_num: 5, training process num: 7585/1427,  kl_soft_loss: 0.0024, kl_hard_loss: 0.356,                                              
+ old_doc_len:1204.75, new_doc_len:668.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 02:13:17,545 epoch_num: 5, training process num: 7635/1427,  kl_soft_loss: 0.0, kl_hard_loss: 0.9921,                                              
+ old_doc_len:1119.88, new_doc_len:628.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 02:16:27,479 epoch_num: 5, training process num: 7685/1427,  kl_soft_loss: 0.0042, kl_hard_loss: 0.1635,                                              
+ old_doc_len:943.0, new_doc_len:497.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 02:19:39,609 epoch_num: 5, training process num: 7735/1427,  kl_soft_loss: 0.5358, kl_hard_loss: 0.4689,                                              
+ old_doc_len:1335.75, new_doc_len:734.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 02:22:51,661 epoch_num: 5, training process num: 7785/1427,  kl_soft_loss: 0.0072, kl_hard_loss: 0.615,                                              
+ old_doc_len:1220.25, new_doc_len:573.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 02:26:02,473 epoch_num: 5, training process num: 7835/1427,  kl_soft_loss: 0.0, kl_hard_loss: 0.7631,                                              
+ old_doc_len:1179.38, new_doc_len:605.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 02:29:13,276 epoch_num: 5, training process num: 7885/1427,  kl_soft_loss: 0.0214, kl_hard_loss: 0.2809,                                              
+ old_doc_len:905.0, new_doc_len:509.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 02:32:20,687 epoch_num: 5, training process num: 7935/1427,  kl_soft_loss: 0.0001, kl_hard_loss: 1.2302,                                              
+ old_doc_len:1087.12, new_doc_len:526.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 02:35:36,323 epoch_num: 5, training process num: 7985/1427,  kl_soft_loss: 0.0006, kl_hard_loss: 0.3203,                                              
+ old_doc_len:1260.12, new_doc_len:748.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 02:36:35,883 
+ Start test ...  
+2024-07-10 02:36:47,159 testing process num: 0
+2024-07-10 02:45:30,292 test: f1 33.12, EM : 25.23, old_doc_len:1126.01, new_doc_len:582.37
+2024-07-10 02:45:30,293 cost_time: 8.906817622979482  
+ 
+2024-07-10 02:47:43,210 epoch_num: 5, training process num: 8035/1427,  kl_soft_loss: 0.0001, kl_hard_loss: 0.1648,                                              
+ old_doc_len:1086.38, new_doc_len:634.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 02:50:53,583 epoch_num: 5, training process num: 8085/1427,  kl_soft_loss: 0.001, kl_hard_loss: 0.6557,                                              
+ old_doc_len:1127.38, new_doc_len:456.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 02:54:05,734 epoch_num: 5, training process num: 8135/1427,  kl_soft_loss: 0.007, kl_hard_loss: 0.6921,                                              
+ old_doc_len:1120.88, new_doc_len:573.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 02:57:15,088 epoch_num: 5, training process num: 8185/1427,  kl_soft_loss: 0.0086, kl_hard_loss: 0.2109,                                              
+ old_doc_len:1209.88, new_doc_len:616.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 03:00:23,638 epoch_num: 5, training process num: 8235/1427,  kl_soft_loss: 0.0, kl_hard_loss: 0.5957,                                              
+ old_doc_len:1011.75, new_doc_len:610.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 03:03:34,817 epoch_num: 5, training process num: 8285/1427,  kl_soft_loss: 0.0022, kl_hard_loss: 0.232,                                              
+ old_doc_len:1037.62, new_doc_len:473.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 03:06:47,556 epoch_num: 5, training process num: 8335/1427,  kl_soft_loss: 3.2881, kl_hard_loss: 1.6035,                                              
+ old_doc_len:1049.25, new_doc_len:486.75,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 03:09:59,211 epoch_num: 5, training process num: 8385/1427,  kl_soft_loss: -0.0, kl_hard_loss: 0.1798,                                              
+ old_doc_len:980.38, new_doc_len:438.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 03:13:09,943 epoch_num: 5, training process num: 8435/1427,  kl_soft_loss: 0.0003, kl_hard_loss: 0.5257,                                              
+ old_doc_len:1196.12, new_doc_len:579.75,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 03:16:19,904 epoch_num: 5, training process num: 8485/1427,  kl_soft_loss: 0.0126, kl_hard_loss: 0.5683,                                              
+ old_doc_len:1049.25, new_doc_len:525.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 03:17:17,672 
+ Start test ...  
+2024-07-10 03:17:28,942 testing process num: 0
+2024-07-10 03:26:02,846 test: f1 31.34, EM : 24.11, old_doc_len:1126.01, new_doc_len:566.11
+2024-07-10 03:26:02,847 cost_time: 8.75291397968928  
+ 
+2024-07-10 03:28:18,369 epoch_num: 5, training process num: 8535/1427,  kl_soft_loss: 0.0109, kl_hard_loss: 0.1932,                                              
+ old_doc_len:1010.75, new_doc_len:598.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 03:30:14,613 epoch_num: 6, training process num: 8562/1427,  kl_soft_loss: 0.0169, kl_hard_loss: 0.2066,                                              
+ old_doc_len:1090.25, new_doc_len:542.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 03:33:27,861 epoch_num: 6, training process num: 8612/1427,  kl_soft_loss: 0.4148, kl_hard_loss: 0.6428,                                              
+ old_doc_len:1183.75, new_doc_len:732.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 03:36:39,921 epoch_num: 6, training process num: 8662/1427,  kl_soft_loss: 0.0027, kl_hard_loss: 0.8076,                                              
+ old_doc_len:1048.62, new_doc_len:554.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 03:39:54,024 epoch_num: 6, training process num: 8712/1427,  kl_soft_loss: 0.0006, kl_hard_loss: 1.5579,                                              
+ old_doc_len:987.0, new_doc_len:521.75,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 03:43:05,850 epoch_num: 6, training process num: 8762/1427,  kl_soft_loss: 0.0003, kl_hard_loss: 0.1571,                                              
+ old_doc_len:1074.25, new_doc_len:586.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 03:46:20,656 epoch_num: 6, training process num: 8812/1427,  kl_soft_loss: 0.1272, kl_hard_loss: 0.1352,                                              
+ old_doc_len:1131.25, new_doc_len:612.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 03:49:35,260 epoch_num: 6, training process num: 8862/1427,  kl_soft_loss: 0.0064, kl_hard_loss: 0.2317,                                              
+ old_doc_len:1111.88, new_doc_len:581.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 03:52:46,214 epoch_num: 6, training process num: 8912/1427,  kl_soft_loss: -0.0, kl_hard_loss: 0.1518,                                              
+ old_doc_len:1204.5, new_doc_len:628.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 03:55:59,158 epoch_num: 6, training process num: 8962/1427,  kl_soft_loss: -0.0, kl_hard_loss: 0.2089,                                              
+ old_doc_len:1057.75, new_doc_len:584.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 03:58:22,641 
+ Start test ...  
+2024-07-10 03:58:33,079 testing process num: 0
+2024-07-10 04:07:25,158 test: f1 31.56, EM : 24.11, old_doc_len:1126.01, new_doc_len:603.61
+2024-07-10 04:07:25,159 cost_time: 9.041956865787506  
+ 
+2024-07-10 04:08:11,126 epoch_num: 6, training process num: 9012/1427,  kl_soft_loss: 0.0019, kl_hard_loss: 1.6865,                                              
+ old_doc_len:1204.75, new_doc_len:641.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 04:11:23,719 epoch_num: 6, training process num: 9062/1427,  kl_soft_loss: 0.0, kl_hard_loss: 0.9312,                                              
+ old_doc_len:1119.88, new_doc_len:583.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 04:14:33,769 epoch_num: 6, training process num: 9112/1427,  kl_soft_loss: 0.0068, kl_hard_loss: 0.1284,                                              
+ old_doc_len:943.0, new_doc_len:594.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 04:17:46,127 epoch_num: 6, training process num: 9162/1427,  kl_soft_loss: 0.5405, kl_hard_loss: 0.326,                                              
+ old_doc_len:1335.75, new_doc_len:742.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 04:20:57,581 epoch_num: 6, training process num: 9212/1427,  kl_soft_loss: 0.0118, kl_hard_loss: 0.0926,                                              
+ old_doc_len:1220.25, new_doc_len:655.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 04:24:07,596 epoch_num: 6, training process num: 9262/1427,  kl_soft_loss: 0.0, kl_hard_loss: 0.6263,                                              
+ old_doc_len:1179.38, new_doc_len:594.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 04:27:18,921 epoch_num: 6, training process num: 9312/1427,  kl_soft_loss: 0.0174, kl_hard_loss: 0.5895,                                              
+ old_doc_len:905.0, new_doc_len:534.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 04:30:26,145 epoch_num: 6, training process num: 9362/1427,  kl_soft_loss: 0.0, kl_hard_loss: 0.809,                                              
+ old_doc_len:1087.12, new_doc_len:496.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 04:33:40,777 epoch_num: 6, training process num: 9412/1427,  kl_soft_loss: 0.0004, kl_hard_loss: 0.6214,                                              
+ old_doc_len:1260.12, new_doc_len:719.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 04:36:51,637 epoch_num: 6, training process num: 9462/1427,  kl_soft_loss: 0.0001, kl_hard_loss: 1.194,                                              
+ old_doc_len:1086.38, new_doc_len:581.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 04:39:14,411 
+ Start test ...  
+2024-07-10 04:39:24,763 testing process num: 0
+2024-07-10 04:48:09,012 test: f1 28.95, EM : 22.07, old_doc_len:1126.01, new_doc_len:575.62
+2024-07-10 04:48:09,012 cost_time: 8.91002002954483  
+ 
+2024-07-10 04:48:55,756 epoch_num: 6, training process num: 9512/1427,  kl_soft_loss: 0.0016, kl_hard_loss: 0.3021,                                              
+ old_doc_len:1127.38, new_doc_len:486.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 04:52:08,767 epoch_num: 6, training process num: 9562/1427,  kl_soft_loss: 0.0076, kl_hard_loss: 0.1586,                                              
+ old_doc_len:1120.88, new_doc_len:531.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 04:55:19,861 epoch_num: 6, training process num: 9612/1427,  kl_soft_loss: 0.0092, kl_hard_loss: 0.3076,                                              
+ old_doc_len:1209.88, new_doc_len:643.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 04:58:30,361 epoch_num: 6, training process num: 9662/1427,  kl_soft_loss: 0.0, kl_hard_loss: 0.6425,                                              
+ old_doc_len:1011.75, new_doc_len:591.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 05:01:42,569 epoch_num: 6, training process num: 9712/1427,  kl_soft_loss: 0.0023, kl_hard_loss: 0.2161,                                              
+ old_doc_len:1037.62, new_doc_len:485.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 05:04:56,793 epoch_num: 6, training process num: 9762/1427,  kl_soft_loss: 3.0308, kl_hard_loss: 3.2406,                                              
+ old_doc_len:1049.25, new_doc_len:531.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 05:08:09,430 epoch_num: 6, training process num: 9812/1427,  kl_soft_loss: -0.0, kl_hard_loss: 0.2339,                                              
+ old_doc_len:980.38, new_doc_len:444.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 05:11:21,408 epoch_num: 6, training process num: 9862/1427,  kl_soft_loss: 0.0002, kl_hard_loss: 0.4395,                                              
+ old_doc_len:1196.12, new_doc_len:649.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 05:14:32,055 epoch_num: 6, training process num: 9912/1427,  kl_soft_loss: 0.0129, kl_hard_loss: 0.0886,                                              
+ old_doc_len:1049.25, new_doc_len:532.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 05:17:44,231 epoch_num: 6, training process num: 9962/1427,  kl_soft_loss: 0.0091, kl_hard_loss: 0.2451,                                              
+ old_doc_len:1010.75, new_doc_len:481.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 05:19:40,991 epoch_num: 7, training process num: 9989/1427,  kl_soft_loss: 0.0178, kl_hard_loss: 0.4003,                                              
+ old_doc_len:1090.25, new_doc_len:496.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 05:20:22,838 
+ Start test ...  
+2024-07-10 05:20:34,836 testing process num: 0
+2024-07-10 05:29:16,519 test: f1 30.7, EM : 22.99, old_doc_len:1126.01, new_doc_len:579.64
+2024-07-10 05:29:16,519 cost_time: 8.894678016503653  
+ 
+2024-07-10 05:31:46,152 epoch_num: 7, training process num: 10039/1427,  kl_soft_loss: 0.4769, kl_hard_loss: 0.4651,                                              
+ old_doc_len:1183.75, new_doc_len:633.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 05:34:57,545 epoch_num: 7, training process num: 10089/1427,  kl_soft_loss: 0.0037, kl_hard_loss: 0.0541,                                              
+ old_doc_len:1048.62, new_doc_len:571.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 05:38:10,442 epoch_num: 7, training process num: 10139/1427,  kl_soft_loss: 0.0008, kl_hard_loss: 1.1318,                                              
+ old_doc_len:987.0, new_doc_len:522.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 05:41:21,472 epoch_num: 7, training process num: 10189/1427,  kl_soft_loss: 0.0001, kl_hard_loss: 0.2141,                                              
+ old_doc_len:1074.25, new_doc_len:674.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 05:44:36,057 epoch_num: 7, training process num: 10239/1427,  kl_soft_loss: 0.134, kl_hard_loss: 0.2267,                                              
+ old_doc_len:1131.25, new_doc_len:557.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 05:47:50,027 epoch_num: 7, training process num: 10289/1427,  kl_soft_loss: 0.0059, kl_hard_loss: 0.5267,                                              
+ old_doc_len:1111.88, new_doc_len:566.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 05:51:00,956 epoch_num: 7, training process num: 10339/1427,  kl_soft_loss: -0.0, kl_hard_loss: 0.2524,                                              
+ old_doc_len:1204.5, new_doc_len:691.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 05:54:14,368 epoch_num: 7, training process num: 10389/1427,  kl_soft_loss: -0.0, kl_hard_loss: 0.6298,                                              
+ old_doc_len:1057.75, new_doc_len:514.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 05:57:23,674 epoch_num: 7, training process num: 10439/1427,  kl_soft_loss: 0.0021, kl_hard_loss: 0.2489,                                              
+ old_doc_len:1204.75, new_doc_len:656.75,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 06:00:35,876 epoch_num: 7, training process num: 10489/1427,  kl_soft_loss: 0.0, kl_hard_loss: 0.3872,                                              
+ old_doc_len:1119.88, new_doc_len:509.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 06:01:17,759 
+ Start test ...  
+2024-07-10 06:01:28,884 testing process num: 0
+2024-07-10 06:10:13,006 test: f1 33.03, EM : 25.16, old_doc_len:1126.01, new_doc_len:593.56
+2024-07-10 06:10:13,006 cost_time: 8.920776998996734  
+ 
+2024-07-10 06:12:42,050 epoch_num: 7, training process num: 10539/1427,  kl_soft_loss: 0.0045, kl_hard_loss: 0.6252,                                              
+ old_doc_len:943.0, new_doc_len:455.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 06:15:53,215 epoch_num: 7, training process num: 10589/1427,  kl_soft_loss: 0.4625, kl_hard_loss: 0.464,                                              
+ old_doc_len:1335.75, new_doc_len:725.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 06:19:07,611 epoch_num: 7, training process num: 10639/1427,  kl_soft_loss: 0.0054, kl_hard_loss: 0.3332,                                              
+ old_doc_len:1220.25, new_doc_len:601.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 06:22:17,793 epoch_num: 7, training process num: 10689/1427,  kl_soft_loss: 0.0, kl_hard_loss: 0.7314,                                              
+ old_doc_len:1179.38, new_doc_len:670.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 06:25:28,569 epoch_num: 7, training process num: 10739/1427,  kl_soft_loss: 0.0218, kl_hard_loss: 0.5807,                                              
+ old_doc_len:905.0, new_doc_len:463.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 06:28:36,434 epoch_num: 7, training process num: 10789/1427,  kl_soft_loss: 0.0001, kl_hard_loss: 1.8856,                                              
+ old_doc_len:1087.12, new_doc_len:583.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 06:31:52,416 epoch_num: 7, training process num: 10839/1427,  kl_soft_loss: 0.0003, kl_hard_loss: 0.3888,                                              
+ old_doc_len:1260.12, new_doc_len:723.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 06:35:04,827 epoch_num: 7, training process num: 10889/1427,  kl_soft_loss: 0.0001, kl_hard_loss: 0.156,                                              
+ old_doc_len:1086.38, new_doc_len:586.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 06:38:14,947 epoch_num: 7, training process num: 10939/1427,  kl_soft_loss: 0.0013, kl_hard_loss: 0.5543,                                              
+ old_doc_len:1127.38, new_doc_len:569.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 06:41:27,306 epoch_num: 7, training process num: 10989/1427,  kl_soft_loss: 0.0103, kl_hard_loss: 0.3781,                                              
+ old_doc_len:1120.88, new_doc_len:569.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 06:42:08,539 
+ Start test ...  
+2024-07-10 06:42:19,604 testing process num: 0
+2024-07-10 06:51:02,570 test: f1 29.89, EM : 23.55, old_doc_len:1126.01, new_doc_len:585.47
+2024-07-10 06:51:02,570 cost_time: 8.900512278079987  
+ 
+2024-07-10 06:53:32,669 epoch_num: 7, training process num: 11039/1427,  kl_soft_loss: 0.0073, kl_hard_loss: 0.171,                                              
+ old_doc_len:1209.88, new_doc_len:522.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 06:56:41,561 epoch_num: 7, training process num: 11089/1427,  kl_soft_loss: 0.0, kl_hard_loss: 0.0508,                                              
+ old_doc_len:1011.75, new_doc_len:547.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 06:59:52,923 epoch_num: 7, training process num: 11139/1427,  kl_soft_loss: 0.0023, kl_hard_loss: 0.6332,                                              
+ old_doc_len:1037.62, new_doc_len:511.75,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 07:03:05,476 epoch_num: 7, training process num: 11189/1427,  kl_soft_loss: 3.2452, kl_hard_loss: 1.1179,                                              
+ old_doc_len:1049.25, new_doc_len:453.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 07:06:18,516 epoch_num: 7, training process num: 11239/1427,  kl_soft_loss: -0.0, kl_hard_loss: 0.149,                                              
+ old_doc_len:980.38, new_doc_len:417.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 07:09:30,009 epoch_num: 7, training process num: 11289/1427,  kl_soft_loss: 0.0003, kl_hard_loss: 0.4103,                                              
+ old_doc_len:1196.12, new_doc_len:568.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 07:12:41,007 epoch_num: 7, training process num: 11339/1427,  kl_soft_loss: 0.0087, kl_hard_loss: 0.2016,                                              
+ old_doc_len:1049.25, new_doc_len:492.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 07:15:53,556 epoch_num: 7, training process num: 11389/1427,  kl_soft_loss: 0.0095, kl_hard_loss: 0.0528,                                              
+ old_doc_len:1010.75, new_doc_len:464.75,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 07:17:50,332 epoch_num: 8, training process num: 11416/1427,  kl_soft_loss: 0.017, kl_hard_loss: 0.1055,                                              
+ old_doc_len:1090.25, new_doc_len:548.75,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 07:21:04,205 epoch_num: 8, training process num: 11466/1427,  kl_soft_loss: 0.4255, kl_hard_loss: 0.4994,                                              
+ old_doc_len:1183.75, new_doc_len:698.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 07:23:15,352 
+ Start test ...  
+2024-07-10 07:23:26,102 testing process num: 0
+2024-07-10 07:32:11,575 test: f1 31.21, EM : 23.62, old_doc_len:1126.01, new_doc_len:585.82
+2024-07-10 07:32:11,575 cost_time: 8.937028980255127  
+ 
+2024-07-10 07:33:12,873 epoch_num: 8, training process num: 11516/1427,  kl_soft_loss: 0.0028, kl_hard_loss: 0.2688,                                              
+ old_doc_len:1048.62, new_doc_len:536.75,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 07:36:26,290 epoch_num: 8, training process num: 11566/1427,  kl_soft_loss: 0.0007, kl_hard_loss: 1.0751,                                              
+ old_doc_len:987.0, new_doc_len:461.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 07:39:36,923 epoch_num: 8, training process num: 11616/1427,  kl_soft_loss: 0.0006, kl_hard_loss: 0.046,                                              
+ old_doc_len:1074.25, new_doc_len:593.75,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 07:42:51,620 epoch_num: 8, training process num: 11666/1427,  kl_soft_loss: 0.1071, kl_hard_loss: 0.4014,                                              
+ old_doc_len:1131.25, new_doc_len:584.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 07:46:05,677 epoch_num: 8, training process num: 11716/1427,  kl_soft_loss: 0.0075, kl_hard_loss: 0.0902,                                              
+ old_doc_len:1111.88, new_doc_len:590.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 07:49:16,442 epoch_num: 8, training process num: 11766/1427,  kl_soft_loss: -0.0, kl_hard_loss: 0.4096,                                              
+ old_doc_len:1204.5, new_doc_len:655.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 07:52:29,566 epoch_num: 8, training process num: 11816/1427,  kl_soft_loss: -0.0, kl_hard_loss: 0.091,                                              
+ old_doc_len:1057.75, new_doc_len:533.75,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 07:55:38,897 epoch_num: 8, training process num: 11866/1427,  kl_soft_loss: 0.0022, kl_hard_loss: 0.0536,                                              
+ old_doc_len:1204.75, new_doc_len:638.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 07:58:50,423 epoch_num: 8, training process num: 11916/1427,  kl_soft_loss: 0.0, kl_hard_loss: 0.1658,                                              
+ old_doc_len:1119.88, new_doc_len:586.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 08:02:00,295 epoch_num: 8, training process num: 11966/1427,  kl_soft_loss: 0.0052, kl_hard_loss: 0.2136,                                              
+ old_doc_len:943.0, new_doc_len:484.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 08:04:09,732 
+ Start test ...  
+2024-07-10 08:04:20,544 testing process num: 0
+2024-07-10 08:13:07,339 test: f1 31.54, EM : 23.83, old_doc_len:1126.01, new_doc_len:594.21
+2024-07-10 08:13:07,339 cost_time: 8.960108784834544  
+ 
+2024-07-10 08:14:10,012 epoch_num: 8, training process num: 12016/1427,  kl_soft_loss: 0.5635, kl_hard_loss: 0.1716,                                              
+ old_doc_len:1335.75, new_doc_len:624.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 08:17:22,057 epoch_num: 8, training process num: 12066/1427,  kl_soft_loss: 0.0138, kl_hard_loss: 0.1587,                                              
+ old_doc_len:1220.25, new_doc_len:557.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 08:20:33,139 epoch_num: 8, training process num: 12116/1427,  kl_soft_loss: 0.0, kl_hard_loss: 0.2394,                                              
+ old_doc_len:1179.38, new_doc_len:498.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 08:23:48,025 epoch_num: 8, training process num: 12166/1427,  kl_soft_loss: 0.0243, kl_hard_loss: 0.1313,                                              
+ old_doc_len:905.0, new_doc_len:499.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 08:26:54,705 epoch_num: 8, training process num: 12216/1427,  kl_soft_loss: 0.0001, kl_hard_loss: 0.646,                                              
+ old_doc_len:1087.12, new_doc_len:512.75,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 08:30:09,859 epoch_num: 8, training process num: 12266/1427,  kl_soft_loss: 0.0007, kl_hard_loss: 0.0609,                                              
+ old_doc_len:1260.12, new_doc_len:670.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 08:33:21,040 epoch_num: 8, training process num: 12316/1427,  kl_soft_loss: 0.0001, kl_hard_loss: 0.1979,                                              
+ old_doc_len:1086.38, new_doc_len:487.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 08:36:30,055 epoch_num: 8, training process num: 12366/1427,  kl_soft_loss: 0.0016, kl_hard_loss: 0.0839,                                              
+ old_doc_len:1127.38, new_doc_len:564.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 08:39:41,731 epoch_num: 8, training process num: 12416/1427,  kl_soft_loss: 0.0077, kl_hard_loss: 0.148,                                              
+ old_doc_len:1120.88, new_doc_len:481.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 08:42:51,682 epoch_num: 8, training process num: 12466/1427,  kl_soft_loss: 0.0104, kl_hard_loss: 0.2965,                                              
+ old_doc_len:1209.88, new_doc_len:579.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 08:44:58,410 
+ Start test ...  
+2024-07-10 08:45:09,094 testing process num: 0
+2024-07-10 08:53:48,629 test: f1 29.34, EM : 21.79, old_doc_len:1126.01, new_doc_len:573.08
+2024-07-10 08:53:48,630 cost_time: 8.836980466047923  
+ 
+2024-07-10 08:54:51,365 epoch_num: 8, training process num: 12516/1427,  kl_soft_loss: 0.0, kl_hard_loss: 1.1441,                                              
+ old_doc_len:1011.75, new_doc_len:405.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 08:58:02,610 epoch_num: 8, training process num: 12566/1427,  kl_soft_loss: 0.0021, kl_hard_loss: 0.7582,                                              
+ old_doc_len:1037.62, new_doc_len:442.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 09:01:15,681 epoch_num: 8, training process num: 12616/1427,  kl_soft_loss: 2.0346, kl_hard_loss: 3.6036,                                              
+ old_doc_len:1049.25, new_doc_len:408.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 09:04:27,322 epoch_num: 8, training process num: 12666/1427,  kl_soft_loss: -0.0, kl_hard_loss: 0.4911,                                              
+ old_doc_len:980.38, new_doc_len:452.75,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 09:07:38,364 epoch_num: 8, training process num: 12716/1427,  kl_soft_loss: 0.0004, kl_hard_loss: 0.0349,                                              
+ old_doc_len:1196.12, new_doc_len:646.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 09:10:48,435 epoch_num: 8, training process num: 12766/1427,  kl_soft_loss: 0.0128, kl_hard_loss: 1.0619,                                              
+ old_doc_len:1049.25, new_doc_len:523.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 09:14:00,281 epoch_num: 8, training process num: 12816/1427,  kl_soft_loss: 0.0088, kl_hard_loss: 0.2787,                                              
+ old_doc_len:1010.75, new_doc_len:495.25,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 09:15:55,383 epoch_num: 9, training process num: 12843/1427,  kl_soft_loss: 0.0164, kl_hard_loss: 0.4757,                                              
+ old_doc_len:1090.25, new_doc_len:571.0,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 09:19:07,616 epoch_num: 9, training process num: 12893/1427,  kl_soft_loss: 0.4286, kl_hard_loss: 0.1055,                                              
+ old_doc_len:1183.75, new_doc_len:589.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 09:22:18,799 epoch_num: 9, training process num: 12943/1427,  kl_soft_loss: 0.003, kl_hard_loss: 0.1049,                                              
+ old_doc_len:1048.62, new_doc_len:608.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 09:25:32,198 epoch_num: 9, training process num: 12993/1427,  kl_soft_loss: 0.0007, kl_hard_loss: 0.536,                                              
+ old_doc_len:987.0, new_doc_len:499.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 09:25:59,226 
+ Start test ...  
+2024-07-10 09:26:10,086 testing process num: 0
+2024-07-10 09:34:54,793 test: f1 32.72, EM : 24.46, old_doc_len:1126.01, new_doc_len:597.85
+2024-07-10 09:34:54,793 cost_time: 8.926104652881623  
+ 
+2024-07-10 09:37:37,474 epoch_num: 9, training process num: 13043/1427,  kl_soft_loss: 0.0007, kl_hard_loss: 0.0787,                                              
+ old_doc_len:1074.25, new_doc_len:691.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 09:40:50,950 epoch_num: 9, training process num: 13093/1427,  kl_soft_loss: 0.1333, kl_hard_loss: 0.2759,                                              
+ old_doc_len:1131.25, new_doc_len:585.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 09:44:04,301 epoch_num: 9, training process num: 13143/1427,  kl_soft_loss: 0.0063, kl_hard_loss: 0.4136,                                              
+ old_doc_len:1111.88, new_doc_len:515.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 09:47:15,948 epoch_num: 9, training process num: 13193/1427,  kl_soft_loss: -0.0, kl_hard_loss: 0.096,                                              
+ old_doc_len:1204.5, new_doc_len:619.5,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 09:50:28,209 epoch_num: 9, training process num: 13243/1427,  kl_soft_loss: -0.0, kl_hard_loss: 0.0248,                                              
+ old_doc_len:1057.75, new_doc_len:548.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 09:53:37,786 epoch_num: 9, training process num: 13293/1427,  kl_soft_loss: 0.0021, kl_hard_loss: 0.2775,                                              
+ old_doc_len:1204.75, new_doc_len:659.88,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 09:56:49,871 epoch_num: 9, training process num: 13343/1427,  kl_soft_loss: 0.0, kl_hard_loss: 0.1871,                                              
+ old_doc_len:1119.88, new_doc_len:618.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 09:59:59,067 epoch_num: 9, training process num: 13393/1427,  kl_soft_loss: 0.0052, kl_hard_loss: 0.1685,                                              
+ old_doc_len:943.0, new_doc_len:529.62,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 10:03:11,574 epoch_num: 9, training process num: 13443/1427,  kl_soft_loss: 0.4917, kl_hard_loss: 0.176,                                              
+ old_doc_len:1335.75, new_doc_len:711.12,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 10:06:23,759 epoch_num: 9, training process num: 13493/1427,  kl_soft_loss: 0.0098, kl_hard_loss: 0.2101,                                              
+ old_doc_len:1220.25, new_doc_len:486.38,                                             
+ best_step:3000, best_performce: 29.64 
+
+2024-07-10 10:06:50,446 
+ Start test ...  
+2024-07-10 10:07:00,967 testing process num: 0

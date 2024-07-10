@@ -4,11 +4,10 @@ import torch.nn as nn
 from torch.nn import TransformerEncoderLayer, MultiheadAttention, Linear, Dropout, LayerNorm, TransformerEncoder
 import torch.nn.functional as F
 from utils.utils import combine_doc
-from utils.cluster_utils import perform_clustering
 from sklearn.metrics import  accuracy_score
 from langchain.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-
+from src.metrics import compute_exact
 
 class My_gate(nn.Module):
     def __init__(self, args):
@@ -18,9 +17,9 @@ class My_gate(nn.Module):
         encoder_layer_gate = nn.TransformerEncoderLayer(d_model=3, nhead=1, dropout=0, batch_first=True).to(self.args.device)
         self.trans_gate = nn.TransformerEncoder(encoder_layer_gate, num_layers=1)
         self.gate_linear = Linear(3, 2).to(self.args.device)
-        self.gate_loss = nn.CrossEntropyLoss(weight=torch.tensor([1, args.gate_weight], dtype=torch.float32).to(args.device))
+        self.gate_loss = nn.CrossEntropyLoss(weight=torch.tensor([args.gate_weight_0, args.gate_weight_1], dtype=torch.float32).to(args.device))
 
-    def get_new_lable(self, general_batch_pred, batch_pred, batch_answer):
+    def get_new_close_lable(self, general_batch_pred, batch_pred, batch_answer):
         new_label_list = []
         label_0_0=0
         label_0_1=0
@@ -45,6 +44,41 @@ class My_gate(nn.Module):
 
         return new_label_list, [label_0_0, label_0_1, label_1_0, label_1_1]
 
+    def get_new_open_lable(self, general_batch_pred, batch_pred, batch_answer):
+        general_batch_label_list = []
+        batch_label_list = []
+        for general_pred, pred, label in zip(general_batch_pred, batch_pred, batch_answer):
+            pred = pred.split(". \n")[0] 
+            general_pred = general_pred.split(". \n")[0] 
+
+            general_batch_label_list.append(compute_exact(label, general_pred)) 
+            batch_label_list.append(compute_exact(label, pred)) 
+
+
+        new_label_list = []
+        label_0_0=0
+        label_0_1=0
+        label_1_0=0
+        label_1_1=0
+        for general_batch_label_item, batch_label_item in zip(general_batch_label_list, batch_label_list):
+            if general_batch_label_item==0 and batch_label_item ==0 :
+                new_label_list.append(1)
+                label_0_0+=1
+
+            if general_batch_label_item==0 and batch_label_item ==1 :
+                new_label_list.append(1)
+                label_0_1+=1
+
+            if general_batch_label_item==1 and  batch_label_item ==0 :
+                new_label_list.append(0)
+                label_1_0+=1
+
+            if general_batch_label_item==1 and batch_label_item ==1:
+                new_label_list.append(0)
+                label_1_1+=1
+
+        return new_label_list, [label_0_0, label_0_1, label_1_0, label_1_1]
+
     def make_gate_input(self, batch_loss, general_batch_loss, batch_logit_log_softmax, general_batch_logit_log_softmax, raw_ques_emb_list, raw_doc_emb_list):
         batch_logit_log_softmax = -torch.max(batch_logit_log_softmax, dim=-1)[0]
         general_batch_logit_log_softmax = -torch.max(general_batch_logit_log_softmax, dim=-1)[0]
@@ -59,10 +93,15 @@ class My_gate(nn.Module):
         gate_logit = self.trans_gate(gate_input)
         gate_logit = self.gate_linear(gate_logit)
         gate_res = torch.argmax(gate_logit, dim=-1)
-
+        
         if batch_pred is not None:
-            new_lable, new_label_count_list = self.get_new_lable(general_batch_pred, batch_pred, batch_answer, )
+            if self.args.dataset in ["USMLE", "MedMCQA", "HEADQA"]:
+                new_lable, new_label_count_list = self.get_new_close_lable(general_batch_pred, batch_pred, batch_answer)
+            else:
+                new_lable, new_label_count_list = self.get_new_open_lable(general_batch_pred, batch_pred, batch_answer)
+
             gate_loss = self.gate_loss(gate_logit, torch.LongTensor(new_lable).to(gate_logit.device) )
+
         else:
             gate_loss = 0
 
@@ -148,6 +187,11 @@ class My_MI_learner(nn.Module):
         kl_soft_loss = 0
         kl_hard_loss = 0
         if train_flag:
+            if "len_penalty" in self.args.loss_list:
+                for item in att_weights_list:
+                    len_penalty_label = (torch.ones(item.size())*1/len(bags_list[0])).to(item.device)
+                    len_penalty_loss += self.len_loss_function(item , len_penalty_label) 
+                len_penalty_loss = self.args.len_penalty_weight * len_penalty_loss
 
             if "kl_soft" in self.args.loss_list:
                 kl_soft_loss = self.kl_loss(torch.stack(total_kl_logit), batch_logit_log_softmax.to(MI_logit_log_softmax.device)) 
@@ -158,7 +202,7 @@ class My_MI_learner(nn.Module):
                 kl_hard_loss = self.kl_loss_hard(torch.stack(total_kl_logit), label) 
                 kl_hard_loss = self.args.hard_weight * kl_hard_loss
 
-        total_loss = kl_soft_loss+kl_hard_loss
+        total_loss = kl_soft_loss+kl_hard_loss+len_penalty_loss
 
         raw_ques_emb_list = torch.stack(raw_ques_emb_list)
         raw_doc_emb_list  = torch.stack(raw_doc_emb_list)

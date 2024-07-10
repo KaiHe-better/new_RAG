@@ -1,0 +1,7 @@
+{
+    "general-prompt":  "You are an AI language model assistant for answering questions. Your task is understanding the intent of the Question and then generating Answer to Question with you knowledge. \nPlease only generate a phrase as Answer and stop generate. \nQuestion: {question} \n The Answer is: ",
+    "retrieve-prompt": "You are an AI language model assistant for answering questions from retrieved Context. Your task is understanding the intent of the Question and then generating Answer to Question with you knowledge based on the provided Context. \n Please only generate a phrase as Answer and stop generate. \n Context: \n {context} \n\nQuestion: {question} \n  The Answer is: "
+}
+
+
+

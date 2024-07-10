@@ -4,6 +4,10 @@ from dataloader.medmcqa_loader import get_loader_MedMCQA
 from dataloader.mmlu_loader import get_loader_MMLU 
 from dataloader.headqa_loader import get_loader_HEADQA 
 from dataloader.popqa_loader import get_loader_PopQA 
+from dataloader.webqa_loader import get_loader_WebQA 
+
+from dataloader.nq_loader import get_loader_NQ
+from dataloader.triviaqa_loader import get_loader_TriviaQA
 
 
 def get_loader(args, tokenizer):
@@ -36,19 +40,6 @@ def get_loader(args, tokenizer):
         train_data_loader, dev_data_loader, test_data_loader, args = get_loader_MedMCQA(args, tokenizer, train_file_path, dev_file_path, test_file_path,
                                                                                         rewrite_train_file_path, rewrite_dev_file_path, rewrite_test_file_path,
                                                                                         ) 
-
-    elif args.dataset == "PopQA":
-        train_file_path = "datasets/Downstream/PopQA/popqa_train.jsonl"
-        dev_file_path = "datasets/Downstream/PopQA/popqa_valid.jsonl"
-        test_file_path = "datasets/Downstream/PopQA/popqa_test.jsonl"
-                         
-        train_data_loader, dev_data_loader, test_data_loader, args = get_loader_PopQA(args, tokenizer, train_file_path, dev_file_path, test_file_path) 
-
-    elif args.dataset == "MMLU":
-        test_file_path = "datasets/Downstream/MMLU/test.csv"
-        rewrite_test_file_path = "datasets/Downstream/MMLU/rewrite_MMLU_test.json"
-        train_data_loader, dev_data_loader, test_data_loader, args = get_loader_MMLU(args, tokenizer, test_file_path, rewrite_test_file_path) 
-
     elif args.dataset == "HEADQA":
         train_file_path = "datasets/Downstream/HEADQA/train.json"
         dev_file_path = "datasets/Downstream/HEADQA/dev.json"
@@ -61,6 +52,37 @@ def get_loader(args, tokenizer):
         train_data_loader, dev_data_loader, test_data_loader, args = get_loader_HEADQA(args, tokenizer, train_file_path, dev_file_path, test_file_path,
                                                                                        rewrite_train_file_path, rewrite_dev_file_path, rewrite_test_file_path
                                                                                        ) 
+
+    elif args.dataset == "PopQA":
+        train_file_path = "datasets/Downstream/PopQA/popqa_train.jsonl"
+        dev_file_path = "datasets/Downstream/PopQA/popqa_valid.jsonl"
+        test_file_path = "datasets/Downstream/PopQA/popqa_test.jsonl"
+                         
+        train_data_loader, dev_data_loader, test_data_loader, args = get_loader_PopQA(args, tokenizer, train_file_path, dev_file_path, test_file_path) 
+
+    elif args.dataset == "WebQA":
+        train_file_path = "datasets/Downstream/xRAG/WebQA/webq-train.jsonl"
+        dev_file_path = "datasets/Downstream/xRAG/WebQA/webq-dev.jsonl"
+        test_file_path = "datasets/Downstream/xRAG/WebQA/webq-test.jsonl"
+                         
+        train_data_loader, dev_data_loader, test_data_loader, args = get_loader_WebQA(args, tokenizer, train_file_path, dev_file_path, test_file_path) 
+
+
+    elif args.dataset == "TriviaQA":
+        train_file_path = "datasets/Downstream/xRAG/TriviaQA/tqa-train.jsonl"
+        dev_file_path = "datasets/Downstream/xRAG/TriviaQA/tqa-dev.jsonl"
+        test_file_path = "datasets/Downstream/xRAG/TriviaQA/tqa-test.jsonl"
+                         
+        train_data_loader, dev_data_loader, test_data_loader, args = get_loader_TriviaQA(args, tokenizer, train_file_path, dev_file_path, test_file_path) 
+
+    elif args.dataset == "NQ":
+        train_file_path = "datasets/Downstream/xRAG/NQ/nq-train.jsonl"
+        dev_file_path = "datasets/Downstream/xRAG/NQ/nq-dev.jsonl"
+        test_file_path = "datasets/Downstream/xRAG/NQ/nq-test.jsonl"
+                         
+        train_data_loader, dev_data_loader, test_data_loader, args = get_loader_NQ(args, tokenizer, train_file_path, dev_file_path, test_file_path) 
+
+
     else:
         raise Exception("Wrong dataset selected !")
 
