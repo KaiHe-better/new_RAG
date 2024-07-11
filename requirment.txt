@@ -7,6 +7,6 @@ tensorboard==2.15.1
 accelerate==0.24.1
 chromadb==0.4.18
 sentencepiece==0.1.99
-
+faiss-gpu
 
 

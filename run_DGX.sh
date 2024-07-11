@@ -356,14 +356,50 @@ nohup  python run.py --ID PopQA_2_6_2  --gpu 4 --RA_method MI_RA --dataset PopQA
 
 
 nohup  python run.py --ID PopQA_3  --gpu 6 --RA_method Gate_RA --dataset PopQA --gate_weight_0 4 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+2024-07-10 15:19:22,036 test: f1 35.43, EM : 27.68, old_doc_len:0.0, new_doc_len:0.0
+ best_step:3000
 
-nohup  python run.py --ID PopQA_4  --gpu 7 --RA_method Gate_MI_RA --dataset PopQA --gate_weight_0 4 --gate_weight_1 1 --gate_weight_0 4 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1    >/dev/null 2>&1 &
+nohup  python run.py --ID PopQA_4  --gpu 7 --RA_method Gate_MI_RA --dataset PopQA --gate_weight_0 4 --gate_weight_1 1  --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1    >/dev/null 2>&1 &
+2024-07-10 13:01:16,875 test: f1 37.22, EM : 29.78, old_doc_len:1126.01, new_doc_len:1037.22
+ best_step:1500
 
-nohup  python run.py --ID PopQA_4_1  --gpu 4 --RA_method Gate_MI_RA --dataset PopQA --gate_weight_0 3 --gate_weight_1 1 --gate_weight_0 4 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1    >/dev/null 2>&1 &
+
+# GCP
+nohup  python run.py --ID PopQA_4_3  --gpu 4 --RA_method Gate_MI_RA --dataset PopQA --gate_weight_0 3 --gate_weight_1 1  --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1   >/dev/null 2>&1 &
+nohup  python run.py --ID PopQA_4_4  --gpu 7 --RA_method Gate_MI_RA --dataset PopQA --gate_weight_0 3 --gate_weight_1 1 --quantile_num 0.6  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1    >/dev/null 2>&1 &
+nohup  python run.py --ID PopQA_4_5  --gpu 6 --RA_method Gate_MI_RA --dataset PopQA --gate_weight_0 3 --gate_weight_1 1 --quantile_num 0.5  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1    >/dev/null 2>&1 &
+
+
+===================================================================================================================================================================================================
+# 改了metric
+
+nohup  python run.py --ID WebQA_1_1  --gpu 4 --RA_method No_RA   --dataset WebQA   >/dev/null 2>&1 &
+2024-07-11 15:29:54,987 test: f1 27.83, EM : 46.01, old_doc_len:0.0, new_doc_len:0.0
+
+nohup  python run.py --ID WebQA_2  --gpu 4 --RA_method Only_RA --dataset WebQA   >/dev/null 2>&1 &
+2024-07-11 15:47:27,230 test: f1 21.74, EM : 37.7, old_doc_len:0.0, new_doc_len:0.0
+
+
+nohup  python run.py --ID WebQA_3    --gpu 6 --RA_method MI_RA    --dataset WebQA --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+nohup  python run.py --ID WebQA_3_1  --gpu 7 --RA_method MI_RA    --dataset WebQA --quantile_num 0.7  --loss_list kl_soft+kl_hard  >/dev/null 2>&1 &
+nohup  python run.py --ID WebQA_3_2  --gpu 4 --RA_method MI_RA    --dataset WebQA --quantile_num 0.85  --loss_list kl_soft+kl_hard  >/dev/null 2>&1 &
 
 
 
 ===================================================================================================================================================================================================
 
+nohup  python run.py --ID TriviaQA_0  --gpu 4 --RA_method No_RA   --dataset TriviaQA   >/dev/null 2>&1 &
 
+nohup  python run.py --ID TriviaQA_1  --gpu 6 --RA_method Only_RA --dataset TriviaQA   >/dev/null 2>&1 &
+
+nohup  python run.py --ID TriviaQA_2  --gpu 7 --RA_method MI_RA   --dataset TriviaQA --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+
+
+===================================================================================================================================================================================================
+
+nohup  python run.py --ID NQ_0  --gpu 4 --RA_method No_RA   --dataset NQ   >/dev/null 2>&1 &
+
+nohup  python run.py --ID NQ_1  --gpu 6 --RA_method Only_RA --dataset NQ   >/dev/null 2>&1 &
+
+nohup  python run.py --ID NQ_2  --gpu 7 --RA_method MI_RA   --dataset NQ --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
 

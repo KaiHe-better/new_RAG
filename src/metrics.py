@@ -50,8 +50,8 @@ def compute_exact( a_gold_list, a_pred):
     res_list = []
     a_pred =  normalize_answer(a_pred)
     for a_gold in a_gold_list:
-        res = int(a_pred ==  normalize_answer(a_gold) )
-        # res = int(normalize_answer(a_gold) in a_pred)
+        # res = int(a_pred ==  normalize_answer(a_gold) )
+        res = int(normalize_answer(a_gold) in a_pred)
         if res ==1:
             return 1
     return res
