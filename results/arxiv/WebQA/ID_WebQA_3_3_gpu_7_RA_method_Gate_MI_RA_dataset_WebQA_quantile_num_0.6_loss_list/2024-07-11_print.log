@@ -1,0 +1,846 @@
+2024-07-11 20:33:19,715 **************** Configuration **************** 
+2024-07-11 20:33:19,715 gpu: 7
+2024-07-11 20:33:19,715 test_code_flag: False
+2024-07-11 20:33:19,715 ID: WebQA_3_3
+2024-07-11 20:33:19,715 seed: 42
+2024-07-11 20:33:19,715 num_workers: 48
+2024-07-11 20:33:19,715 loading_ckpt_path: None
+2024-07-11 20:33:19,715 RA_method: Gate_MI_RA
+2024-07-11 20:33:19,715 LLM: meta-llama/Meta-Llama-3-8B-Instruct
+2024-07-11 20:33:19,715 dataset: WebQA
+2024-07-11 20:33:19,715 train_batch_size: 8
+2024-07-11 20:33:19,715 test_batch_size: 8
+2024-07-11 20:33:19,715 accumulation_steps: 1
+2024-07-11 20:33:19,715 demonstration: False
+2024-07-11 20:33:19,715 demons_cnt: 1
+2024-07-11 20:33:19,715 l2_coef: 0
+2024-07-11 20:33:19,715 train_eval: 500
+2024-07-11 20:33:19,716 total_step: 25000
+2024-07-11 20:33:19,716 gate_weight_0: 1
+2024-07-11 20:33:19,716 gate_weight_1: 2
+2024-07-11 20:33:19,716 lr: 0.0001
+2024-07-11 20:33:19,716 init_lr_num: 500
+2024-07-11 20:33:19,716 lr_decay: 0.9
+2024-07-11 20:33:19,716 lr_decay_interval: 400
+2024-07-11 20:33:19,716 num_layers: 1
+2024-07-11 20:33:19,716 d_model: 768
+2024-07-11 20:33:19,716 dim_feedforward: 2048
+2024-07-11 20:33:19,716 layer_norm_eps: 1e-05
+2024-07-11 20:33:19,716 nhead: 8
+2024-07-11 20:33:19,716 dropout: 0.1
+2024-07-11 20:33:19,716 loss_list: kl_soft+kl_hard+len_penalty
+2024-07-11 20:33:19,716 len_penalty_weight: 1.0
+2024-07-11 20:33:19,716 soft_weight: 1
+2024-07-11 20:33:19,716 hard_weight: 1
+2024-07-11 20:33:19,716 do_sample: True
+2024-07-11 20:33:19,716 temperature: 1e-09
+2024-07-11 20:33:19,716 top_p: 0
+2024-07-11 20:33:19,716 max_new_tokens: 40
+2024-07-11 20:33:19,716 infer_add_gold_retrieval: False
+2024-07-11 20:33:19,716 multi_query: False
+2024-07-11 20:33:19,716 rewrite_num: 1
+2024-07-11 20:33:19,716 chunk_size: 512
+2024-07-11 20:33:19,716 chunk_overlap: 20
+2024-07-11 20:33:19,716 if_hierarchical_retrieval: True
+2024-07-11 20:33:19,716 hierarchical_ratio: 1.4
+2024-07-11 20:33:19,716 quantile_num: 0.6
+2024-07-11 20:33:19,716 n_docs: 10
+2024-07-11 20:33:19,716 model_name_or_path: facebook/contriever-msmarco
+2024-07-11 20:33:19,716 question_maxlength: 512
+2024-07-11 20:33:19,716 passages: datasets/Retrieval_corpus/enwiki_2020_dec_intro_only.jsonl
+2024-07-11 20:33:19,716 passages_embeddings: datasets/Retrieval_corpus/enwiki_dec_2020_contriever_intro/*
+2024-07-11 20:33:19,716 lowercase: False
+2024-07-11 20:33:19,717 normalize_text: False
+2024-07-11 20:33:19,717 save_or_load_index: False
+2024-07-11 20:33:19,717 no_fp16: True
+2024-07-11 20:33:19,717 projection_size: 768
+2024-07-11 20:33:19,717 n_subquantizers: 0
+2024-07-11 20:33:19,717 n_bits: 8
+2024-07-11 20:33:19,717 indexing_batch_size: 30000000
+2024-07-11 20:33:19,717 device: cuda
+2024-07-11 20:33:19,717 prompt_file: prompts/WebQA.json
+2024-07-11 20:33:19,717 dir_path: ./results/output/ID_WebQA_3_3_gpu_7_RA_method_Gate_MI_RA_dataset_WebQA_quantile_num_0.6_loss_list
+2024-07-11 20:33:19,717 print_logger: <Logger print (DEBUG)>
+2024-07-11 20:33:19,717 **************** Configuration **************** 
+
+
+2024-07-11 20:33:19,717 Loading retriever ...
+2024-07-11 20:34:32,800 Loading meta-llama/Meta-Llama-3-8B-Instruct in torch.bfloat16...
+2024-07-11 20:34:40,526 Finish loading in 0.13 mins.
+2024-07-11 20:34:41,429 Loading data ...
+2024-07-11 20:34:42,771 prompt_format: retrieve-prompt 
+
+2024-07-11 20:34:42,771 Start training ... 
+ 
+2024-07-11 20:34:59,364 epoch_num: 0, training process num: 0/435,  gate_loss: 0.5066, kl_soft_loss: -0.0, kl_hard_loss: 11.8671, len_loss: 0.0149,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:1334.75, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:0, best_performce: 0 
+
+2024-07-11 20:39:34,452 epoch_num: 0, training process num: 50/435,  gate_loss: 0.4366, kl_soft_loss: 6.4466, kl_hard_loss: 6.9635, len_loss: 0.0175,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:1446.5, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:0, best_performce: 0 
+
+2024-07-11 20:44:07,211 epoch_num: 0, training process num: 100/435,  gate_loss: 0.8507, kl_soft_loss: 0.039, kl_hard_loss: 10.281, len_loss: 0.0135,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:1212.0, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:0, best_performce: 0 
+
+2024-07-11 20:48:36,014 epoch_num: 0, training process num: 150/435,  gate_loss: 0.4823, kl_soft_loss: 0.0002, kl_hard_loss: 7.6013, len_loss: 0.0185,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:1476.25, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:0, best_performce: 0 
+
+2024-07-11 20:52:59,614 epoch_num: 0, training process num: 200/435,  gate_loss: 0.5846, kl_soft_loss: 0.439, kl_hard_loss: 7.5137, len_loss: 0.0157,                                         
+ gate_acc:0.57, old_doc_len:1232.88, new_doc_len:1288.38, label_0_0:774, label_0_1:144, label_1_0:225, label_1_1:465,                                         
+ best_step:0, best_performce: 0 
+
+2024-07-11 20:57:30,057 epoch_num: 0, training process num: 250/435,  gate_loss: 0.4698, kl_soft_loss: 0.0002, kl_hard_loss: 6.7953, len_loss: 0.0152,                                         
+ gate_acc:0.57, old_doc_len:1275.0, new_doc_len:1340.25, label_0_0:959, label_0_1:179, label_1_0:275, label_1_1:595,                                         
+ best_step:0, best_performce: 0 
+
+2024-07-11 21:01:59,296 epoch_num: 0, training process num: 300/435,  gate_loss: 0.5401, kl_soft_loss: -0.0015, kl_hard_loss: 6.1662, len_loss: 0.0146,                                         
+ gate_acc:0.57, old_doc_len:1171.38, new_doc_len:1193.88, label_0_0:1152, label_0_1:213, label_1_0:333, label_1_1:710,                                         
+ best_step:0, best_performce: 0 
+
+2024-07-11 21:06:29,174 epoch_num: 0, training process num: 350/435,  gate_loss: 0.4243, kl_soft_loss: 5.1124, kl_hard_loss: 6.9942, len_loss: 0.0165,                                         
+ gate_acc:0.56, old_doc_len:1278.88, new_doc_len:1318.38, label_0_0:1340, label_0_1:240, label_1_0:396, label_1_1:832,                                         
+ best_step:0, best_performce: 0 
+
+2024-07-11 21:10:57,187 epoch_num: 0, training process num: 400/435,  gate_loss: 0.6025, kl_soft_loss: 2.8872, kl_hard_loss: 6.8765, len_loss: 0.0175,                                         
+ gate_acc:0.56, old_doc_len:1313.12, new_doc_len:1334.12, label_0_0:1540, label_0_1:262, label_1_0:449, label_1_1:957,                                         
+ best_step:0, best_performce: 0 
+
+2024-07-11 21:14:19,457 epoch_num: 1, training process num: 435/435,  gate_loss: 0.5281, kl_soft_loss: -0.0, kl_hard_loss: 4.7513, len_loss: 0.0166,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:1328.62, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:0, best_performce: 0 
+
+2024-07-11 21:18:49,682 epoch_num: 1, training process num: 485/435,  gate_loss: 0.4584, kl_soft_loss: 3.9264, kl_hard_loss: 4.5894, len_loss: 0.0171,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:1423.12, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:0, best_performce: 0 
+
+2024-07-11 21:20:12,099 
+ Start test ...  
+2024-07-11 21:20:22,189 testing process num: 0
+2024-07-11 21:38:17,844 testing process num: 200
+2024-07-11 21:43:07,730 test: f1 24.08, EM : 37.11, old_doc_len:1293.44, new_doc_len:1346.14
+2024-07-11 21:43:07,731 cost_time: 22.927175958951313 , gate_res_list: 1.0, 2032 / 2032 
+ 
+2024-07-11 21:46:14,614 epoch_num: 1, training process num: 535/435,  gate_loss: 0.8182, kl_soft_loss: 0.0163, kl_hard_loss: 6.4694, len_loss: 0.0132,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:1212.0, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 21:50:39,516 epoch_num: 1, training process num: 585/435,  gate_loss: 0.4835, kl_soft_loss: 0.0005, kl_hard_loss: 5.5029, len_loss: 0.0182,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:1460.12, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 21:55:03,562 epoch_num: 1, training process num: 635/435,  gate_loss: 0.5801, kl_soft_loss: 0.4788, kl_hard_loss: 4.907, len_loss: 0.017,                                         
+ gate_acc:0.57, old_doc_len:1232.88, new_doc_len:1267.25, label_0_0:774, label_0_1:144, label_1_0:225, label_1_1:465,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 21:59:33,361 epoch_num: 1, training process num: 685/435,  gate_loss: 0.4732, kl_soft_loss: 0.0003, kl_hard_loss: 5.389, len_loss: 0.0151,                                         
+ gate_acc:0.57, old_doc_len:1275.0, new_doc_len:1326.0, label_0_0:959, label_0_1:179, label_1_0:275, label_1_1:595,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 22:03:58,708 epoch_num: 1, training process num: 735/435,  gate_loss: 0.5471, kl_soft_loss: -0.0014, kl_hard_loss: 4.6082, len_loss: 0.0154,                                         
+ gate_acc:0.57, old_doc_len:1171.38, new_doc_len:1184.62, label_0_0:1152, label_0_1:213, label_1_0:333, label_1_1:710,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 22:08:26,527 epoch_num: 1, training process num: 785/435,  gate_loss: 0.423, kl_soft_loss: 3.2554, kl_hard_loss: 4.3218, len_loss: 0.0173,                                         
+ gate_acc:0.56, old_doc_len:1278.88, new_doc_len:1305.12, label_0_0:1340, label_0_1:240, label_1_0:396, label_1_1:832,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 22:12:51,209 epoch_num: 1, training process num: 835/435,  gate_loss: 0.6113, kl_soft_loss: 2.8135, kl_hard_loss: 5.3424, len_loss: 0.0173,                                         
+ gate_acc:0.56, old_doc_len:1313.12, new_doc_len:1324.0, label_0_0:1540, label_0_1:262, label_1_0:449, label_1_1:957,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 22:16:11,237 epoch_num: 2, training process num: 870/435,  gate_loss: 0.5309, kl_soft_loss: -0.0, kl_hard_loss: 3.5291, len_loss: 0.0173,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:1251.0, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 22:20:39,012 epoch_num: 2, training process num: 920/435,  gate_loss: 0.4614, kl_soft_loss: 4.0218, kl_hard_loss: 3.5551, len_loss: 0.0201,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:1299.0, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 22:25:08,755 epoch_num: 2, training process num: 970/435,  gate_loss: 0.8207, kl_soft_loss: 0.0168, kl_hard_loss: 4.5885, len_loss: 0.0156,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:1118.12, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 22:27:45,463 
+ Start test ...  
+2024-07-11 22:27:55,451 testing process num: 0
+2024-07-11 22:45:27,694 testing process num: 200
+2024-07-11 22:50:10,905 test: f1 23.58, EM : 36.42, old_doc_len:1293.44, new_doc_len:1272.92
+2024-07-11 22:50:10,905 cost_time: 22.424032437801362 , gate_res_list: 1.0, 2032 / 2032 
+ 
+2024-07-11 22:51:58,110 epoch_num: 2, training process num: 1020/435,  gate_loss: 0.4803, kl_soft_loss: 0.0006, kl_hard_loss: 3.9297, len_loss: 0.0186,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:1432.88, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 22:56:19,637 epoch_num: 2, training process num: 1070/435,  gate_loss: 0.5823, kl_soft_loss: 0.5053, kl_hard_loss: 3.5426, len_loss: 0.0197,                                         
+ gate_acc:0.57, old_doc_len:1232.88, new_doc_len:1199.12, label_0_0:774, label_0_1:144, label_1_0:225, label_1_1:465,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 23:00:46,029 epoch_num: 2, training process num: 1120/435,  gate_loss: 0.473, kl_soft_loss: 0.0004, kl_hard_loss: 3.9721, len_loss: 0.0184,                                         
+ gate_acc:0.57, old_doc_len:1275.0, new_doc_len:1226.0, label_0_0:959, label_0_1:179, label_1_0:275, label_1_1:595,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 23:05:10,333 epoch_num: 2, training process num: 1170/435,  gate_loss: 0.5457, kl_soft_loss: -0.0013, kl_hard_loss: 2.9138, len_loss: 0.0182,                                         
+ gate_acc:0.57, old_doc_len:1171.38, new_doc_len:1088.12, label_0_0:1152, label_0_1:213, label_1_0:333, label_1_1:710,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 23:09:37,739 epoch_num: 2, training process num: 1220/435,  gate_loss: 0.4219, kl_soft_loss: 2.7587, kl_hard_loss: 2.7472, len_loss: 0.0199,                                         
+ gate_acc:0.56, old_doc_len:1278.88, new_doc_len:1182.5, label_0_0:1340, label_0_1:240, label_1_0:396, label_1_1:832,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 23:14:01,778 epoch_num: 2, training process num: 1270/435,  gate_loss: 0.6104, kl_soft_loss: 2.6945, kl_hard_loss: 3.7376, len_loss: 0.0204,                                         
+ gate_acc:0.56, old_doc_len:1313.12, new_doc_len:1226.0, label_0_0:1540, label_0_1:262, label_1_0:449, label_1_1:957,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 23:17:21,434 epoch_num: 3, training process num: 1305/435,  gate_loss: 0.5326, kl_soft_loss: -0.0, kl_hard_loss: 2.1803, len_loss: 0.0216,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:1084.5, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 23:21:49,330 epoch_num: 3, training process num: 1355/435,  gate_loss: 0.4621, kl_soft_loss: 3.8853, kl_hard_loss: 2.5517, len_loss: 0.0246,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:1227.12, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 23:26:17,854 epoch_num: 3, training process num: 1405/435,  gate_loss: 0.817, kl_soft_loss: 0.0218, kl_hard_loss: 2.4546, len_loss: 0.0173,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:1084.75, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 23:30:43,653 epoch_num: 3, training process num: 1455/435,  gate_loss: 0.4814, kl_soft_loss: 0.0007, kl_hard_loss: 2.3268, len_loss: 0.0224,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:1299.75, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-11 23:34:41,158 
+ Start test ...  
+2024-07-11 23:34:51,180 testing process num: 0
+2024-07-11 23:51:37,550 testing process num: 200
+2024-07-11 23:56:07,671 test: f1 23.06, EM : 35.48, old_doc_len:1293.44, new_doc_len:1108.21
+2024-07-11 23:56:07,671 cost_time: 21.441873093446095 , gate_res_list: 1.0, 2032 / 2032 
+ 
+2024-07-11 23:56:33,841 epoch_num: 3, training process num: 1505/435,  gate_loss: 0.5832, kl_soft_loss: 0.4854, kl_hard_loss: 2.1033, len_loss: 0.0244,                                         
+ gate_acc:0.57, old_doc_len:1232.88, new_doc_len:1071.62, label_0_0:774, label_0_1:144, label_1_0:225, label_1_1:465,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 00:01:00,928 epoch_num: 3, training process num: 1555/435,  gate_loss: 0.4742, kl_soft_loss: 0.0003, kl_hard_loss: 2.4246, len_loss: 0.0228,                                         
+ gate_acc:0.57, old_doc_len:1275.0, new_doc_len:1106.62, label_0_0:959, label_0_1:179, label_1_0:275, label_1_1:595,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 00:05:24,797 epoch_num: 3, training process num: 1605/435,  gate_loss: 0.5401, kl_soft_loss: -0.0011, kl_hard_loss: 1.3037, len_loss: 0.0201,                                         
+ gate_acc:0.57, old_doc_len:1171.38, new_doc_len:1025.88, label_0_0:1152, label_0_1:213, label_1_0:333, label_1_1:710,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 00:09:54,486 epoch_num: 3, training process num: 1655/435,  gate_loss: 0.4204, kl_soft_loss: 2.9391, kl_hard_loss: 1.4699, len_loss: 0.0246,                                         
+ gate_acc:0.56, old_doc_len:1278.88, new_doc_len:1013.62, label_0_0:1340, label_0_1:240, label_1_0:396, label_1_1:832,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 00:14:23,142 epoch_num: 3, training process num: 1705/435,  gate_loss: 0.6096, kl_soft_loss: 2.9996, kl_hard_loss: 2.0947, len_loss: 0.0284,                                         
+ gate_acc:0.56, old_doc_len:1313.12, new_doc_len:970.75, label_0_0:1540, label_0_1:262, label_1_0:449, label_1_1:957,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 00:17:44,367 epoch_num: 4, training process num: 1740/435,  gate_loss: 0.5345, kl_soft_loss: -0.0, kl_hard_loss: 0.855, len_loss: 0.0264,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:952.38, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 00:22:16,745 epoch_num: 4, training process num: 1790/435,  gate_loss: 0.4625, kl_soft_loss: 4.0656, kl_hard_loss: 1.4576, len_loss: 0.0257,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:1077.38, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 00:26:50,966 epoch_num: 4, training process num: 1840/435,  gate_loss: 0.8158, kl_soft_loss: 0.0288, kl_hard_loss: 1.0619, len_loss: 0.0228,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:867.88, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 00:31:19,819 epoch_num: 4, training process num: 1890/435,  gate_loss: 0.4809, kl_soft_loss: 0.0008, kl_hard_loss: 1.1878, len_loss: 0.025,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:1143.88, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 00:35:49,743 epoch_num: 4, training process num: 1940/435,  gate_loss: 0.5846, kl_soft_loss: 0.4564, kl_hard_loss: 1.2629, len_loss: 0.0253,                                         
+ gate_acc:0.57, old_doc_len:1232.88, new_doc_len:1009.25, label_0_0:774, label_0_1:144, label_1_0:225, label_1_1:465,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 00:40:21,623 epoch_num: 4, training process num: 1990/435,  gate_loss: 0.4742, kl_soft_loss: 0.0004, kl_hard_loss: 1.2165, len_loss: 0.0321,                                         
+ gate_acc:0.57, old_doc_len:1275.0, new_doc_len:970.75, label_0_0:959, label_0_1:179, label_1_0:275, label_1_1:595,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 00:41:13,778 
+ Start test ...  
+2024-07-12 00:41:24,785 testing process num: 0
+2024-07-12 00:58:21,822 testing process num: 200
+2024-07-12 01:02:54,735 test: f1 22.41, EM : 34.15, old_doc_len:1293.44, new_doc_len:1021.93
+2024-07-12 01:02:54,736 cost_time: 21.6826069355011 , gate_res_list: 1.0, 2032 / 2032 
+ 
+2024-07-12 01:06:31,241 epoch_num: 4, training process num: 2040/435,  gate_loss: 0.5428, kl_soft_loss: -0.0012, kl_hard_loss: 0.6132, len_loss: 0.0231,                                         
+ gate_acc:0.57, old_doc_len:1171.38, new_doc_len:895.0, label_0_0:1152, label_0_1:213, label_1_0:333, label_1_1:710,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 01:11:02,308 epoch_num: 4, training process num: 2090/435,  gate_loss: 0.4203, kl_soft_loss: 1.4844, kl_hard_loss: 1.406, len_loss: 0.0275,                                         
+ gate_acc:0.56, old_doc_len:1278.88, new_doc_len:989.62, label_0_0:1340, label_0_1:240, label_1_0:396, label_1_1:832,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 01:15:29,963 epoch_num: 4, training process num: 2140/435,  gate_loss: 0.6102, kl_soft_loss: 2.961, kl_hard_loss: 1.3644, len_loss: 0.0306,                                         
+ gate_acc:0.56, old_doc_len:1313.12, new_doc_len:998.25, label_0_0:1540, label_0_1:262, label_1_0:449, label_1_1:957,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 01:18:58,528 epoch_num: 5, training process num: 2175/435,  gate_loss: 0.5351, kl_soft_loss: -0.0, kl_hard_loss: 0.6903, len_loss: 0.03,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:755.5, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 01:23:31,783 epoch_num: 5, training process num: 2225/435,  gate_loss: 0.4627, kl_soft_loss: 4.4391, kl_hard_loss: 1.6055, len_loss: 0.03,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:930.12, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 01:28:04,972 epoch_num: 5, training process num: 2275/435,  gate_loss: 0.8145, kl_soft_loss: 0.0316, kl_hard_loss: 0.5851, len_loss: 0.0261,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:829.75, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 01:32:33,824 epoch_num: 5, training process num: 2325/435,  gate_loss: 0.4805, kl_soft_loss: 0.0006, kl_hard_loss: 1.0893, len_loss: 0.0255,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:1120.62, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 01:37:05,269 epoch_num: 5, training process num: 2375/435,  gate_loss: 0.5841, kl_soft_loss: 0.4927, kl_hard_loss: 0.4433, len_loss: 0.0258,                                         
+ gate_acc:0.57, old_doc_len:1232.88, new_doc_len:939.0, label_0_0:774, label_0_1:144, label_1_0:225, label_1_1:465,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 01:41:40,770 epoch_num: 5, training process num: 2425/435,  gate_loss: 0.4755, kl_soft_loss: 0.0004, kl_hard_loss: 1.0202, len_loss: 0.0267,                                         
+ gate_acc:0.57, old_doc_len:1275.0, new_doc_len:1030.88, label_0_0:959, label_0_1:179, label_1_0:275, label_1_1:595,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 01:46:11,742 epoch_num: 5, training process num: 2475/435,  gate_loss: 0.5306, kl_soft_loss: -0.0009, kl_hard_loss: 0.3275, len_loss: 0.0238,                                         
+ gate_acc:0.57, old_doc_len:1171.38, new_doc_len:892.25, label_0_0:1152, label_0_1:213, label_1_0:333, label_1_1:710,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 01:48:28,550 
+ Start test ...  
+2024-07-12 01:48:43,931 testing process num: 0
+2024-07-12 02:05:13,454 testing process num: 200
+2024-07-12 02:09:37,196 test: f1 21.72, EM : 32.97, old_doc_len:1293.44, new_doc_len:958.0
+2024-07-12 02:09:37,197 cost_time: 21.144099605083465 , gate_res_list: 1.0, 2032 / 2032 
+ 
+2024-07-12 02:11:54,893 epoch_num: 5, training process num: 2525/435,  gate_loss: 0.4259, kl_soft_loss: 1.5913, kl_hard_loss: 0.5927, len_loss: 0.0301,                                         
+ gate_acc:0.56, old_doc_len:1278.88, new_doc_len:878.25, label_0_0:1340, label_0_1:240, label_1_0:396, label_1_1:832,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 02:16:26,116 epoch_num: 5, training process num: 2575/435,  gate_loss: 0.6046, kl_soft_loss: 3.2739, kl_hard_loss: 1.238, len_loss: 0.028,                                         
+ gate_acc:0.56, old_doc_len:1313.12, new_doc_len:937.62, label_0_0:1540, label_0_1:262, label_1_0:449, label_1_1:957,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 02:19:54,447 epoch_num: 6, training process num: 2610/435,  gate_loss: 0.5364, kl_soft_loss: -0.0, kl_hard_loss: 0.5317, len_loss: 0.0269,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:957.0, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 02:24:30,838 epoch_num: 6, training process num: 2660/435,  gate_loss: 0.4638, kl_soft_loss: 4.041, kl_hard_loss: 0.864, len_loss: 0.0341,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:827.88, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 02:29:05,935 epoch_num: 6, training process num: 2710/435,  gate_loss: 0.81, kl_soft_loss: 0.0529, kl_hard_loss: 0.1481, len_loss: 0.0295,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:713.75, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 02:33:36,588 epoch_num: 6, training process num: 2760/435,  gate_loss: 0.4807, kl_soft_loss: 0.0011, kl_hard_loss: 0.6385, len_loss: 0.0303,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:1043.12, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 02:38:02,731 epoch_num: 6, training process num: 2810/435,  gate_loss: 0.5852, kl_soft_loss: 0.4861, kl_hard_loss: 0.7173, len_loss: 0.0278,                                         
+ gate_acc:0.57, old_doc_len:1232.88, new_doc_len:920.0, label_0_0:774, label_0_1:144, label_1_0:225, label_1_1:465,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 02:42:34,274 epoch_num: 6, training process num: 2860/435,  gate_loss: 0.4762, kl_soft_loss: 0.0007, kl_hard_loss: 0.3259, len_loss: 0.0341,                                         
+ gate_acc:0.57, old_doc_len:1275.0, new_doc_len:915.62, label_0_0:959, label_0_1:179, label_1_0:275, label_1_1:595,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 02:47:03,277 epoch_num: 6, training process num: 2910/435,  gate_loss: 0.5288, kl_soft_loss: -0.0007, kl_hard_loss: 0.2845, len_loss: 0.0263,                                         
+ gate_acc:0.57, old_doc_len:1171.38, new_doc_len:880.25, label_0_0:1152, label_0_1:213, label_1_0:333, label_1_1:710,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 02:51:34,406 epoch_num: 6, training process num: 2960/435,  gate_loss: 0.4212, kl_soft_loss: 0.9832, kl_hard_loss: 0.7519, len_loss: 0.0312,                                         
+ gate_acc:0.56, old_doc_len:1278.88, new_doc_len:834.0, label_0_0:1340, label_0_1:240, label_1_0:396, label_1_1:832,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 02:55:09,253 
+ Start test ...  
+2024-07-12 02:55:24,195 testing process num: 0
+2024-07-12 03:11:29,880 testing process num: 200
+2024-07-12 03:15:48,183 test: f1 21.94, EM : 34.1, old_doc_len:1293.44, new_doc_len:922.98
+2024-07-12 03:15:48,183 cost_time: 20.648831140995025 , gate_res_list: 1.0, 2032 / 2032 
+ 
+2024-07-12 03:16:42,592 epoch_num: 6, training process num: 3010/435,  gate_loss: 0.6035, kl_soft_loss: 2.5896, kl_hard_loss: 2.1571, len_loss: 0.0297,                                         
+ gate_acc:0.56, old_doc_len:1313.12, new_doc_len:978.5, label_0_0:1540, label_0_1:262, label_1_0:449, label_1_1:957,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 03:20:08,576 epoch_num: 7, training process num: 3045/435,  gate_loss: 0.5372, kl_soft_loss: -0.0, kl_hard_loss: 0.162, len_loss: 0.0276,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:969.75, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 03:24:41,538 epoch_num: 7, training process num: 3095/435,  gate_loss: 0.4636, kl_soft_loss: 3.2534, kl_hard_loss: 1.685, len_loss: 0.0396,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:824.12, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 03:29:12,272 epoch_num: 7, training process num: 3145/435,  gate_loss: 0.8079, kl_soft_loss: 0.0435, kl_hard_loss: 0.192, len_loss: 0.0285,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:804.12, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 03:33:42,908 epoch_num: 7, training process num: 3195/435,  gate_loss: 0.4808, kl_soft_loss: 0.0015, kl_hard_loss: 0.6189, len_loss: 0.0275,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:1066.62, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 03:38:08,830 epoch_num: 7, training process num: 3245/435,  gate_loss: 0.5865, kl_soft_loss: 0.4654, kl_hard_loss: 0.2213, len_loss: 0.0301,                                         
+ gate_acc:0.57, old_doc_len:1232.88, new_doc_len:886.88, label_0_0:774, label_0_1:144, label_1_0:225, label_1_1:465,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 03:42:41,491 epoch_num: 7, training process num: 3295/435,  gate_loss: 0.477, kl_soft_loss: 0.0005, kl_hard_loss: 0.4096, len_loss: 0.0329,                                         
+ gate_acc:0.57, old_doc_len:1275.0, new_doc_len:886.38, label_0_0:959, label_0_1:179, label_1_0:275, label_1_1:595,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 03:47:10,314 epoch_num: 7, training process num: 3345/435,  gate_loss: 0.5274, kl_soft_loss: -0.0009, kl_hard_loss: 0.2821, len_loss: 0.0254,                                         
+ gate_acc:0.57, old_doc_len:1171.38, new_doc_len:877.5, label_0_0:1152, label_0_1:213, label_1_0:333, label_1_1:710,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 03:51:41,546 epoch_num: 7, training process num: 3395/435,  gate_loss: 0.4203, kl_soft_loss: 1.0937, kl_hard_loss: 0.9271, len_loss: 0.0287,                                         
+ gate_acc:0.56, old_doc_len:1278.88, new_doc_len:833.38, label_0_0:1340, label_0_1:240, label_1_0:396, label_1_1:832,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 03:56:09,887 epoch_num: 7, training process num: 3445/435,  gate_loss: 0.6038, kl_soft_loss: 2.7242, kl_hard_loss: 1.2828, len_loss: 0.0273,                                         
+ gate_acc:0.56, old_doc_len:1313.12, new_doc_len:974.5, label_0_0:1540, label_0_1:262, label_1_0:449, label_1_1:957,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 03:59:37,555 epoch_num: 8, training process num: 3480/435,  gate_loss: 0.5386, kl_soft_loss: -0.0, kl_hard_loss: 0.2842, len_loss: 0.0265,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:947.12, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 04:01:29,427 
+ Start test ...  
+2024-07-12 04:01:44,956 testing process num: 0
+2024-07-12 04:17:57,750 testing process num: 200
+2024-07-12 04:22:16,370 test: f1 22.16, EM : 33.22, old_doc_len:1293.44, new_doc_len:925.75
+2024-07-12 04:22:16,371 cost_time: 20.782380263010662 , gate_res_list: 1.0, 2032 / 2032 
+ 
+2024-07-12 04:24:59,357 epoch_num: 8, training process num: 3530/435,  gate_loss: 0.4633, kl_soft_loss: 3.4193, kl_hard_loss: 1.0291, len_loss: 0.0393,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:801.0, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 04:29:32,281 epoch_num: 8, training process num: 3580/435,  gate_loss: 0.8065, kl_soft_loss: 0.0317, kl_hard_loss: 0.3574, len_loss: 0.0241,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:816.62, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 04:34:00,129 epoch_num: 8, training process num: 3630/435,  gate_loss: 0.4804, kl_soft_loss: 0.0013, kl_hard_loss: 0.1834, len_loss: 0.0296,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:965.5, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 04:38:27,772 epoch_num: 8, training process num: 3680/435,  gate_loss: 0.5871, kl_soft_loss: 0.484, kl_hard_loss: 0.3154, len_loss: 0.0313,                                         
+ gate_acc:0.57, old_doc_len:1232.88, new_doc_len:827.38, label_0_0:774, label_0_1:144, label_1_0:225, label_1_1:465,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 04:43:01,114 epoch_num: 8, training process num: 3730/435,  gate_loss: 0.4776, kl_soft_loss: 0.0006, kl_hard_loss: 0.243, len_loss: 0.0246,                                         
+ gate_acc:0.57, old_doc_len:1275.0, new_doc_len:1019.88, label_0_0:959, label_0_1:179, label_1_0:275, label_1_1:595,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 04:47:29,566 epoch_num: 8, training process num: 3780/435,  gate_loss: 0.5274, kl_soft_loss: -0.001, kl_hard_loss: 0.2116, len_loss: 0.0246,                                         
+ gate_acc:0.57, old_doc_len:1171.38, new_doc_len:968.38, label_0_0:1152, label_0_1:213, label_1_0:333, label_1_1:710,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 04:52:02,828 epoch_num: 8, training process num: 3830/435,  gate_loss: 0.4208, kl_soft_loss: 1.2255, kl_hard_loss: 0.6524, len_loss: 0.0314,                                         
+ gate_acc:0.56, old_doc_len:1278.88, new_doc_len:810.5, label_0_0:1340, label_0_1:240, label_1_0:396, label_1_1:832,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 04:56:32,410 epoch_num: 8, training process num: 3880/435,  gate_loss: 0.6041, kl_soft_loss: 2.291, kl_hard_loss: 1.6026, len_loss: 0.027,                                         
+ gate_acc:0.56, old_doc_len:1313.12, new_doc_len:1004.75, label_0_0:1540, label_0_1:262, label_1_0:449, label_1_1:957,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 04:59:59,034 epoch_num: 9, training process num: 3915/435,  gate_loss: 0.5397, kl_soft_loss: -0.0, kl_hard_loss: 0.1019, len_loss: 0.0256,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:970.12, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 05:04:33,354 epoch_num: 9, training process num: 3965/435,  gate_loss: 0.4632, kl_soft_loss: 3.6224, kl_hard_loss: 1.0382, len_loss: 0.0325,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:978.12, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 05:07:44,012 
+ Start test ...  
+2024-07-12 05:07:59,319 testing process num: 0
+2024-07-12 05:24:19,996 testing process num: 200
+2024-07-12 05:28:44,803 test: f1 21.82, EM : 34.65, old_doc_len:1293.44, new_doc_len:951.31
+2024-07-12 05:28:44,804 cost_time: 21.01318329970042 , gate_res_list: 1.0, 2032 / 2032 
+ 
+2024-07-12 05:30:06,443 epoch_num: 9, training process num: 4015/435,  gate_loss: 0.8056, kl_soft_loss: 0.0388, kl_hard_loss: 0.2591, len_loss: 0.0264,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:845.38, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 05:34:35,415 epoch_num: 9, training process num: 4065/435,  gate_loss: 0.4797, kl_soft_loss: 0.0011, kl_hard_loss: 0.2529, len_loss: 0.0313,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:976.62, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 05:39:02,385 epoch_num: 9, training process num: 4115/435,  gate_loss: 0.5873, kl_soft_loss: 0.5001, kl_hard_loss: 0.3143, len_loss: 0.0296,                                         
+ gate_acc:0.57, old_doc_len:1232.88, new_doc_len:839.75, label_0_0:774, label_0_1:144, label_1_0:225, label_1_1:465,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 05:43:33,716 epoch_num: 9, training process num: 4165/435,  gate_loss: 0.4779, kl_soft_loss: 0.0006, kl_hard_loss: 0.2603, len_loss: 0.0338,                                         
+ gate_acc:0.57, old_doc_len:1275.0, new_doc_len:889.62, label_0_0:959, label_0_1:179, label_1_0:275, label_1_1:595,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 05:48:01,565 epoch_num: 9, training process num: 4215/435,  gate_loss: 0.5277, kl_soft_loss: -0.0008, kl_hard_loss: 0.2996, len_loss: 0.027,                                         
+ gate_acc:0.57, old_doc_len:1171.38, new_doc_len:894.75, label_0_0:1152, label_0_1:213, label_1_0:333, label_1_1:710,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 05:52:33,016 epoch_num: 9, training process num: 4265/435,  gate_loss: 0.4204, kl_soft_loss: 0.6725, kl_hard_loss: 0.7574, len_loss: 0.0277,                                         
+ gate_acc:0.56, old_doc_len:1278.88, new_doc_len:999.0, label_0_0:1340, label_0_1:240, label_1_0:396, label_1_1:832,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 05:57:01,333 epoch_num: 9, training process num: 4315/435,  gate_loss: 0.6043, kl_soft_loss: 2.5228, kl_hard_loss: 1.4357, len_loss: 0.0264,                                         
+ gate_acc:0.56, old_doc_len:1313.12, new_doc_len:986.75, label_0_0:1540, label_0_1:262, label_1_0:449, label_1_1:957,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 06:00:27,624 epoch_num: 10, training process num: 4350/435,  gate_loss: 0.5403, kl_soft_loss: -0.0, kl_hard_loss: 0.2636, len_loss: 0.0259,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:961.12, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 06:05:01,847 epoch_num: 10, training process num: 4400/435,  gate_loss: 0.4631, kl_soft_loss: 2.2386, kl_hard_loss: 1.658, len_loss: 0.0314,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:936.88, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 06:09:34,287 epoch_num: 10, training process num: 4450/435,  gate_loss: 0.8047, kl_soft_loss: 0.0498, kl_hard_loss: 0.1143, len_loss: 0.0248,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:845.38, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 06:14:02,025 epoch_num: 10, training process num: 4500/435,  gate_loss: 0.4791, kl_soft_loss: 0.0014, kl_hard_loss: 0.4998, len_loss: 0.0271,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:1043.5, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 06:14:02,031 
+ Start test ...  
+2024-07-12 06:14:17,901 testing process num: 0
+2024-07-12 06:30:45,738 testing process num: 200
+2024-07-12 06:35:12,071 test: f1 21.57, EM : 33.22, old_doc_len:1293.44, new_doc_len:965.42
+2024-07-12 06:35:12,071 cost_time: 21.167331751187643 , gate_res_list: 1.0, 2032 / 2032 
+ 
+2024-07-12 06:39:38,545 epoch_num: 10, training process num: 4550/435,  gate_loss: 0.5874, kl_soft_loss: 0.4426, kl_hard_loss: 0.3101, len_loss: 0.0281,                                         
+ gate_acc:0.57, old_doc_len:1232.88, new_doc_len:879.38, label_0_0:774, label_0_1:144, label_1_0:225, label_1_1:465,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 06:44:09,955 epoch_num: 10, training process num: 4600/435,  gate_loss: 0.4781, kl_soft_loss: 0.0009, kl_hard_loss: 0.234, len_loss: 0.0295,                                         
+ gate_acc:0.57, old_doc_len:1275.0, new_doc_len:1005.62, label_0_0:959, label_0_1:179, label_1_0:275, label_1_1:595,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 06:48:38,375 epoch_num: 10, training process num: 4650/435,  gate_loss: 0.5281, kl_soft_loss: -0.0006, kl_hard_loss: 0.0743, len_loss: 0.0242,                                         
+ gate_acc:0.57, old_doc_len:1171.38, new_doc_len:933.88, label_0_0:1152, label_0_1:213, label_1_0:333, label_1_1:710,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 06:53:10,749 epoch_num: 10, training process num: 4700/435,  gate_loss: 0.4202, kl_soft_loss: 0.7625, kl_hard_loss: 0.6255, len_loss: 0.0343,                                         
+ gate_acc:0.56, old_doc_len:1278.88, new_doc_len:829.12, label_0_0:1340, label_0_1:240, label_1_0:396, label_1_1:832,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 06:57:39,170 epoch_num: 10, training process num: 4750/435,  gate_loss: 0.6044, kl_soft_loss: 2.0202, kl_hard_loss: 1.6931, len_loss: 0.0274,                                         
+ gate_acc:0.56, old_doc_len:1313.12, new_doc_len:1027.25, label_0_0:1540, label_0_1:262, label_1_0:449, label_1_1:957,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 07:01:06,740 epoch_num: 11, training process num: 4785/435,  gate_loss: 0.5407, kl_soft_loss: -0.0, kl_hard_loss: 0.1844, len_loss: 0.0255,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:911.25, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 07:05:40,915 epoch_num: 11, training process num: 4835/435,  gate_loss: 0.4631, kl_soft_loss: 3.2128, kl_hard_loss: 0.859, len_loss: 0.0385,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:859.12, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 07:10:13,942 epoch_num: 11, training process num: 4885/435,  gate_loss: 0.8038, kl_soft_loss: 0.0444, kl_hard_loss: 0.1602, len_loss: 0.0246,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:807.25, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 07:14:42,181 epoch_num: 11, training process num: 4935/435,  gate_loss: 0.4786, kl_soft_loss: 0.001, kl_hard_loss: 0.5897, len_loss: 0.0293,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:956.0, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 07:19:08,314 epoch_num: 11, training process num: 4985/435,  gate_loss: 0.5874, kl_soft_loss: 0.5615, kl_hard_loss: 0.2647, len_loss: 0.0271,                                         
+ gate_acc:0.57, old_doc_len:1232.88, new_doc_len:928.12, label_0_0:774, label_0_1:144, label_1_0:225, label_1_1:465,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 07:20:30,593 
+ Start test ...  
+2024-07-12 07:20:46,439 testing process num: 0
+2024-07-12 07:37:31,247 testing process num: 200
+2024-07-12 07:42:00,689 test: f1 22.0, EM : 34.55, old_doc_len:1293.44, new_doc_len:1021.26
+2024-07-12 07:42:00,689 cost_time: 21.501593112945557 , gate_res_list: 1.0, 2032 / 2032 
+ 
+2024-07-12 07:45:10,888 epoch_num: 11, training process num: 5035/435,  gate_loss: 0.4782, kl_soft_loss: 0.0009, kl_hard_loss: 0.1135, len_loss: 0.0272,                                         
+ gate_acc:0.57, old_doc_len:1275.0, new_doc_len:947.38, label_0_0:959, label_0_1:179, label_1_0:275, label_1_1:595,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 07:49:40,439 epoch_num: 11, training process num: 5085/435,  gate_loss: 0.5286, kl_soft_loss: -0.0006, kl_hard_loss: 0.1142, len_loss: 0.0267,                                         
+ gate_acc:0.57, old_doc_len:1171.38, new_doc_len:924.62, label_0_0:1152, label_0_1:213, label_1_0:333, label_1_1:710,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 07:54:12,486 epoch_num: 11, training process num: 5135/435,  gate_loss: 0.4207, kl_soft_loss: 0.7683, kl_hard_loss: 0.9148, len_loss: 0.0312,                                         
+ gate_acc:0.56, old_doc_len:1278.88, new_doc_len:909.88, label_0_0:1340, label_0_1:240, label_1_0:396, label_1_1:832,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 07:58:42,064 epoch_num: 11, training process num: 5185/435,  gate_loss: 0.6045, kl_soft_loss: 1.7771, kl_hard_loss: 1.4661, len_loss: 0.0236,                                         
+ gate_acc:0.56, old_doc_len:1313.12, new_doc_len:1023.75, label_0_0:1540, label_0_1:262, label_1_0:449, label_1_1:957,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 08:02:08,887 epoch_num: 12, training process num: 5220/435,  gate_loss: 0.5408, kl_soft_loss: -0.0, kl_hard_loss: 0.0854, len_loss: 0.0248,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:917.0, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 08:06:41,781 epoch_num: 12, training process num: 5270/435,  gate_loss: 0.4623, kl_soft_loss: 2.3582, kl_hard_loss: 1.9811, len_loss: 0.0344,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:866.0, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 08:11:14,099 epoch_num: 12, training process num: 5320/435,  gate_loss: 0.8049, kl_soft_loss: 0.0481, kl_hard_loss: 0.1151, len_loss: 0.0235,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:866.5, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 08:15:42,320 epoch_num: 12, training process num: 5370/435,  gate_loss: 0.4772, kl_soft_loss: 0.0013, kl_hard_loss: 0.0883, len_loss: 0.0321,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:924.62, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 08:20:10,612 epoch_num: 12, training process num: 5420/435,  gate_loss: 0.5882, kl_soft_loss: 0.455, kl_hard_loss: 0.2421, len_loss: 0.0276,                                         
+ gate_acc:0.57, old_doc_len:1232.88, new_doc_len:862.25, label_0_0:774, label_0_1:144, label_1_0:225, label_1_1:465,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 08:24:41,741 epoch_num: 12, training process num: 5470/435,  gate_loss: 0.4774, kl_soft_loss: 0.001, kl_hard_loss: 0.1569, len_loss: 0.0255,                                         
+ gate_acc:0.57, old_doc_len:1275.0, new_doc_len:969.62, label_0_0:959, label_0_1:179, label_1_0:275, label_1_1:595,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 08:27:22,222 
+ Start test ...  
+2024-07-12 08:27:37,503 testing process num: 0
+2024-07-12 08:44:06,666 testing process num: 200
+2024-07-12 08:48:37,524 test: f1 22.11, EM : 34.45, old_doc_len:1293.44, new_doc_len:993.29
+2024-07-12 08:48:37,524 cost_time: 21.255015925566354 , gate_res_list: 1.0, 2032 / 2032 
+ 
+2024-07-12 08:50:25,765 epoch_num: 12, training process num: 5520/435,  gate_loss: 0.5469, kl_soft_loss: -0.0006, kl_hard_loss: 0.0824, len_loss: 0.0211,                                         
+ gate_acc:0.57, old_doc_len:1171.38, new_doc_len:973.88, label_0_0:1152, label_0_1:213, label_1_0:333, label_1_1:710,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 08:54:57,747 epoch_num: 12, training process num: 5570/435,  gate_loss: 0.4159, kl_soft_loss: 0.8131, kl_hard_loss: 0.8061, len_loss: 0.0289,                                         
+ gate_acc:0.56, old_doc_len:1278.88, new_doc_len:910.0, label_0_0:1340, label_0_1:240, label_1_0:396, label_1_1:832,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 08:59:27,363 epoch_num: 12, training process num: 5620/435,  gate_loss: 0.6061, kl_soft_loss: 2.1557, kl_hard_loss: 0.9763, len_loss: 0.0265,                                         
+ gate_acc:0.56, old_doc_len:1313.12, new_doc_len:1002.88, label_0_0:1540, label_0_1:262, label_1_0:449, label_1_1:957,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 09:02:52,905 epoch_num: 13, training process num: 5655/435,  gate_loss: 0.5415, kl_soft_loss: -0.0, kl_hard_loss: 0.0732, len_loss: 0.0245,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:1017.38, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 09:07:27,621 epoch_num: 13, training process num: 5705/435,  gate_loss: 0.4629, kl_soft_loss: 2.3794, kl_hard_loss: 1.5866, len_loss: 0.0444,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:885.0, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 09:12:00,476 epoch_num: 13, training process num: 5755/435,  gate_loss: 0.8064, kl_soft_loss: 0.0406, kl_hard_loss: 0.2869, len_loss: 0.0257,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:869.25, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 09:16:29,137 epoch_num: 13, training process num: 5805/435,  gate_loss: 0.4758, kl_soft_loss: 0.0011, kl_hard_loss: 0.3597, len_loss: 0.0292,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:1037.88, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 09:20:54,701 epoch_num: 13, training process num: 5855/435,  gate_loss: 0.5866, kl_soft_loss: 0.5169, kl_hard_loss: 0.2136, len_loss: 0.0274,                                         
+ gate_acc:0.57, old_doc_len:1232.88, new_doc_len:945.62, label_0_0:774, label_0_1:144, label_1_0:225, label_1_1:465,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 09:25:25,787 epoch_num: 13, training process num: 5905/435,  gate_loss: 0.4764, kl_soft_loss: 0.0008, kl_hard_loss: 0.1355, len_loss: 0.0313,                                         
+ gate_acc:0.57, old_doc_len:1275.0, new_doc_len:994.38, label_0_0:959, label_0_1:179, label_1_0:275, label_1_1:595,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 09:29:54,428 epoch_num: 13, training process num: 5955/435,  gate_loss: 0.548, kl_soft_loss: -0.0005, kl_hard_loss: 0.0702, len_loss: 0.0236,                                         
+ gate_acc:0.57, old_doc_len:1171.38, new_doc_len:961.0, label_0_0:1152, label_0_1:213, label_1_0:333, label_1_1:710,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 09:33:58,845 
+ Start test ...  
+2024-07-12 09:34:14,954 testing process num: 0
+2024-07-12 09:50:51,624 testing process num: 200
+2024-07-12 09:55:21,391 test: f1 21.97, EM : 33.86, old_doc_len:1293.44, new_doc_len:975.03
+2024-07-12 09:55:21,392 cost_time: 21.375761512915293 , gate_res_list: 1.0, 2032 / 2032 
+ 
+2024-07-12 09:55:49,260 epoch_num: 13, training process num: 6005/435,  gate_loss: 0.4161, kl_soft_loss: 1.059, kl_hard_loss: 0.6947, len_loss: 0.0315,                                         
+ gate_acc:0.56, old_doc_len:1278.88, new_doc_len:935.12, label_0_0:1340, label_0_1:240, label_1_0:396, label_1_1:832,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 10:00:17,808 epoch_num: 13, training process num: 6055/435,  gate_loss: 0.6055, kl_soft_loss: 2.422, kl_hard_loss: 1.2978, len_loss: 0.0266,                                         
+ gate_acc:0.56, old_doc_len:1313.12, new_doc_len:1050.5, label_0_0:1540, label_0_1:262, label_1_0:449, label_1_1:957,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 10:03:44,327 epoch_num: 14, training process num: 6090/435,  gate_loss: 0.5393, kl_soft_loss: -0.0, kl_hard_loss: 0.0983, len_loss: 0.0252,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:924.75, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 10:08:17,404 epoch_num: 14, training process num: 6140/435,  gate_loss: 0.4628, kl_soft_loss: 2.6263, kl_hard_loss: 1.2226, len_loss: 0.0401,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:843.38, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 10:12:50,524 epoch_num: 14, training process num: 6190/435,  gate_loss: 0.8063, kl_soft_loss: 0.0581, kl_hard_loss: 0.0681, len_loss: 0.0236,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:816.0, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 10:17:18,690 epoch_num: 14, training process num: 6240/435,  gate_loss: 0.4764, kl_soft_loss: 0.001, kl_hard_loss: 0.123, len_loss: 0.0301,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:1003.12, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 10:21:44,811 epoch_num: 14, training process num: 6290/435,  gate_loss: 0.5856, kl_soft_loss: 0.4199, kl_hard_loss: 0.3995, len_loss: 0.0261,                                         
+ gate_acc:0.57, old_doc_len:1232.88, new_doc_len:975.75, label_0_0:774, label_0_1:144, label_1_0:225, label_1_1:465,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 10:26:15,606 epoch_num: 14, training process num: 6340/435,  gate_loss: 0.4758, kl_soft_loss: 0.0008, kl_hard_loss: 0.2513, len_loss: 0.0306,                                         
+ gate_acc:0.57, old_doc_len:1275.0, new_doc_len:945.88, label_0_0:959, label_0_1:179, label_1_0:275, label_1_1:595,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 10:30:43,199 epoch_num: 14, training process num: 6390/435,  gate_loss: 0.5498, kl_soft_loss: -0.0007, kl_hard_loss: 0.1323, len_loss: 0.0221,                                         
+ gate_acc:0.57, old_doc_len:1171.38, new_doc_len:958.0, label_0_0:1152, label_0_1:213, label_1_0:333, label_1_1:710,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 10:35:14,305 epoch_num: 14, training process num: 6440/435,  gate_loss: 0.4149, kl_soft_loss: 0.9277, kl_hard_loss: 0.6606, len_loss: 0.0259,                                         
+ gate_acc:0.56, old_doc_len:1278.88, new_doc_len:958.38, label_0_0:1340, label_0_1:240, label_1_0:396, label_1_1:832,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 10:39:42,867 epoch_num: 14, training process num: 6490/435,  gate_loss: 0.6047, kl_soft_loss: 2.2252, kl_hard_loss: 1.6119, len_loss: 0.0247,                                         
+ gate_acc:0.56, old_doc_len:1313.12, new_doc_len:1035.75, label_0_0:1540, label_0_1:262, label_1_0:449, label_1_1:957,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 10:40:36,509 
+ Start test ...  
+2024-07-12 10:40:52,162 testing process num: 0
+2024-07-12 10:57:26,485 testing process num: 200
+2024-07-12 11:01:51,733 test: f1 21.29, EM : 33.27, old_doc_len:1293.44, new_doc_len:980.6
+2024-07-12 11:01:51,734 cost_time: 21.25373740196228 , gate_res_list: 1.0, 2032 / 2032 
+ 
+2024-07-12 11:04:25,607 epoch_num: 15, training process num: 6525/435,  gate_loss: 0.538, kl_soft_loss: -0.0, kl_hard_loss: 0.132, len_loss: 0.0242,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:964.88, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 11:08:58,081 epoch_num: 15, training process num: 6575/435,  gate_loss: 0.4637, kl_soft_loss: 2.1471, kl_hard_loss: 1.5692, len_loss: 0.0394,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:771.12, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 11:13:31,266 epoch_num: 15, training process num: 6625/435,  gate_loss: 0.8072, kl_soft_loss: 0.0493, kl_hard_loss: 0.1112, len_loss: 0.0242,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:853.75, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 11:17:59,757 epoch_num: 15, training process num: 6675/435,  gate_loss: 0.4769, kl_soft_loss: 0.0013, kl_hard_loss: 0.187, len_loss: 0.0288,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:1003.75, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 11:22:26,709 epoch_num: 15, training process num: 6725/435,  gate_loss: 0.5853, kl_soft_loss: 0.4101, kl_hard_loss: 0.2005, len_loss: 0.0302,                                         
+ gate_acc:0.57, old_doc_len:1232.88, new_doc_len:886.88, label_0_0:774, label_0_1:144, label_1_0:225, label_1_1:465,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 11:26:59,156 epoch_num: 15, training process num: 6775/435,  gate_loss: 0.4757, kl_soft_loss: 0.0009, kl_hard_loss: 0.1193, len_loss: 0.0291,                                         
+ gate_acc:0.57, old_doc_len:1275.0, new_doc_len:899.5, label_0_0:959, label_0_1:179, label_1_0:275, label_1_1:595,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 11:31:28,096 epoch_num: 15, training process num: 6825/435,  gate_loss: 0.5497, kl_soft_loss: -0.0006, kl_hard_loss: 0.1137, len_loss: 0.0228,                                         
+ gate_acc:0.57, old_doc_len:1171.38, new_doc_len:976.88, label_0_0:1152, label_0_1:213, label_1_0:333, label_1_1:710,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 11:35:59,940 epoch_num: 15, training process num: 6875/435,  gate_loss: 0.4151, kl_soft_loss: 0.9776, kl_hard_loss: 0.6736, len_loss: 0.0258,                                         
+ gate_acc:0.56, old_doc_len:1278.88, new_doc_len:990.0, label_0_0:1340, label_0_1:240, label_1_0:396, label_1_1:832,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 11:40:28,608 epoch_num: 15, training process num: 6925/435,  gate_loss: 0.6043, kl_soft_loss: 2.1262, kl_hard_loss: 0.844, len_loss: 0.0236,                                         
+ gate_acc:0.56, old_doc_len:1313.12, new_doc_len:997.25, label_0_0:1540, label_0_1:262, label_1_0:449, label_1_1:957,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 11:43:57,394 epoch_num: 16, training process num: 6960/435,  gate_loss: 0.538, kl_soft_loss: -0.0, kl_hard_loss: 0.1818, len_loss: 0.0262,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:977.88, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 11:47:36,328 
+ Start test ...  
+2024-07-12 11:47:52,112 testing process num: 0
+2024-07-12 12:04:29,150 testing process num: 200
+2024-07-12 12:08:56,991 test: f1 21.57, EM : 33.91, old_doc_len:1293.44, new_doc_len:994.18
+2024-07-12 12:08:56,991 cost_time: 21.344366002082825 , gate_res_list: 1.0, 2032 / 2032 
+ 
+2024-07-12 12:09:51,101 epoch_num: 16, training process num: 7010/435,  gate_loss: 0.4632, kl_soft_loss: 2.0167, kl_hard_loss: 1.468, len_loss: 0.0376,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:859.38, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 12:14:23,711 epoch_num: 16, training process num: 7060/435,  gate_loss: 0.8076, kl_soft_loss: 0.0517, kl_hard_loss: 0.046, len_loss: 0.0225,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:930.12, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 12:18:51,802 epoch_num: 16, training process num: 7110/435,  gate_loss: 0.477, kl_soft_loss: 0.0012, kl_hard_loss: 0.1029, len_loss: 0.0343,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:953.75, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 12:23:17,504 epoch_num: 16, training process num: 7160/435,  gate_loss: 0.5853, kl_soft_loss: 0.4173, kl_hard_loss: 0.1117, len_loss: 0.0283,                                         
+ gate_acc:0.57, old_doc_len:1232.88, new_doc_len:945.88, label_0_0:774, label_0_1:144, label_1_0:225, label_1_1:465,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 12:27:50,323 epoch_num: 16, training process num: 7210/435,  gate_loss: 0.476, kl_soft_loss: 0.0007, kl_hard_loss: 0.1431, len_loss: 0.0268,                                         
+ gate_acc:0.57, old_doc_len:1275.0, new_doc_len:959.5, label_0_0:959, label_0_1:179, label_1_0:275, label_1_1:595,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 12:32:19,713 epoch_num: 16, training process num: 7260/435,  gate_loss: 0.5492, kl_soft_loss: -0.0006, kl_hard_loss: 0.0804, len_loss: 0.0225,                                         
+ gate_acc:0.57, old_doc_len:1171.38, new_doc_len:918.12, label_0_0:1152, label_0_1:213, label_1_0:333, label_1_1:710,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 12:36:52,675 epoch_num: 16, training process num: 7310/435,  gate_loss: 0.4155, kl_soft_loss: 0.7464, kl_hard_loss: 0.5496, len_loss: 0.0241,                                         
+ gate_acc:0.56, old_doc_len:1278.88, new_doc_len:985.75, label_0_0:1340, label_0_1:240, label_1_0:396, label_1_1:832,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 12:41:21,064 epoch_num: 16, training process num: 7360/435,  gate_loss: 0.6041, kl_soft_loss: 1.6572, kl_hard_loss: 1.8455, len_loss: 0.0234,                                         
+ gate_acc:0.56, old_doc_len:1313.12, new_doc_len:1098.88, label_0_0:1540, label_0_1:262, label_1_0:449, label_1_1:957,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 12:44:47,606 epoch_num: 17, training process num: 7395/435,  gate_loss: 0.5378, kl_soft_loss: -0.0, kl_hard_loss: 0.0943, len_loss: 0.0238,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:954.62, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 12:49:21,146 epoch_num: 17, training process num: 7445/435,  gate_loss: 0.4644, kl_soft_loss: 2.3145, kl_hard_loss: 1.0022, len_loss: 0.0348,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:891.0, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 12:53:54,261 epoch_num: 17, training process num: 7495/435,  gate_loss: 0.8082, kl_soft_loss: 0.0376, kl_hard_loss: 0.2472, len_loss: 0.0222,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:909.5, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 12:54:19,862 
+ Start test ...  
+2024-07-12 12:54:33,742 testing process num: 0
+2024-07-12 13:11:12,376 testing process num: 200
+2024-07-12 13:15:41,052 test: f1 21.46, EM : 33.17, old_doc_len:1293.44, new_doc_len:990.43
+2024-07-12 13:15:41,053 cost_time: 21.353178358078004 , gate_res_list: 1.0, 2032 / 2032 
+ 
+2024-07-12 13:19:44,030 epoch_num: 17, training process num: 7545/435,  gate_loss: 0.477, kl_soft_loss: 0.0009, kl_hard_loss: 0.3223, len_loss: 0.0299,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:996.38, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 13:24:10,411 epoch_num: 17, training process num: 7595/435,  gate_loss: 0.585, kl_soft_loss: 0.3661, kl_hard_loss: 0.1351, len_loss: 0.0309,                                         
+ gate_acc:0.57, old_doc_len:1232.88, new_doc_len:942.0, label_0_0:774, label_0_1:144, label_1_0:225, label_1_1:465,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 13:28:43,144 epoch_num: 17, training process num: 7645/435,  gate_loss: 0.4762, kl_soft_loss: 0.0009, kl_hard_loss: 0.0995, len_loss: 0.0295,                                         
+ gate_acc:0.57, old_doc_len:1275.0, new_doc_len:1004.12, label_0_0:959, label_0_1:179, label_1_0:275, label_1_1:595,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 13:33:12,831 epoch_num: 17, training process num: 7695/435,  gate_loss: 0.5488, kl_soft_loss: -0.0006, kl_hard_loss: 0.1143, len_loss: 0.0209,                                         
+ gate_acc:0.57, old_doc_len:1171.38, new_doc_len:1029.62, label_0_0:1152, label_0_1:213, label_1_0:333, label_1_1:710,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 13:37:45,273 epoch_num: 17, training process num: 7745/435,  gate_loss: 0.4158, kl_soft_loss: 0.5804, kl_hard_loss: 0.6739, len_loss: 0.0286,                                         
+ gate_acc:0.56, old_doc_len:1278.88, new_doc_len:826.38, label_0_0:1340, label_0_1:240, label_1_0:396, label_1_1:832,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 13:42:13,500 epoch_num: 17, training process num: 7795/435,  gate_loss: 0.6043, kl_soft_loss: 1.8785, kl_hard_loss: 1.1477, len_loss: 0.0234,                                         
+ gate_acc:0.56, old_doc_len:1313.12, new_doc_len:1103.5, label_0_0:1540, label_0_1:262, label_1_0:449, label_1_1:957,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 13:45:40,419 epoch_num: 18, training process num: 7830/435,  gate_loss: 0.5372, kl_soft_loss: -0.0, kl_hard_loss: 0.1236, len_loss: 0.0262,                                         
+ gate_acc:0.62, old_doc_len:1269.38, new_doc_len:897.38, label_0_0:3, label_0_1:2, label_1_0:2, label_1_1:1,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 13:50:13,800 epoch_num: 18, training process num: 7880/435,  gate_loss: 0.4635, kl_soft_loss: 1.8077, kl_hard_loss: 1.2381, len_loss: 0.0388,                                         
+ gate_acc:0.57, old_doc_len:1374.12, new_doc_len:811.88, label_0_0:194, label_0_1:40, label_1_0:57, label_1_1:117,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 13:54:47,825 epoch_num: 18, training process num: 7930/435,  gate_loss: 0.8083, kl_soft_loss: 0.0504, kl_hard_loss: 0.0576, len_loss: 0.0236,                                         
+ gate_acc:0.57, old_doc_len:1149.62, new_doc_len:828.5, label_0_0:384, label_0_1:79, label_1_0:121, label_1_1:224,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 13:59:17,554 epoch_num: 18, training process num: 7980/435,  gate_loss: 0.4771, kl_soft_loss: 0.0013, kl_hard_loss: 0.3484, len_loss: 0.0342,                                         
+ gate_acc:0.57, old_doc_len:1405.12, new_doc_len:992.75, label_0_0:576, label_0_1:109, label_1_0:178, label_1_1:345,                                         
+ best_step:500, best_performce: 37.11 
+
+2024-07-12 14:01:04,795 
+ Start test ...  
+2024-07-12 14:01:20,491 testing process num: 0
