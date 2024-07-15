@@ -141,8 +141,11 @@ def extracted_token_id_label(res, label, tokenizer, dataset, prompt, LLM):
         return res, [hall_label] , 1 
 
     else:
-        
-        res = res.split(prompt.template[-10:])[1].strip()
+        res = res.split(prompt.template[-10:])
+        if len(res)>=2:
+            res = res[1].strip()
+        else:
+            res = "."
         label = tokenizer(res, add_special_tokens=False)["input_ids"]
 
         return res, label , 0

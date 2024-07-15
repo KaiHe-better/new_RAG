@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser()
 
 # system settings
 # parser.add_argument("--config", type=str, default="llama3-8b_USMLE_MI_RA.yaml", help="Path to the config file")
-parser.add_argument('--gpu', default="4", type=str, help='gpu device numbers')
+parser.add_argument('--gpu', default="6", type=str, help='gpu device numbers')
 parser.add_argument("--test_code_flag", type=bool, default=False, help="if retrieval augmented")
 parser.add_argument('--ID', type=str, default='7', help='run ID')
 parser.add_argument('--seed', default=42, help='trandom seed')
@@ -27,8 +27,8 @@ parser.add_argument('--demons_cnt', type=int, default=1, help='demonstration num
 parser.add_argument('--l2_coef', type=float, default=0, help='l2')
 parser.add_argument('--train_eval', type=int, default=500, help='lr for retriever')
 parser.add_argument('--total_step', type=int, default=25000, help='lr for retriever')
-parser.add_argument('--gate_weight_0', type=int, default=1, help='lr for retriever')
-parser.add_argument('--gate_weight_1', type=int, default=2, help='lr for retriever')
+parser.add_argument('--gate_weight_0', type=float, default=1, help='lr for retriever')
+parser.add_argument('--gate_weight_1', type=float, default=2, help='lr for retriever')
 # lr
 parser.add_argument('--lr', type=float, default=1e-4, help='lr for retriever')
 parser.add_argument('--init_lr_num', type=int, default=500, help='lr for retriever')

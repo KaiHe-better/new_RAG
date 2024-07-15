@@ -1,0 +1,496 @@
+2024-07-14 15:12:40,100 **************** Configuration **************** 
+2024-07-14 15:12:40,100 gpu: 6
+2024-07-14 15:12:40,100 test_code_flag: False
+2024-07-14 15:12:40,100 ID: TriviaQA_3
+2024-07-14 15:12:40,100 seed: 42
+2024-07-14 15:12:40,100 num_workers: 48
+2024-07-14 15:12:40,100 loading_ckpt_path: None
+2024-07-14 15:12:40,100 RA_method: Gate_RA
+2024-07-14 15:12:40,100 LLM: meta-llama/Meta-Llama-3-8B-Instruct
+2024-07-14 15:12:40,100 dataset: TriviaQA
+2024-07-14 15:12:40,100 train_batch_size: 8
+2024-07-14 15:12:40,100 test_batch_size: 8
+2024-07-14 15:12:40,100 accumulation_steps: 1
+2024-07-14 15:12:40,100 demonstration: False
+2024-07-14 15:12:40,100 demons_cnt: 1
+2024-07-14 15:12:40,100 l2_coef: 0
+2024-07-14 15:12:40,100 train_eval: 500
+2024-07-14 15:12:40,100 total_step: 25000
+2024-07-14 15:12:40,100 gate_weight_0: 1
+2024-07-14 15:12:40,100 gate_weight_1: 1
+2024-07-14 15:12:40,100 lr: 0.0001
+2024-07-14 15:12:40,100 init_lr_num: 500
+2024-07-14 15:12:40,100 lr_decay: 0.9
+2024-07-14 15:12:40,100 lr_decay_interval: 400
+2024-07-14 15:12:40,100 num_layers: 1
+2024-07-14 15:12:40,100 d_model: 768
+2024-07-14 15:12:40,100 dim_feedforward: 2048
+2024-07-14 15:12:40,101 layer_norm_eps: 1e-05
+2024-07-14 15:12:40,101 nhead: 8
+2024-07-14 15:12:40,101 dropout: 0.1
+2024-07-14 15:12:40,101 loss_list: kl_soft+kl_hard
+2024-07-14 15:12:40,101 len_penalty_weight: 10
+2024-07-14 15:12:40,101 soft_weight: 1
+2024-07-14 15:12:40,101 hard_weight: 1
+2024-07-14 15:12:40,101 do_sample: True
+2024-07-14 15:12:40,101 temperature: 1e-09
+2024-07-14 15:12:40,101 top_p: 0
+2024-07-14 15:12:40,101 max_new_tokens: 40
+2024-07-14 15:12:40,101 infer_add_gold_retrieval: False
+2024-07-14 15:12:40,101 multi_query: False
+2024-07-14 15:12:40,101 rewrite_num: 1
+2024-07-14 15:12:40,101 chunk_size: 512
+2024-07-14 15:12:40,101 chunk_overlap: 20
+2024-07-14 15:12:40,101 if_hierarchical_retrieval: True
+2024-07-14 15:12:40,101 hierarchical_ratio: 1.4
+2024-07-14 15:12:40,101 quantile_num: 1
+2024-07-14 15:12:40,101 n_docs: 10
+2024-07-14 15:12:40,101 model_name_or_path: facebook/contriever-msmarco
+2024-07-14 15:12:40,101 question_maxlength: 512
+2024-07-14 15:12:40,101 passages: datasets/Retrieval_corpus/enwiki_2020_dec_intro_only.jsonl
+2024-07-14 15:12:40,101 passages_embeddings: datasets/Retrieval_corpus/enwiki_dec_2020_contriever_intro/*
+2024-07-14 15:12:40,101 lowercase: False
+2024-07-14 15:12:40,101 normalize_text: False
+2024-07-14 15:12:40,101 save_or_load_index: False
+2024-07-14 15:12:40,101 no_fp16: True
+2024-07-14 15:12:40,101 projection_size: 768
+2024-07-14 15:12:40,101 n_subquantizers: 0
+2024-07-14 15:12:40,101 n_bits: 8
+2024-07-14 15:12:40,101 indexing_batch_size: 30000000
+2024-07-14 15:12:40,101 device: cuda
+2024-07-14 15:12:40,101 prompt_file: prompts/TriviaQA.json
+2024-07-14 15:12:40,101 dir_path: ./results/output/ID_TriviaQA_3_gpu_6_RA_method_Gate_RA_dataset_TriviaQA_gate_weight_0_1_gate_weig
+2024-07-14 15:12:40,101 print_logger: <Logger print (DEBUG)>
+2024-07-14 15:12:40,102 **************** Configuration **************** 
+
+
+2024-07-14 15:12:40,102 Loading retriever ...
+2024-07-14 15:13:48,598 Loading meta-llama/Meta-Llama-3-8B-Instruct in torch.bfloat16...
+2024-07-14 15:13:55,401 Finish loading in 0.11 mins.
+2024-07-14 15:13:56,400 Loading data ...
+2024-07-14 15:13:57,627 prompt_format: retrieve-prompt 
+
+2024-07-14 15:13:57,627 Start training ... 
+ 
+2024-07-14 15:14:12,428 epoch_num: 0, training process num: 0/9849,  gate_loss: 0.7599,                                              
+ gate_acc:0.62, label_0_0:4, label_0_1:1, label_1_0:1, label_1_1:2,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-14 15:18:10,316 epoch_num: 0, training process num: 50/9849,  gate_loss: 0.661,                                              
+ gate_acc:0.58, label_0_0:205, label_0_1:31, label_1_0:40, label_1_1:132,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-14 15:22:10,162 epoch_num: 0, training process num: 100/9849,  gate_loss: 0.7809,                                              
+ gate_acc:0.55, label_0_0:359, label_0_1:83, label_1_0:77, label_1_1:289,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-14 15:26:15,672 epoch_num: 0, training process num: 150/9849,  gate_loss: 0.5648,                                              
+ gate_acc:0.55, label_0_0:534, label_0_1:136, label_1_0:129, label_1_1:409,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-14 15:30:19,114 epoch_num: 0, training process num: 200/9849,  gate_loss: 0.7078,                                              
+ gate_acc:0.52, label_0_0:649, label_0_1:184, label_1_0:184, label_1_1:591,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-14 15:34:22,487 epoch_num: 0, training process num: 250/9849,  gate_loss: 0.674,                                              
+ gate_acc:0.52, label_0_0:739, label_0_1:225, label_1_0:247, label_1_1:797,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-14 15:38:28,153 epoch_num: 0, training process num: 300/9849,  gate_loss: 0.6821,                                              
+ gate_acc:0.54, label_0_0:853, label_0_1:258, label_1_0:330, label_1_1:967,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-14 15:42:31,937 epoch_num: 0, training process num: 350/9849,  gate_loss: 0.6775,                                              
+ gate_acc:0.53, label_0_0:1027, label_0_1:290, label_1_0:384, label_1_1:1107,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-14 15:46:32,869 epoch_num: 0, training process num: 400/9849,  gate_loss: 0.705,                                              
+ gate_acc:0.53, label_0_0:1144, label_0_1:356, label_1_0:438, label_1_1:1270,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-14 15:50:36,561 epoch_num: 0, training process num: 450/9849,  gate_loss: 0.6753,                                              
+ gate_acc:0.54, label_0_0:1281, label_0_1:406, label_1_0:491, label_1_1:1430,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-14 15:54:41,117 epoch_num: 0, training process num: 500/9849,  gate_loss: 0.6634,                                              
+ gate_acc:0.55, label_0_0:1408, label_0_1:469, label_1_0:533, label_1_1:1598,                                             
+ best_step:0, best_performce: 0 
+
+2024-07-14 15:54:41,118 
+ Start test ...  
+2024-07-14 15:54:50,239 testing process num: 0
+2024-07-14 16:10:57,473 testing process num: 200
+2024-07-14 16:27:15,050 testing process num: 400
+2024-07-14 16:43:44,330 testing process num: 600
+2024-07-14 16:59:56,198 testing process num: 800
+2024-07-14 17:15:57,933 testing process num: 1000
+2024-07-14 17:32:16,214 testing process num: 1200
+2024-07-14 17:48:20,712 testing process num: 1400
+2024-07-14 17:49:34,958 test: f1 52.17, EM : 60.88, old_doc_len:0.0, new_doc_len:0.0
+2024-07-14 17:49:34,958 cost_time: 114.89733752409617 , gate_res_list: 0.22, 2467 / 11313 
+ 
+2024-07-14 17:53:35,922 epoch_num: 0, training process num: 550/9849,  gate_loss: 0.6426,                                              
+ gate_acc:0.55, label_0_0:1544, label_0_1:526, label_1_0:576, label_1_1:1762,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 17:57:35,720 epoch_num: 0, training process num: 600/9849,  gate_loss: 0.65,                                              
+ gate_acc:0.55, label_0_0:1669, label_0_1:569, label_1_0:623, label_1_1:1947,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 18:01:37,037 epoch_num: 0, training process num: 650/9849,  gate_loss: 0.7393,                                              
+ gate_acc:0.55, label_0_0:1801, label_0_1:615, label_1_0:665, label_1_1:2127,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 18:05:40,609 epoch_num: 0, training process num: 700/9849,  gate_loss: 0.67,                                              
+ gate_acc:0.55, label_0_0:1923, label_0_1:674, label_1_0:721, label_1_1:2290,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 18:09:43,365 epoch_num: 0, training process num: 750/9849,  gate_loss: 0.7302,                                              
+ gate_acc:0.55, label_0_0:2040, label_0_1:727, label_1_0:773, label_1_1:2468,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 18:13:43,881 epoch_num: 0, training process num: 800/9849,  gate_loss: 0.7021,                                              
+ gate_acc:0.56, label_0_0:2128, label_0_1:767, label_1_0:823, label_1_1:2690,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 18:17:46,073 epoch_num: 0, training process num: 850/9849,  gate_loss: 0.6658,                                              
+ gate_acc:0.57, label_0_0:2205, label_0_1:815, label_1_0:866, label_1_1:2922,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 18:21:47,270 epoch_num: 0, training process num: 900/9849,  gate_loss: 0.6704,                                              
+ gate_acc:0.58, label_0_0:2297, label_0_1:863, label_1_0:922, label_1_1:3126,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 18:25:46,746 epoch_num: 0, training process num: 950/9849,  gate_loss: 0.6697,                                              
+ gate_acc:0.59, label_0_0:2368, label_0_1:924, label_1_0:963, label_1_1:3353,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 18:29:45,918 epoch_num: 0, training process num: 1000/9849,  gate_loss: 0.5504,                                              
+ gate_acc:0.59, label_0_0:2450, label_0_1:975, label_1_0:1009, label_1_1:3574,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 18:29:45,919 
+ Start test ...  
+2024-07-14 18:29:55,496 testing process num: 0
+2024-07-14 18:46:01,702 testing process num: 200
+2024-07-14 19:02:15,347 testing process num: 400
+2024-07-14 19:18:45,015 testing process num: 600
+2024-07-14 19:34:56,379 testing process num: 800
+2024-07-14 19:50:58,002 testing process num: 1000
+2024-07-14 20:07:16,294 testing process num: 1200
+2024-07-14 20:23:20,239 testing process num: 1400
+2024-07-14 20:24:34,530 test: f1 52.33, EM : 60.78, old_doc_len:0.0, new_doc_len:0.0
+2024-07-14 20:24:34,530 cost_time: 114.81018448670706 , gate_res_list: 0.17, 1873 / 11313 
+ 
+2024-07-14 20:28:37,649 epoch_num: 0, training process num: 1050/9849,  gate_loss: 0.6778,                                              
+ gate_acc:0.6, label_0_0:2522, label_0_1:1023, label_1_0:1062, label_1_1:3801,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 20:32:33,506 epoch_num: 0, training process num: 1100/9849,  gate_loss: 0.6974,                                              
+ gate_acc:0.6, label_0_0:2617, label_0_1:1067, label_1_0:1099, label_1_1:4025,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 20:36:32,370 epoch_num: 0, training process num: 1150/9849,  gate_loss: 0.593,                                              
+ gate_acc:0.6, label_0_0:2696, label_0_1:1112, label_1_0:1149, label_1_1:4251,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 20:40:30,457 epoch_num: 0, training process num: 1200/9849,  gate_loss: 0.6155,                                              
+ gate_acc:0.61, label_0_0:2782, label_0_1:1163, label_1_0:1187, label_1_1:4476,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 20:44:29,239 epoch_num: 0, training process num: 1250/9849,  gate_loss: 0.702,                                              
+ gate_acc:0.61, label_0_0:2863, label_0_1:1210, label_1_0:1242, label_1_1:4693,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 20:48:29,009 epoch_num: 0, training process num: 1300/9849,  gate_loss: 0.5578,                                              
+ gate_acc:0.61, label_0_0:2952, label_0_1:1256, label_1_0:1278, label_1_1:4922,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 20:52:28,475 epoch_num: 0, training process num: 1350/9849,  gate_loss: 0.6843,                                              
+ gate_acc:0.62, label_0_0:3028, label_0_1:1321, label_1_0:1328, label_1_1:5131,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 20:56:30,399 epoch_num: 0, training process num: 1400/9849,  gate_loss: 0.6625,                                              
+ gate_acc:0.62, label_0_0:3143, label_0_1:1369, label_1_0:1366, label_1_1:5330,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 21:00:29,206 epoch_num: 0, training process num: 1450/9849,  gate_loss: 0.6951,                                              
+ gate_acc:0.62, label_0_0:3230, label_0_1:1425, label_1_0:1415, label_1_1:5538,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 21:04:31,514 epoch_num: 0, training process num: 1500/9849,  gate_loss: 0.7171,                                              
+ gate_acc:0.62, label_0_0:3338, label_0_1:1478, label_1_0:1468, label_1_1:5724,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 21:04:31,516 
+ Start test ...  
+2024-07-14 21:04:41,212 testing process num: 0
+2024-07-14 21:20:47,802 testing process num: 200
+2024-07-14 21:37:02,459 testing process num: 400
+2024-07-14 21:53:38,364 testing process num: 600
+2024-07-14 22:09:57,804 testing process num: 800
+2024-07-14 22:26:00,873 testing process num: 1000
+2024-07-14 22:42:18,863 testing process num: 1200
+2024-07-14 22:58:21,358 testing process num: 1400
+2024-07-14 22:59:35,768 test: f1 52.43, EM : 60.5, old_doc_len:0.0, new_doc_len:0.0
+2024-07-14 22:59:35,768 cost_time: 115.07087179819743 , gate_res_list: 0.1, 1109 / 11313 
+ 
+2024-07-14 23:03:37,309 epoch_num: 0, training process num: 1550/9849,  gate_loss: 0.6658,                                              
+ gate_acc:0.62, label_0_0:3453, label_0_1:1541, label_1_0:1515, label_1_1:5899,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 23:07:36,539 epoch_num: 0, training process num: 1600/9849,  gate_loss: 0.7665,                                              
+ gate_acc:0.62, label_0_0:3564, label_0_1:1595, label_1_0:1564, label_1_1:6085,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 23:11:34,372 epoch_num: 0, training process num: 1650/9849,  gate_loss: 0.663,                                              
+ gate_acc:0.62, label_0_0:3709, label_0_1:1657, label_1_0:1611, label_1_1:6231,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 23:15:34,187 epoch_num: 0, training process num: 1700/9849,  gate_loss: 0.7475,                                              
+ gate_acc:0.62, label_0_0:3844, label_0_1:1705, label_1_0:1670, label_1_1:6389,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 23:19:33,511 epoch_num: 0, training process num: 1750/9849,  gate_loss: 0.7393,                                              
+ gate_acc:0.62, label_0_0:3971, label_0_1:1755, label_1_0:1729, label_1_1:6553,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 23:23:35,113 epoch_num: 0, training process num: 1800/9849,  gate_loss: 0.7082,                                              
+ gate_acc:0.61, label_0_0:4106, label_0_1:1814, label_1_0:1782, label_1_1:6706,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 23:27:35,753 epoch_num: 0, training process num: 1850/9849,  gate_loss: 0.6712,                                              
+ gate_acc:0.61, label_0_0:4248, label_0_1:1859, label_1_0:1833, label_1_1:6868,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 23:31:37,222 epoch_num: 0, training process num: 1900/9849,  gate_loss: 0.5879,                                              
+ gate_acc:0.61, label_0_0:4360, label_0_1:1916, label_1_0:1902, label_1_1:7030,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 23:35:41,137 epoch_num: 0, training process num: 1950/9849,  gate_loss: 0.7134,                                              
+ gate_acc:0.61, label_0_0:4479, label_0_1:1975, label_1_0:1946, label_1_1:7208,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 23:39:41,248 epoch_num: 0, training process num: 2000/9849,  gate_loss: 0.7254,                                              
+ gate_acc:0.61, label_0_0:4628, label_0_1:2024, label_1_0:2001, label_1_1:7355,                                             
+ best_step:500, best_performce: 60.88 
+
+2024-07-14 23:39:41,249 
+ Start test ...  
+2024-07-14 23:39:51,518 testing process num: 0
+2024-07-14 23:55:58,119 testing process num: 200
+2024-07-15 00:12:17,236 testing process num: 400
+2024-07-15 00:28:45,250 testing process num: 600
+2024-07-15 00:44:56,646 testing process num: 800
+2024-07-15 01:00:59,153 testing process num: 1000
+2024-07-15 01:17:16,559 testing process num: 1200
+2024-07-15 01:33:17,298 testing process num: 1400
+2024-07-15 01:34:31,458 test: f1 52.16, EM : 60.95, old_doc_len:0.0, new_doc_len:0.0
+2024-07-15 01:34:31,458 cost_time: 114.83681926727294 , gate_res_list: 0.25, 2824 / 11313 
+ 
+2024-07-15 01:38:31,835 epoch_num: 0, training process num: 2050/9849,  gate_loss: 0.6956,                                              
+ gate_acc:0.61, label_0_0:4753, label_0_1:2088, label_1_0:2045, label_1_1:7522,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 01:42:34,044 epoch_num: 0, training process num: 2100/9849,  gate_loss: 0.598,                                              
+ gate_acc:0.61, label_0_0:4885, label_0_1:2150, label_1_0:2093, label_1_1:7680,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 01:46:38,108 epoch_num: 0, training process num: 2150/9849,  gate_loss: 0.5021,                                              
+ gate_acc:0.61, label_0_0:5006, label_0_1:2207, label_1_0:2133, label_1_1:7862,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 01:50:47,122 epoch_num: 0, training process num: 2200/9849,  gate_loss: 0.5548,                                              
+ gate_acc:0.61, label_0_0:5124, label_0_1:2274, label_1_0:2185, label_1_1:8025,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 01:54:52,115 epoch_num: 0, training process num: 2250/9849,  gate_loss: 0.9607,                                              
+ gate_acc:0.61, label_0_0:5250, label_0_1:2324, label_1_0:2242, label_1_1:8192,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 01:58:55,845 epoch_num: 0, training process num: 2300/9849,  gate_loss: 0.6421,                                              
+ gate_acc:0.61, label_0_0:5364, label_0_1:2391, label_1_0:2287, label_1_1:8366,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 02:03:05,459 epoch_num: 0, training process num: 2350/9849,  gate_loss: 0.5905,                                              
+ gate_acc:0.61, label_0_0:5490, label_0_1:2437, label_1_0:2342, label_1_1:8539,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 02:07:10,395 epoch_num: 0, training process num: 2400/9849,  gate_loss: 0.766,                                              
+ gate_acc:0.61, label_0_0:5590, label_0_1:2510, label_1_0:2381, label_1_1:8727,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 02:11:14,432 epoch_num: 0, training process num: 2450/9849,  gate_loss: 0.6626,                                              
+ gate_acc:0.61, label_0_0:5693, label_0_1:2567, label_1_0:2431, label_1_1:8917,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 02:15:19,008 epoch_num: 0, training process num: 2500/9849,  gate_loss: 0.5162,                                              
+ gate_acc:0.61, label_0_0:5779, label_0_1:2629, label_1_0:2488, label_1_1:9112,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 02:15:19,009 
+ Start test ...  
+2024-07-15 02:15:29,199 testing process num: 0
+2024-07-15 02:31:33,004 testing process num: 200
+2024-07-15 02:47:45,333 testing process num: 400
+2024-07-15 03:04:16,152 testing process num: 600
+2024-07-15 03:20:29,017 testing process num: 800
+2024-07-15 03:36:30,648 testing process num: 1000
+2024-07-15 03:52:46,458 testing process num: 1200
+2024-07-15 04:08:47,512 testing process num: 1400
+2024-07-15 04:10:01,766 test: f1 52.33, EM : 60.69, old_doc_len:0.0, new_doc_len:0.0
+2024-07-15 04:10:01,767 cost_time: 114.71262993017832 , gate_res_list: 0.14, 1555 / 11313 
+ 
+2024-07-15 04:14:03,668 epoch_num: 0, training process num: 2550/9849,  gate_loss: 0.7232,                                              
+ gate_acc:0.61, label_0_0:5877, label_0_1:2677, label_1_0:2531, label_1_1:9323,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 04:18:10,310 epoch_num: 0, training process num: 2600/9849,  gate_loss: 0.6138,                                              
+ gate_acc:0.62, label_0_0:5960, label_0_1:2717, label_1_0:2602, label_1_1:9529,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 04:22:14,326 epoch_num: 0, training process num: 2650/9849,  gate_loss: 0.7298,                                              
+ gate_acc:0.62, label_0_0:6048, label_0_1:2767, label_1_0:2661, label_1_1:9732,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 04:26:21,596 epoch_num: 0, training process num: 2700/9849,  gate_loss: 0.6081,                                              
+ gate_acc:0.62, label_0_0:6160, label_0_1:2813, label_1_0:2714, label_1_1:9921,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 04:30:28,424 epoch_num: 0, training process num: 2750/9849,  gate_loss: 0.6897,                                              
+ gate_acc:0.62, label_0_0:6297, label_0_1:2853, label_1_0:2766, label_1_1:10092,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 04:34:36,535 epoch_num: 0, training process num: 2800/9849,  gate_loss: 0.61,                                              
+ gate_acc:0.62, label_0_0:6405, label_0_1:2900, label_1_0:2816, label_1_1:10287,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 04:38:43,143 epoch_num: 0, training process num: 2850/9849,  gate_loss: 0.8107,                                              
+ gate_acc:0.62, label_0_0:6523, label_0_1:2962, label_1_0:2865, label_1_1:10458,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 04:42:51,692 epoch_num: 0, training process num: 2900/9849,  gate_loss: 0.7836,                                              
+ gate_acc:0.62, label_0_0:6646, label_0_1:3008, label_1_0:2906, label_1_1:10648,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 04:46:56,846 epoch_num: 0, training process num: 2950/9849,  gate_loss: 0.6698,                                              
+ gate_acc:0.62, label_0_0:6782, label_0_1:3053, label_1_0:2960, label_1_1:10813,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 04:51:01,799 epoch_num: 0, training process num: 3000/9849,  gate_loss: 0.6811,                                              
+ gate_acc:0.61, label_0_0:6933, label_0_1:3104, label_1_0:3009, label_1_1:10962,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 04:51:01,800 
+ Start test ...  
+2024-07-15 04:51:12,148 testing process num: 0
+2024-07-15 05:07:20,371 testing process num: 200
+2024-07-15 05:23:38,734 testing process num: 400
+2024-07-15 05:40:09,767 testing process num: 600
+2024-07-15 05:56:21,532 testing process num: 800
+2024-07-15 06:12:23,559 testing process num: 1000
+2024-07-15 06:28:41,377 testing process num: 1200
+2024-07-15 06:44:42,337 testing process num: 1400
+2024-07-15 06:45:56,675 test: f1 52.25, EM : 60.85, old_doc_len:0.0, new_doc_len:0.0
+2024-07-15 06:45:56,675 cost_time: 114.91458419561386 , gate_res_list: 0.19, 2141 / 11313 
+ 
+2024-07-15 06:50:06,162 epoch_num: 0, training process num: 3050/9849,  gate_loss: 0.6629,                                              
+ gate_acc:0.61, label_0_0:7096, label_0_1:3148, label_1_0:3054, label_1_1:11110,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 06:54:10,662 epoch_num: 0, training process num: 3100/9849,  gate_loss: 0.702,                                              
+ gate_acc:0.61, label_0_0:7226, label_0_1:3190, label_1_0:3096, label_1_1:11296,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 06:58:12,773 epoch_num: 0, training process num: 3150/9849,  gate_loss: 0.6368,                                              
+ gate_acc:0.61, label_0_0:7335, label_0_1:3239, label_1_0:3142, label_1_1:11492,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 07:02:11,364 epoch_num: 0, training process num: 3200/9849,  gate_loss: 0.6345,                                              
+ gate_acc:0.62, label_0_0:7421, label_0_1:3287, label_1_0:3192, label_1_1:11708,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 07:06:15,964 epoch_num: 0, training process num: 3250/9849,  gate_loss: 0.5309,                                              
+ gate_acc:0.62, label_0_0:7529, label_0_1:3332, label_1_0:3251, label_1_1:11896,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 07:10:18,496 epoch_num: 0, training process num: 3300/9849,  gate_loss: 0.4868,                                              
+ gate_acc:0.62, label_0_0:7604, label_0_1:3383, label_1_0:3299, label_1_1:12122,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 07:14:24,669 epoch_num: 0, training process num: 3350/9849,  gate_loss: 0.5545,                                              
+ gate_acc:0.62, label_0_0:7695, label_0_1:3433, label_1_0:3336, label_1_1:12344,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 07:18:36,384 epoch_num: 0, training process num: 3400/9849,  gate_loss: 0.4951,                                              
+ gate_acc:0.62, label_0_0:7821, label_0_1:3462, label_1_0:3377, label_1_1:12548,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 07:22:39,621 epoch_num: 0, training process num: 3450/9849,  gate_loss: 0.7453,                                              
+ gate_acc:0.62, label_0_0:7935, label_0_1:3501, label_1_0:3423, label_1_1:12749,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 07:26:48,682 epoch_num: 0, training process num: 3500/9849,  gate_loss: 0.5914,                                              
+ gate_acc:0.62, label_0_0:8036, label_0_1:3553, label_1_0:3473, label_1_1:12946,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 07:26:48,683 
+ Start test ...  
+2024-07-15 07:26:59,253 testing process num: 0
+2024-07-15 07:43:08,113 testing process num: 200
+2024-07-15 07:59:25,036 testing process num: 400
+2024-07-15 08:15:52,720 testing process num: 600
+2024-07-15 08:32:04,235 testing process num: 800
+2024-07-15 08:48:08,938 testing process num: 1000
+2024-07-15 09:04:28,424 testing process num: 1200
+2024-07-15 09:20:29,491 testing process num: 1400
+2024-07-15 09:21:43,661 test: f1 52.34, EM : 60.82, old_doc_len:0.0, new_doc_len:0.0
+2024-07-15 09:21:43,662 cost_time: 114.91630457639694 , gate_res_list: 0.15, 1729 / 11313 
+ 
+2024-07-15 09:25:54,422 epoch_num: 0, training process num: 3550/9849,  gate_loss: 0.6215,                                              
+ gate_acc:0.62, label_0_0:8139, label_0_1:3598, label_1_0:3529, label_1_1:13142,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 09:30:06,453 epoch_num: 0, training process num: 3600/9849,  gate_loss: 0.6402,                                              
+ gate_acc:0.62, label_0_0:8252, label_0_1:3651, label_1_0:3587, label_1_1:13318,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 09:34:13,555 epoch_num: 0, training process num: 3650/9849,  gate_loss: 0.7077,                                              
+ gate_acc:0.62, label_0_0:8377, label_0_1:3685, label_1_0:3637, label_1_1:13509,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 09:38:22,046 epoch_num: 0, training process num: 3700/9849,  gate_loss: 0.5407,                                              
+ gate_acc:0.62, label_0_0:8489, label_0_1:3722, label_1_0:3697, label_1_1:13700,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 09:42:33,438 epoch_num: 0, training process num: 3750/9849,  gate_loss: 0.629,                                              
+ gate_acc:0.62, label_0_0:8607, label_0_1:3766, label_1_0:3736, label_1_1:13899,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 09:46:44,741 epoch_num: 0, training process num: 3800/9849,  gate_loss: 0.6428,                                              
+ gate_acc:0.62, label_0_0:8714, label_0_1:3831, label_1_0:3789, label_1_1:14074,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 09:50:49,462 epoch_num: 0, training process num: 3850/9849,  gate_loss: 0.808,                                              
+ gate_acc:0.62, label_0_0:8819, label_0_1:3876, label_1_0:3841, label_1_1:14272,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 09:54:53,712 epoch_num: 0, training process num: 3900/9849,  gate_loss: 0.5331,                                              
+ gate_acc:0.62, label_0_0:8935, label_0_1:3919, label_1_0:3899, label_1_1:14455,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 09:59:01,757 epoch_num: 0, training process num: 3950/9849,  gate_loss: 0.6246,                                              
+ gate_acc:0.62, label_0_0:9045, label_0_1:3964, label_1_0:3959, label_1_1:14640,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 10:03:08,358 epoch_num: 0, training process num: 4000/9849,  gate_loss: 0.7566,                                              
+ gate_acc:0.62, label_0_0:9162, label_0_1:4014, label_1_0:4008, label_1_1:14824,                                             
+ best_step:2000, best_performce: 60.95 
+
+2024-07-15 10:03:08,359 
+ Start test ...  
+2024-07-15 10:03:18,851 testing process num: 0
+2024-07-15 10:19:31,222 testing process num: 200
+2024-07-15 10:35:45,789 testing process num: 400
+2024-07-15 10:52:14,249 testing process num: 600
+2024-07-15 11:08:26,098 testing process num: 800
