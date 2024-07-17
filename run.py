@@ -18,7 +18,7 @@ parser.add_argument("--loading_ckpt_path", type=str, default=None, help="loading
 parser.add_argument("--RA_method", type=str,  default="MI_RA", choices=["No_RA", "Only_RA", "Gate_RA", "MI_RA", "Gate_MI_RA"], help="RA_method")
 parser.add_argument("--LLM", type=str, default="meta-llama/Meta-Llama-3-8B-Instruct", help="[meta-llama/Meta-Llama-3-8B-Instruct, meta-llama/Llama-2-7b-chat-hf]")  
 # train
-parser.add_argument('--dataset', type=str, default="PopQA", choices=["USMLE", "MedMCQA", "HEADQA", "PopQA", "WebQA", "TriviaQA", "NQ"], help='train_file_path')
+parser.add_argument('--dataset', type=str, default="Hotpot", choices=["USMLE", "MedMCQA", "HEADQA", "PopQA", "Hotpot", "WebQA", "TriviaQA", "NQ"], help='train_file_path')
 parser.add_argument('--train_batch_size', type=int, default=8, help='train_batch_size')
 parser.add_argument('--test_batch_size', type=int, default=8, help='train_batch_size')
 parser.add_argument('--accumulation_steps', type=int, default=1, help='accumulation_steps')

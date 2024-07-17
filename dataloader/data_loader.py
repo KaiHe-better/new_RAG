@@ -2,10 +2,12 @@ from dataloader.usmle_loader import get_loader_USMLE
 from dataloader.ottqa_loader import get_loader_OTTQA
 from dataloader.medmcqa_loader import get_loader_MedMCQA
 from dataloader.mmlu_loader import get_loader_MMLU 
-from dataloader.headqa_loader import get_loader_HEADQA 
-from dataloader.popqa_loader import get_loader_PopQA 
-from dataloader.webqa_loader import get_loader_WebQA 
 
+
+from dataloader.popqa_loader import get_loader_PopQA 
+from dataloader.hotpot_loader import get_loader_Hotpot 
+
+from dataloader.webqa_loader import get_loader_WebQA 
 from dataloader.nq_loader import get_loader_NQ
 from dataloader.triviaqa_loader import get_loader_TriviaQA
 
@@ -60,6 +62,15 @@ def get_loader(args, tokenizer):
                          
         train_data_loader, dev_data_loader, test_data_loader, args = get_loader_PopQA(args, tokenizer, train_file_path, dev_file_path, test_file_path) 
 
+    elif args.dataset == "Hotpot":
+        train_file_path = "datasets/Downstream/Hotpot/hotpot_train_v1.1.json"
+        dev_file_path = "datasets/Downstream/Hotpot/hotpot_dev_fullwiki_v1.json"
+        test_file_path = "datasets/Downstream/Hotpot/hotpot_dev_fullwiki_v1.json"
+        # test_file_path = "datasets/Downstream/Hotpot/hotpot_test_fullwiki_v1.json"
+                         
+        train_data_loader, dev_data_loader, test_data_loader, args = get_loader_Hotpot(args, tokenizer, train_file_path, dev_file_path, test_file_path) 
+
+
     elif args.dataset == "WebQA":
         train_file_path = "datasets/Downstream/xRAG/WebQA/webq-train.jsonl"
         dev_file_path = "datasets/Downstream/xRAG/WebQA/webq-dev.jsonl"
@@ -69,10 +80,14 @@ def get_loader(args, tokenizer):
 
 
     elif args.dataset == "TriviaQA":
-        train_file_path = "datasets/Downstream/xRAG/TriviaQA/tqa-train.jsonl"
-        dev_file_path = "datasets/Downstream/xRAG/TriviaQA/tqa-dev.jsonl"
-        test_file_path = "datasets/Downstream/xRAG/TriviaQA/tqa-test.jsonl"
-                         
+        # train_file_path = "datasets/Downstream/xRAG/TriviaQA/tqa-train.jsonl"
+        # dev_file_path = "datasets/Downstream/xRAG/TriviaQA/tqa-dev.jsonl"
+        # test_file_path = "datasets/Downstream/xRAG/TriviaQA/tqa-test.jsonl"
+        
+        train_file_path = "datasets/Downstream/Triviaqa/triviaqa-unfiltered/unfiltered-web-train.json"
+        dev_file_path = "datasets/Downstream/Triviaqa/triviaqa-unfiltered/unfiltered-web-dev.json"
+        test_file_path = "datasets/Downstream/Triviaqa/triviaqa-unfiltered/unfiltered-web-dev.json"
+
         train_data_loader, dev_data_loader, test_data_loader, args = get_loader_TriviaQA(args, tokenizer, train_file_path, dev_file_path, test_file_path) 
 
     elif args.dataset == "NQ":
