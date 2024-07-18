@@ -51,8 +51,8 @@ class My_gate(nn.Module):
             pred = pred.split(". \n")[0] 
             general_pred = general_pred.split(". \n")[0] 
 
-            general_batch_label_list.append(compute_exact(label, general_pred)) 
-            batch_label_list.append(compute_exact(label, pred)) 
+            general_batch_label_list.append(compute_exact(label, general_pred)[1]) 
+            batch_label_list.append(compute_exact(label, pred)[1]) 
 
 
         new_label_list = []

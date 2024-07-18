@@ -13,8 +13,10 @@ class TriviaQA(Dataset):
         self.args = args
         self.LLM_tokenizer = tokenizer
         
+        self.data = []
         with open(data_file, 'r') as file:
-            self.data = json.load(file)["Data"]
+            for i in file:
+                self.data.append(json.loads(i))
 
     def __len__(self):
         return len(self.data)
@@ -23,8 +25,8 @@ class TriviaQA(Dataset):
     def __getitem__(self, index):
 
         data_item = self.data[index]
-        question = data_item['Question']
-        answs = data_item["Answer"]["Aliases"] 
+        question = data_item['question']
+        answs = data_item['answer']
 
         label_list = []
 
