@@ -175,7 +175,7 @@ def main(args):
         # trainer.train_proc(train_data_loader, dev_data_loader)
         trainer.train_proc(train_data_loader, test_data_loader)
     elif args.RA_method in ["No_RA", "Only_RA"]:
-        test_performce, all_test_predictions, all_test_input_list, all_test_answers = trainer.test_proc(test_data_loader)  
+        test_performce, test_performce_in, all_test_predictions, all_test_input_list, all_test_answers = trainer.test_proc(test_data_loader)  
 
         test_result_logger = get_logger(args.dir_path, "test_result")
         for batch_pred, batch_input, batch_answer in zip(all_test_predictions, all_test_input_list, all_test_answers):
