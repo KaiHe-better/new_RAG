@@ -290,7 +290,9 @@ class My_Trainer:
         total_batch = len(train_data_loader)
         step_num = -1
         best_step = 0
+        best_step_in = 0
         best_performce = 0
+        best_performce_in = 0
         eval_num = 0
         for epoch_num in range(99999999):
             label_0_0, label_0_1, label_1_0, label_1_1 = 0, 0, 0, 0
@@ -319,7 +321,8 @@ class My_Trainer:
                     if tmp_step% 50==0:
                         self.print_logger.info(f"epoch_num: {epoch_num}, training process num: {step_num}/{total_batch},  gate_loss: {round(float(gate_loss), 4)},  \
                                             \n gate_acc:{gate_acc}, label_0_0:{label_0_0}, label_0_1:{label_0_1}, label_1_0:{label_1_0}, label_1_1:{label_1_1}, \
-                                            \n best_step:{best_step}, best_performce: {best_performce} \n")
+                                            \n\n best_step:{best_step}, best_performce: {best_performce}, \
+                                             \n best_step_in:{best_step_in}, best_performce_in: {best_performce_in} \n ")
                     
                 elif self.args.RA_method == "MI_RA":
                     loss_list, _, _, _, _, _, _, old_doc_len, new_doc_len, _, _ \
@@ -329,7 +332,8 @@ class My_Trainer:
                     if tmp_step%50==0:
                         self.print_logger.info(f"epoch_num: {epoch_num}, training process num: {step_num}/{total_batch},  kl_soft_loss: {round(float(loss_list[1]), 4)}, kl_hard_loss: {round(float(loss_list[2]), 4)}, len_loss: {round(float(loss_list[0]), 4)}, \
                                             \n old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, \
-                                            \n best_step:{best_step}, best_performce: {best_performce} \n")
+                                            \n\n best_step:{best_step}, best_performce: {best_performce}, \
+                                        \n best_step_in:{best_step_in}, best_performce_in: {best_performce_in} \n ")
                     
                 elif self.args.RA_method == "Gate_MI_RA":
                     loss_list, gate_loss, gate_acc, old_doc_len, new_doc_len, _, _, _, _, _, _, _, _, _, \
@@ -342,7 +346,8 @@ class My_Trainer:
                     if tmp_step%50==0:
                         self.print_logger.info(f"epoch_num: {epoch_num}, training process num: {step_num}/{total_batch},  gate_loss: {round(float(gate_loss), 4)}, kl_soft_loss: {round(float(loss_list[1]), 4)}, kl_hard_loss: {round(float(loss_list[2]), 4)}, len_loss: {round(float(loss_list[0]), 4)}, \
                                         \n gate_acc:{gate_acc}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, label_0_0:{label_0_0}, label_0_1:{label_0_1}, label_1_0:{label_1_0}, label_1_1:{label_1_1}, \
-                                        \n best_step:{best_step}, best_performce: {best_performce} \n")
+                                        \n\n best_step:{best_step}, best_performce: {best_performce}, \
+                                        \n best_step_in:{best_step_in}, best_performce_in: {best_performce_in} \n ")
         
                 else:
                     raise Exception("no need train !")
@@ -363,25 +368,29 @@ class My_Trainer:
                         # if self.args.RA_method in ["Gate_RA", "Gate_MI_RA"]:
                         #     self.my_gate.eval()
 
-                        test_performce, all_test_predictions, all_test_input_list, all_test_answers = self.test_proc(test_data_loader, step_num, break_cnt=break_cnt)
+                        test_performce, test_performce_in, all_test_predictions, all_test_input_list, all_test_answers = self.test_proc(test_data_loader, step_num, break_cnt=break_cnt)
 
                         # if self.args.RA_method in ["Gate_MI_RA", "MI_RA"]:
                         #     self.MI_learner.train()
                         # if self.args.RA_method in ["Gate_RA", "Gate_MI_RA"]:
                         #     self.my_gate.train()
- 
+
                     if test_performce>best_performce:
                         best_performce = test_performce
                         best_step = step_num
+
+                        with open(self.args.dir_path+'/MI_' +str(best_performce)+'.txt', "w") as f:
+                            f.writelines(" ")
+
+                    if test_performce_in>best_performce_in:
+                        best_performce_in = test_performce_in
+                        best_step_in = step_num
 
                         self.test_result_logger = get_logger(self.args.dir_path, "test_result")
                         for batch_pred, batch_input, batch_answer in zip(all_test_predictions, all_test_input_list, all_test_answers):
                             self.recored_res(batch_pred, batch_input, batch_answer, training_flag=False, record_flag=True)     
 
-                        # if step_num>10:
-                        #     torch.save(self.MI_learner.state_dict(), self.args.dir_path+'/MI_' +str(best_performce)+'.pkl') 
-
-                        with open(self.args.dir_path+'/MI_' +str(best_performce)+'.txt', "w") as f:
+                        with open(self.args.dir_path+'/in_MI_' +str(best_performce)+'.txt', "w") as f:
                             f.writelines(" ")
 
                 if step_num == self.args.total_step :
@@ -519,9 +528,10 @@ class My_Trainer:
             self.args.print_logger.info(f"test: acc {test_acc}, f1 {test_f1}, precision {test_precision}, recall {test_recall}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, hallucination: {all_hallucination} ")
             record_performance = test_acc
         else:
-            test_f1, test_EM = F_EM(all_test_answers, all_test_predictions)
-            self.args.print_logger.info(f"test: f1 {test_f1}, EM : {test_EM}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}")
+            test_f1, test_EM, test_EM_in = F_EM(all_test_answers, all_test_predictions)
+            self.args.print_logger.info(f"test: f1 {test_f1}, EM : {test_EM}/{test_EM_in}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}")
             record_performance = test_EM
+            record_performance_in =  test_EM_in
 
         cost_time  = (time.time() - start_time)/60
         if self.args.RA_method in ["Gate_RA", "Gate_MI_RA"]:
@@ -534,7 +544,7 @@ class My_Trainer:
         # self.writer.add_scalar('Performance/test/recall', test_recall, eval_num )
         # self.writer.add_scalar('Performance/test/f1', test_f1, eval_num )
 
-        return record_performance, all_test_predictions, all_test_input_list, all_test_answers
+        return record_performance, record_performance_in, all_test_predictions, all_test_input_list, all_test_answers
          
     def pipeline_inference(self, used_prompt, input_dict, label, batch_answer, training_flag=False, record_flag=True):
         if self.args.LLM == "chatGPT":

@@ -474,6 +474,7 @@ nohup  python run.py --ID TriviaQA_4  --gpu 7 --RA_method Gate_MI_RA    --datase
 
 
 
+nohup  python run.py --ID Hotpot_1  --gpu 6 --RA_method Only_RA --dataset Hotpot   >/dev/null 2>&1 &
 
 
 

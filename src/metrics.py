@@ -47,14 +47,17 @@ def get_tokens(  s):
     return  normalize_answer(s).split()
 
 def compute_exact( a_gold_list, a_pred):
-    res_list = []
+    final_res = 0
+    final_res_in = 0
     a_pred =  normalize_answer(a_pred)
     for a_gold in a_gold_list:
-        # res = int(a_pred ==  normalize_answer(a_gold) )
-        res = int(normalize_answer(a_gold) in a_pred)
+        res = int(a_pred ==  normalize_answer(a_gold) )
+        res_in = int(normalize_answer(a_gold) in a_pred)
         if res ==1:
-            return 1
-    return res
+            final_res= 1
+        if res_in ==1:
+            final_res_in= 1
+    return final_res, final_res_in
 
 def compute_f1(  a_gold_list, a_pred):
     f1_list = []
@@ -84,19 +87,22 @@ def F_EM(  reference, examples):
     reference = label,  examples = preds
     """
     exact_scores_list = []
+    exact_scores_in_list = []
     f1_scores_list = []
     
     for pred, label in zip(examples, reference):
         pred = pred.split(". \n")[0] 
-        exact_scores = compute_exact(label, pred)
+        exact_scores, exact_scores_in = compute_exact(label, pred)
         f1_scores = compute_f1(label, pred) 
         
         exact_scores_list.append(exact_scores)
+        exact_scores_in_list.append(exact_scores_in)
         f1_scores_list.append(f1_scores)
 
     f1 = round(sum(f1_scores_list)/len(f1_scores_list)*100, 2)
     exact_scores = round(sum(exact_scores_list)/len(exact_scores_list)*100, 2)
-    return f1, exact_scores
+    exact_scores_in = round(sum(exact_scores_in_list)/len(exact_scores_in_list)*100, 2)
+    return f1, exact_scores, exact_scores_in
 
 
 
