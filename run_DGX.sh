@@ -484,5 +484,3 @@ nohup  python run.py --ID TriviaQA_2  --gpu 6 --RA_method MI_RA   --dataset Triv
 nohup  python run.py --ID TriviaQA_3  --gpu 6 --RA_method Gate_RA   --dataset TriviaQA --gate_weight_0 2.5 --gate_weight_1 1  >/dev/null 2>&1 &
 nohup  python run.py --ID TriviaQA_4  --gpu 7 --RA_method Gate_MI_RA    --dataset TriviaQA --gate_weight_0 2 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
 
-
-1
