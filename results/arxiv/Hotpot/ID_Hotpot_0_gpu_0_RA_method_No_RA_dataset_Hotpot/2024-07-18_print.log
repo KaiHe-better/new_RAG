@@ -1,0 +1,81 @@
+2024-07-18 13:05:46,746 **************** Configuration **************** 
+2024-07-18 13:05:46,747 gpu: 0
+2024-07-18 13:05:46,747 test_code_flag: False
+2024-07-18 13:05:46,747 ID: Hotpot_0
+2024-07-18 13:05:46,747 seed: 42
+2024-07-18 13:05:46,747 num_workers: 48
+2024-07-18 13:05:46,747 loading_ckpt_path: None
+2024-07-18 13:05:46,747 RA_method: No_RA
+2024-07-18 13:05:46,747 LLM: meta-llama/Meta-Llama-3-8B-Instruct
+2024-07-18 13:05:46,747 dataset: Hotpot
+2024-07-18 13:05:46,747 train_batch_size: 8
+2024-07-18 13:05:46,747 test_batch_size: 8
+2024-07-18 13:05:46,747 accumulation_steps: 1
+2024-07-18 13:05:46,747 demonstration: False
+2024-07-18 13:05:46,747 demons_cnt: 1
+2024-07-18 13:05:46,747 l2_coef: 0
+2024-07-18 13:05:46,747 train_eval: 500
+2024-07-18 13:05:46,747 total_step: 25000
+2024-07-18 13:05:46,747 gate_weight_0: 1
+2024-07-18 13:05:46,747 gate_weight_1: 2
+2024-07-18 13:05:46,747 lr: 0.0001
+2024-07-18 13:05:46,747 init_lr_num: 500
+2024-07-18 13:05:46,747 lr_decay: 0.9
+2024-07-18 13:05:46,747 lr_decay_interval: 400
+2024-07-18 13:05:46,747 num_layers: 1
+2024-07-18 13:05:46,747 d_model: 768
+2024-07-18 13:05:46,747 dim_feedforward: 2048
+2024-07-18 13:05:46,747 layer_norm_eps: 1e-05
+2024-07-18 13:05:46,747 nhead: 8
+2024-07-18 13:05:46,747 dropout: 0.1
+2024-07-18 13:05:46,747 loss_list: kl_soft+kl_hard
+2024-07-18 13:05:46,747 len_penalty_weight: 10
+2024-07-18 13:05:46,747 soft_weight: 1
+2024-07-18 13:05:46,747 hard_weight: 1
+2024-07-18 13:05:46,747 do_sample: True
+2024-07-18 13:05:46,747 temperature: 1e-09
+2024-07-18 13:05:46,747 top_p: 0
+2024-07-18 13:05:46,747 max_new_tokens: 40
+2024-07-18 13:05:46,747 infer_add_gold_retrieval: False
+2024-07-18 13:05:46,747 multi_query: False
+2024-07-18 13:05:46,747 rewrite_num: 1
+2024-07-18 13:05:46,747 chunk_size: 512
+2024-07-18 13:05:46,747 chunk_overlap: 20
+2024-07-18 13:05:46,747 if_hierarchical_retrieval: True
+2024-07-18 13:05:46,747 hierarchical_ratio: 1.4
+2024-07-18 13:05:46,747 quantile_num: 1
+2024-07-18 13:05:46,747 n_docs: 10
+2024-07-18 13:05:46,747 model_name_or_path: facebook/contriever-msmarco
+2024-07-18 13:05:46,747 question_maxlength: 512
+2024-07-18 13:05:46,747 passages: datasets/Retrieval_corpus/enwiki_2020_dec_intro_only.jsonl
+2024-07-18 13:05:46,747 passages_embeddings: datasets/Retrieval_corpus/enwiki_dec_2020_contriever_intro/*
+2024-07-18 13:05:46,747 lowercase: False
+2024-07-18 13:05:46,747 normalize_text: False
+2024-07-18 13:05:46,747 save_or_load_index: False
+2024-07-18 13:05:46,747 no_fp16: True
+2024-07-18 13:05:46,747 projection_size: 768
+2024-07-18 13:05:46,747 n_subquantizers: 0
+2024-07-18 13:05:46,747 n_bits: 8
+2024-07-18 13:05:46,747 indexing_batch_size: 30000000
+2024-07-18 13:05:46,748 device: cuda
+2024-07-18 13:05:46,748 prompt_file: prompts/Hotpot.json
+2024-07-18 13:05:46,748 dir_path: ./results/output/ID_Hotpot_0_gpu_0_RA_method_No_RA_dataset_Hotpot
+2024-07-18 13:05:46,748 print_logger: <Logger print (DEBUG)>
+2024-07-18 13:05:46,748 **************** Configuration **************** 
+
+
+2024-07-18 13:05:46,748 Loading meta-llama/Meta-Llama-3-8B-Instruct in torch.bfloat16...
+2024-07-18 13:05:53,549 Finish loading in 0.11 mins.
+2024-07-18 13:05:54,133 Loading data ...
+2024-07-18 13:05:59,510 prompt_format: general-prompt 
+
+2024-07-18 13:05:59,511 
+ Start test ...  
+2024-07-18 13:06:01,381 testing process num: 0
+2024-07-18 13:08:41,995 testing process num: 200
+2024-07-18 13:11:21,426 testing process num: 400
+2024-07-18 13:14:05,284 testing process num: 600
+2024-07-18 13:16:44,145 testing process num: 800
+2024-07-18 13:18:23,456 test: f1 22.38, EM : 13.33/25.01, old_doc_len:0.0, new_doc_len:0.0
+2024-07-18 13:18:23,457 cost_time: 12.399094672997792  
+ 

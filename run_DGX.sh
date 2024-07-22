@@ -201,13 +201,13 @@ nohup  python run.py --ID USMLE_1 --gpu 5 --RA_method Gate_MI_RA --dataset USMLE
 
 
 # 关掉了train 和 eval
-nohup  python run.py --ID USMLE_0 --gpu 4 --RA_method Gate_MI_RA --dataset USMLE --quantile_num 1 --if_hierarchical_retrieval True --train_batch_size 8 --test_batch_size 8   >/dev/null 2>&1 &
-2024-06-26 15:37:10,720 test: acc 66.77, f1 66.51, precision 66.75, recall 66.7, old_doc_len:2022.52, new_doc_len:1139.97, hallucination: 2.12 
- best_step:32000
+# nohup  python run.py --ID USMLE_0 --gpu 4 --RA_method Gate_MI_RA --dataset USMLE --quantile_num 1 --if_hierarchical_retrieval True --train_batch_size 8 --test_batch_size 8   >/dev/null 2>&1 &
+# 2024-06-26 15:37:10,720 test: acc 66.77, f1 66.51, precision 66.75, recall 66.7, old_doc_len:2022.52, new_doc_len:1139.97, hallucination: 2.12 
+#  best_step:32000
 
-nohup  python run.py --ID USMLE_1 --gpu 5 --RA_method Gate_MI_RA --dataset USMLE --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 8 --test_batch_size 8  >/dev/null 2>&1 &
-2024-06-26 11:57:36,064 test: acc 67.09, f1 66.88, precision 67.14, recall 66.99, old_doc_len:2022.52, new_doc_len:1197.32, hallucination: 1.65 
- best_step:32000
+# nohup  python run.py --ID USMLE_1 --gpu 5 --RA_method Gate_MI_RA --dataset USMLE --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 8 --test_batch_size 8  >/dev/null 2>&1 &
+# 2024-06-26 11:57:36,064 test: acc 67.09, f1 66.88, precision 67.14, recall 66.99, old_doc_len:2022.52, new_doc_len:1197.32, hallucination: 1.65 
+#  best_step:32000
 
 # # --if_hierarchical_retrieval False
 # nohup  python run.py --ID USMLE_2 --gpu 6 --RA_method Gate_MI_RA --dataset USMLE --quantile_num 1 --train_batch_size 8 --test_batch_size 8  >/dev/null 2>&1 &
@@ -453,28 +453,42 @@ nohup  python run.py --ID NQ_4  --gpu 7 --RA_method Gate_MI_RA    --dataset NQ -
 ===================================================================================================================================================================================================
 # hotpot 
 
-nohup  python run.py --ID Hotpot_0  --gpu 2 --RA_method No_RA   --dataset Hotpot   >/dev/null 2>&1 &
-nohup  python run.py --ID Hotpot_1  --gpu 3 --RA_method Only_RA --dataset Hotpot   >/dev/null 2>&1 &
+nohup  python run.py --ID Hotpot_0  --gpu 0 --RA_method No_RA   --dataset Hotpot   >/dev/null 2>&1 &
+2024-07-18 13:18:23,456 test: f1 22.38, EM : 13.33/25.01, old_doc_len:0.0, new_doc_len:0.0
 
-nohup  python run.py --ID Hotpot_2  --gpu 6 --RA_method MI_RA   --dataset Hotpot --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
-nohup  python run.py --ID Hotpot_3  --gpu 6 --RA_method Gate_RA   --dataset Hotpot --gate_weight_0 2.5 --gate_weight_1 1  >/dev/null 2>&1 &
-nohup  python run.py --ID Hotpot_4  --gpu 7 --RA_method Gate_MI_RA    --dataset Hotpot --gate_weight_0 2 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+nohup  python run.py --ID Hotpot_1  --gpu 4 --RA_method Only_RA --dataset Hotpot   --test_batch_size 7  >/dev/null 2>&1 &
+2024-07-22 11:04:56,069 test: f1 30.12, EM : 18.37/37.49, old_doc_len:0.0, new_doc_len:0.0
+
+
+
+nohup  python run.py --ID Hotpot_2  --gpu 5 --RA_method MI_RA   --dataset Hotpot --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 --train_batch_size 7 --test_batch_size 7  >/dev/null 2>&1 &
+
+nohup  python run.py --ID Hotpot_3  --gpu 6 --RA_method Gate_RA   --dataset Hotpot --gate_weight_0 1 --gate_weight_1 1 --train_batch_size 7 --test_batch_size 7  >/dev/null 2>&1 &
+
+nohup  python run.py --ID Hotpot_4  --gpu 7 --RA_method Gate_MI_RA    --dataset Hotpot --gate_weight_0 1 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 --train_batch_size 7 --test_batch_size 7  >/dev/null 2>&1 &
 
 
 ===================================================================================================================================================================================================
 # new TriviaQA
 
 nohup  python run.py --ID TriviaQA_0  --gpu 4 --RA_method No_RA   --dataset TriviaQA   >/dev/null 2>&1 &
+2024-07-18 10:39:54,659 test: f1 51.81, EM : 41.8/59.3, old_doc_len:0.0, new_doc_len:0.0
+
 nohup  python run.py --ID TriviaQA_1  --gpu 4 --RA_method Only_RA --dataset TriviaQA   >/dev/null 2>&1 &
-
-nohup  python run.py --ID TriviaQA_2  --gpu 6 --RA_method MI_RA   --dataset TriviaQA --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
-nohup  python run.py --ID TriviaQA_3  --gpu 6 --RA_method Gate_RA   --dataset TriviaQA --gate_weight_0 2.5 --gate_weight_1 1  >/dev/null 2>&1 &
-nohup  python run.py --ID TriviaQA_4  --gpu 7 --RA_method Gate_MI_RA    --dataset TriviaQA --gate_weight_0 2 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+2024-07-18 11:39:57,230 test: f1 50.31, EM : 40.0/59.45, old_doc_len:0.0, new_doc_len:0.0
 
 
 
 
-nohup  python run.py --ID Hotpot_1  --gpu 6 --RA_method Only_RA --dataset Hotpot   >/dev/null 2>&1 &
+nohup  python run.py --ID TriviaQA_2  --gpu 0 --RA_method MI_RA   --dataset TriviaQA --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 --train_batch_size 7 --test_batch_size 7  >/dev/null 2>&1 &
+
+nohup  python run.py --ID TriviaQA_3  --gpu 1 --RA_method Gate_RA   --dataset TriviaQA --gate_weight_0 1 --gate_weight_1 1   --train_batch_size 7 --test_batch_size 7  >/dev/null 2>&1 &
+
+nohup  python run.py --ID TriviaQA_4  --gpu 2 --RA_method Gate_MI_RA    --dataset TriviaQA --gate_weight_0 1 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1   --train_batch_size 7 --test_batch_size 7  >/dev/null 2>&1 &
+
+
+
+
 
 
 
