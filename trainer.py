@@ -390,7 +390,7 @@ class My_Trainer:
                         for batch_pred, batch_input, batch_answer in zip(all_test_predictions, all_test_input_list, all_test_answers):
                             self.recored_res(batch_pred, batch_input, batch_answer, training_flag=False, record_flag=True)     
 
-                        with open(self.args.dir_path+'/in_MI_' +str(best_performce)+'.txt', "w") as f:
+                        with open(self.args.dir_path+'/in_MI_' +str(best_performce_in)+'.txt', "w") as f:
                             f.writelines(" ")
 
                 if step_num == self.args.total_step :
