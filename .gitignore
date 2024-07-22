@@ -1,0 +1,9 @@
+checkpoint/orginal_model/dragon+/*
+results/output/*
+results/saved/*
+*.pyc
+datasets/*
+.vscode
+**/__pycache__/
+__pycache__
+.env
