@@ -1,7 +1,7 @@
 from dataloader.usmle_loader import get_loader_USMLE
 from dataloader.ottqa_loader import get_loader_OTTQA
 from dataloader.medmcqa_loader import get_loader_MedMCQA
-from dataloader.mmlu_loader import get_loader_MMLU 
+from dataloader.headqa_loader import get_loader_HEADQA 
 
 
 from dataloader.popqa_loader import get_loader_PopQA 

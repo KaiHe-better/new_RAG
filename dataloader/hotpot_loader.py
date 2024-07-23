@@ -32,7 +32,7 @@ class Hotpot(Dataset):
         label_list = []
 
         for index, answ in enumerate(answs):
-            label = self.LLM_tokenizer(answ, add_special_tokens=False)["input_ids"]
+            label = self.LLM_tokenizer(answ, add_special_tokens=False)["input_ids"][:self.args.max_new_tokens]
             label_list.append(label)
             if index==0:
                 one_hot_label = torch.zeros(self.LLM_tokenizer.vocab_size)
