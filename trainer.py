@@ -609,7 +609,7 @@ class My_Trainer:
         batch_pred = []
         batch_hallucination_cnt = []
 
-        inputs = self.LLM_tokenizer(my_input_list, return_tensors="pt", padding=True, max_length=self.args.question_max_length,  truncation=True).to(self.args.device)
+        inputs = self.LLM_tokenizer(my_input_list, return_tensors="pt", padding=True).to(self.args.device)
         generation_config = GenerationConfig(
             max_new_tokens=self.args.max_new_tokens,  
             pad_token_id = self.LLM_tokenizer.eos_token_id,

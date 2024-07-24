@@ -472,7 +472,7 @@ nohup  python run.py --ID NQ_5  --gpu 2 --RA_method No_RA      --dataset NQ --ma
 2024-07-24 10:35:16,204 test: f1 24.62, EM : 14.43/33.24, old_doc_len:0.0, new_doc_len:0.0
 
 
-nohup  python run.py --ID NQ_6  --gpu 3 --RA_method Only_RA    --dataset NQ --max_new_tokens 10 >/dev/null 2>&1 &
+nohup  python run.py --ID NQ_6  --gpu 5 --RA_method Only_RA    --dataset NQ --max_new_tokens 10 >/dev/null 2>&1 &
 nohup  python run.py --ID NQ_2  --gpu 2 --RA_method MI_RA      --dataset NQ --max_new_tokens 10 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 --max_new_tokens 10 >/dev/null 2>&1 &
 nohup  python run.py --ID NQ_3  --gpu 3 --RA_method Gate_RA    --dataset NQ --max_new_tokens 10 --gate_weight_0 2  --gate_weight_1 1 --max_new_tokens 10 >/dev/null 2>&1 &
 nohup  python run.py --ID NQ_4  --gpu 4 --RA_method Gate_MI_RA --dataset NQ --max_new_tokens 10 --gate_weight_0 2  --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  --max_new_tokens 10 >/dev/null 2>&1 &
@@ -499,9 +499,9 @@ nohup  python run.py --ID Hotpot_3  --gpu 6 --RA_method Gate_RA    --dataset Hot
 
 
 
-nohup  python run.py --ID Hotpot_2  --gpu 5 --RA_method MI_RA      --dataset Hotpot --max_new_tokens 30 --train_batch_size 4 --test_batch_size 4 --quantile_num 0.8  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
-nohup  python run.py --ID Hotpot_3  --gpu 6 --RA_method Gate_RA    --dataset Hotpot --max_new_tokens 30 --train_batch_size 4 --test_batch_size 4 --gate_weight_0 1.5   --gate_weight_1 1  >/dev/null 2>&1 &
-nohup  python run.py --ID Hotpot_4  --gpu 7 --RA_method Gate_MI_RA --dataset Hotpot --max_new_tokens 30 --train_batch_size 4 --test_batch_size 4 --gate_weight_0 1.5   --gate_weight_1 1 --quantile_num 0.8  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 >/dev/null 2>&1 &
+nohup  python run.py --ID Hotpot_2  --gpu 5 --RA_method MI_RA      --dataset Hotpot --max_new_tokens 30 --train_batch_size 6 --test_batch_size 6 --quantile_num 0.8  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+nohup  python run.py --ID Hotpot_3  --gpu 6 --RA_method Gate_RA    --dataset Hotpot --max_new_tokens 30 --train_batch_size 6 --test_batch_size 6 --gate_weight_0 1.5   --gate_weight_1 1  >/dev/null 2>&1 &
+nohup  python run.py --ID Hotpot_4  --gpu 7 --RA_method Gate_MI_RA --dataset Hotpot --max_new_tokens 30 --train_batch_size 6 --test_batch_size 6 --gate_weight_0 1.5   --gate_weight_1 1 --quantile_num 0.8  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 >/dev/null 2>&1 &
 
 
 
