@@ -9,7 +9,7 @@ parser = argparse.ArgumentParser()
 # system settings
 # parser.add_argument("--config", type=str, default="llama3-8b_USMLE_MI_RA.yaml", help="Path to the config file")
 parser.add_argument('--gpu', default="6", type=str, help='gpu device numbers')
-parser.add_argument("--test_code_flag", type=bool, default=False, help="if retrieval augmented")
+parser.add_argument("--test_code_flag", type=bool, default=True, help="if retrieval augmented")
 parser.add_argument('--ID', type=str, default='0', help='run ID')
 parser.add_argument('--seed', default=42, help='trandom seed')
 parser.add_argument('--num_workers', default=48, type=int, help='data_loader_work')
@@ -63,7 +63,7 @@ parser.add_argument('--quantile_num', type=float, default=1, help='quantile_num,
 # retriever
 parser.add_argument("--n_docs", type=int, default=10, help="Number of documents to retrieve per questions")
 parser.add_argument("--model_name_or_path", type=str,  default="facebook/contriever-msmarco", choices=["facebook/dragon-plus-query-encoder", "facebook/contriever-msmarco"], help="triever to use")
-parser.add_argument("--question_maxlength", type=int, default=512, help="Maximum number of tokens in a question")
+parser.add_argument("--question_max_length", type=int, default=512, help="Maximum number of tokens in a question")
 parser.add_argument("--passages", type=str, default="datasets/Retrieval_corpus/enwiki_2020_dec_intro_only.jsonl", help="Path to passages (.tsv file)")
 parser.add_argument("--passages_embeddings", type=str, default="datasets/Retrieval_corpus/enwiki_dec_2020_contriever_intro/*", help="Glob path to encoded passages")
 

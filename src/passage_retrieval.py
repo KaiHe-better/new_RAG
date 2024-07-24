@@ -47,7 +47,7 @@ class Retriever:
             encoded_batch = self.tokenizer.batch_encode_plus(
                 batch_question,
                 return_tensors="pt",
-                max_length=args.question_maxlength,
+                max_length=args.question_max_length,
                 padding=True,
                 truncation=True,
             )
