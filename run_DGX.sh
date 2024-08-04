@@ -626,9 +626,11 @@ nohup  python run.py --ID PubmedQA_1  --gpu 4 --RA_method Only_RA --dataset Pubm
 nohup  python run.py --ID USMLE_0 --gpu 4 --RA_method No_RA      --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 10    >/dev/null 2>&1 &
 nohup  python run.py --ID USMLE_1 --gpu 5 --RA_method Only_RA    --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 10   >/dev/null 2>&1 &
 
-nohup  python run.py --ID USMLE_2 --gpu 0 --RA_method Gate_RA    --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard  --quantile_num 0.95 --train_batch_size 8 --test_batch_size 8  --gate_weight_1 2 >/dev/null 2>&1 &
-nohup  python run.py --ID USMLE_3 --gpu 1 --RA_method Gate_MI_RA --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 10 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 8 --test_batch_size 8 --gate_weight_1 2 >/dev/null 2>&1 &
-·
+nohup  python run.py --ID USMLE_2 --gpu 3 --RA_method Gate_RA    --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard  --quantile_num 0.95 --train_batch_size 4 --test_batch_size 4  --gate_weight_1 2 >/dev/null 2>&1 &
+nohup  python run.py --ID USMLE_3 --gpu 4 --RA_method Gate_MI_RA --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 10 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 4 --test_batch_size 4 --gate_weight_1 2 >/dev/null 2>&1 &
+
+nohup  python run.py --ID USMLE_2-1 --gpu 5 --RA_method Gate_RA    --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 5  --loss_list kl_soft+kl_hard  --quantile_num 0.95 --train_batch_size 8 --test_batch_size 8  --gate_weight_1 2 >/dev/null 2>&1 &
+nohup  python run.py --ID USMLE_3-1 --gpu 6 --RA_method Gate_MI_RA --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 5 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 8 --test_batch_size 8 --gate_weight_1 2 >/dev/null 2>&1 &
 
 
 
@@ -636,7 +638,7 @@ nohup  python run.py --ID MedMCQA_0 --gpu 4  --RA_method No_RA      --dataset Me
 nohup  python run.py --ID MedMCQA_1 --gpu 5  --RA_method Only_RA    --dataset MedMCQA  --LLM meta-llama/Llama-2-7b-chat-hf >/dev/null 2>&1 &
 
 nohup  python run.py --ID MedMCQA_2 --gpu 5  --RA_method Gate_RA    --dataset MedMCQA  --LLM meta-llama/Llama-2-7b-chat-hf --quantile_num 0.80 --gate_weight_1 2 >/dev/null 2>&1 &
-nohup  python run.py --ID MedMCQA_3 --gpu 7  --RA_method Gate_MI_RA --dataset MedMCQA  --LLM meta-llama/Llama-2-7b-chat-hf --quantile_num 0.80 --gate_weight_1 2 >/dev/null 2>&1 &
+nohup  python run.py --ID MedMCQA_3 --gpu 6  --RA_method Gate_MI_RA --dataset MedMCQA  --LLM meta-llama/Llama-2-7b-chat-hf --quantile_num 0.80 --gate_weight_1 2 >/dev/null 2>&1 &
 
 
 
@@ -644,6 +646,6 @@ nohup  python run.py --ID MedMCQA_3 --gpu 7  --RA_method Gate_MI_RA --dataset Me
 nohup  python run.py --ID HEADQA_0  --gpu 4 --RA_method No_RA --dataset HEADQA  --LLM meta-llama/Llama-2-7b-chat-hf  --quantile_num 0.80 --gate_weight_1 2  >/dev/null 2>&1 &
 nohup  python run.py --ID HEADQA_1  --gpu 5 --RA_method Only_RA --dataset HEADQA --LLM meta-llama/Llama-2-7b-chat-hf  --quantile_num 0.80 --gate_weight_1 2   >/dev/null 2>&1 &
 
-nohup  python run.py --ID HEADQA_2  --gpu 6 --RA_method Gate_RA --dataset HEADQA  --LLM meta-llama/Llama-2-7b-chat-hf  --quantile_num 0.80 --gate_weight_1 2  >/dev/null 2>&1 &
-nohup  python run.py --ID HEADQA_3  --gpu 7 --RA_method Gate_MI_RA --dataset HEADQA --LLM meta-llama/Llama-2-7b-chat-hf  --quantile_num 0.80 --gate_weight_1 2 >/dev/null 2>&1 &
+nohup  python run.py --ID HEADQA_2  --gpu 7 --RA_method Gate_RA --dataset HEADQA  --LLM meta-llama/Llama-2-7b-chat-hf  --quantile_num 0.80 --gate_weight_1 2  >/dev/null 2>&1 &
+nohup  python run.py --ID HEADQA_3  --gpu 1 --RA_method Gate_MI_RA --dataset HEADQA --LLM meta-llama/Llama-2-7b-chat-hf  --quantile_num 0.80 --gate_weight_1 2 >/dev/null 2>&1 &
 
