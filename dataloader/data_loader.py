@@ -10,6 +10,7 @@ from dataloader.hotpot_loader import get_loader_Hotpot
 from dataloader.webqa_loader import get_loader_WebQA 
 from dataloader.nq_loader import get_loader_NQ
 from dataloader.triviaqa_loader import get_loader_TriviaQA
+from dataloader.pubmedqa_loader import get_loader_PubmedQA
 
 
 def get_loader(args, tokenizer):
@@ -97,6 +98,12 @@ def get_loader(args, tokenizer):
                          
         train_data_loader, dev_data_loader, test_data_loader, args = get_loader_NQ(args, tokenizer, train_file_path, dev_file_path, test_file_path) 
 
+    elif args.dataset == "PubmedQA":
+        train_file_path = "datasets/Downstream/PubmedQA/pqaa_train_set.json"
+        dev_file_path = "datasets/Downstream/PubmedQA/pqaa_dev_set.json"
+        test_file_path = "datasets/Downstream/PubmedQA/pqaa_test_set.json"
+                         
+        train_data_loader, dev_data_loader, test_data_loader, args = get_loader_PubmedQA(args, tokenizer, train_file_path, dev_file_path, test_file_path) 
 
     else:
         raise Exception("Wrong dataset selected !")

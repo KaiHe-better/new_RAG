@@ -1,0 +1,6 @@
+{
+    "general-prompt":  "You are an AI language model assistant for answering medical questions. Your task is to select a correct answer from the provided options to the give question. \n\nQuestion: {question}  \n Select an Option from the provided Options <yes>, <no>, <maybe> to answer the given Question. The selected Option is <",
+    "retrieve-prompt": "You are an AI language model assistant for answering medical questions. Your task is to select a correct answer from the provided options to the give question. Please learn and think according to the provided Context. \n Context: \n {context} \n\nQuestion: {question} \n Select an Option from the provided Options <yes>, <no>, <maybe> to answer the given Question. \n The selected Option is <"
+}
+
+

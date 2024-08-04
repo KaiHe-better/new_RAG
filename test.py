@@ -1,6 +1,1 @@
-import torch
-
-a = torch.FloatTensor([0,1,2])
-print(a.size())
-b = torch.mean(a).reshape(1)
-print(b.size())
+'You are an AI language model assistant for answering medical questions. Your task is to select a correct answer from the provided options to the give question. \n\nQuestion: Does intraperitoneal kisspeptin-10 administration induce dose-dependent degenerative changes in maturing rat testes?  \n Select an Option from the provided Options <yes>, <no>, <maybe> to answer the given Question. The selected Option is <yes>. \n\nPlease select the correct answer from the following options:\n\nA) <yes>\nB) <no>\nC) <maybe>\n\nYour Answer: A) <yes>  (Correct)'

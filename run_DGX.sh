@@ -163,8 +163,8 @@ nohup  python run.py --ID USMLE_1 --gpu 5 --RA_method Gate_MI_RA --dataset USMLE
 2024-06-26 11:57:36,064 test: acc 67.09, f1 66.88, precision 67.14, recall 66.99, old_doc_len:2022.52, new_doc_len:1197.32, hallucination: 1.65 
  best_step:32000
 
-
-
+acc 67.09-58.99=8.1
+f1 66.88-58.79=8.09
 # nohup  python run.py --ID USMLE_0 --gpu 4 --RA_method MI_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 3 --train_eval 1000   >/dev/null 2>&1 &
 #  best_step:2000, best_performce: 60.25 
 
@@ -245,8 +245,8 @@ nohup  python run.py --ID MedMCQA_5_2 --gpu 4  --RA_method Gate_MI_RA --dataset 
  best_step:24000
 
 
-
-
+acc 61.68-47.57 = 14.11
+f1 59.39-45.69 = 13.7
 # nohup  python run.py --ID MedMCQA_5_2 --gpu 5  --RA_method Gate_MI_RA --dataset MedMCQA --quantile_num 0.825  >/dev/null 2>&1 &
 # 2024-06-29 04:36:22,559 test: acc 61.34, f1 58.91, precision 56.93, recall 76.04, old_doc_len:1533.97, new_doc_len:1357.5, hallucination: 0.17 
 #  best_step:17500
@@ -260,7 +260,7 @@ nohup  python run.py --ID MedMCQA_5_2 --gpu 4  --RA_method Gate_MI_RA --dataset 
 
 
 ===================================================================================================================================================================================================
-# HEADQA
+# HEADQA 
 
 nohup  python run.py --ID HEADQA_0  --gpu 4 --RA_method No_RA --dataset HEADQA   >/dev/null 2>&1 &
 2024-06-26 19:06:58,740 test: acc 55.8, f1 55.17, precision 55.47, recall 58.0, old_doc_len:0.0, new_doc_len:0.0, hallucination: 11.01 
@@ -282,47 +282,71 @@ nohup  python run.py --ID HEADQA_2  --gpu 6 --RA_method Gate_MI_RA --dataset HEA
  best_step:22500
 
 
+acc 65.06 - 55.8 = 9.26
+f1 65.59 - 55.17 = 10.42
+
+
+
 ===================================================================================================================================================================================================
 # PopQA
 
 nohup  python run.py --ID PopQA_0  --gpu 4 --RA_method No_RA   --dataset PopQA   >/dev/null 2>&1 &
-2024-07-03 11:51:08,027 test: f1 28.15, EM : 22.92, old_doc_len:0.0, new_doc_len:0.0
-# 2024-07-13 12:07:19,941 test: f1 28.33, EM : 27.89, old_doc_len:0.0, new_doc_len:0.0
+# 2024-07-03 11:51:08,027 test: f1 28.15, EM : 22.92, old_doc_len:0.0, new_doc_len:0.0
+2024-07-13 12:07:19,941 test: f1 28.33, EM : 27.89, old_doc_len:0.0, new_doc_len:0.0
 
 nohup  python run.py --ID PopQA_1  --gpu 5 --RA_method Only_RA --dataset PopQA   >/dev/null 2>&1 &
-2024-07-03 15:43:56,184 test: f1 36.09, EM : 26.77, old_doc_len:0.0, new_doc_len:0.0
-# 2024-07-14 15:30:49,685 test: f1 36.35, EM : 52.56, old_doc_len:0.0, new_doc_len:0.0
+# 2024-07-03 15:43:56,184 test: f1 36.09, EM : 26.77, old_doc_len:0.0, new_doc_len:0.0
+2024-07-14 15:30:49,685 test: f1 36.35, EM : 52.56, old_doc_len:0.0, new_doc_len:0.0
 
 
-nohup  python run.py --ID PopQA_2_6_2  --gpu 4 --RA_method MI_RA --dataset PopQA --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
-2024-07-09 19:50:43,301 test: f1 37.72, EM : 29.64, old_doc_len:1126.01, new_doc_len:813.65
-#  best_step:3000
+# nohup  python run.py --ID PopQA_2_6_2  --gpu 4 --RA_method MI_RA --dataset PopQA --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+# 2024-07-09 19:50:43,301 test: f1 37.72, EM : 29.64, old_doc_len:1126.01, new_doc_len:813.65
+# #  best_step:3000
 
-nohup  python run.py --ID PopQA_3  --gpu 6 --RA_method Gate_RA --dataset PopQA --gate_weight_0 4 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
-2024-07-10 15:19:22,036 test: f1 35.43, EM : 27.68, old_doc_len:0.0, new_doc_len:0.0
-#  best_step:3000
+# nohup  python run.py --ID PopQA_3  --gpu 6 --RA_method Gate_RA --dataset PopQA --gate_weight_0 4 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+# 2024-07-10 15:19:22,036 test: f1 35.43, EM : 27.68, old_doc_len:0.0, new_doc_len:0.0
+# #  best_step:3000
 
-# GCP
-nohup  python run.py --ID PopQA_4_5  --gpu 6 --RA_method Gate_MI_RA --dataset PopQA --gate_weight_0 3 --gate_weight_1 1 --quantile_num 0.5  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1    >/dev/null 2>&1 &
-2024-07-11 08:43:16,052 test: f1 39.78, EM : 31.32, old_doc_len:1126.01, new_doc_len:1171.47
-#  best_step:500
-
-
-nohup  python run.py --ID PopQA_2  --gpu 4 --RA_method MI_RA --dataset PopQA --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
-nohup  python run.py --ID PopQA_3  --gpu 6 --RA_method Gate_RA --dataset PopQA --gate_weight_0 4 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
-nohup  python run.py --ID PopQA_4  --gpu 6 --RA_method Gate_MI_RA --dataset PopQA --gate_weight_0 3 --gate_weight_1 1 --quantile_num 0.5  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1    >/dev/null 2>&1 &
-
+# # GCP
+# nohup  python run.py --ID PopQA_4_5  --gpu 6 --RA_method Gate_MI_RA --dataset PopQA --gate_weight_0 3 --gate_weight_1 1 --quantile_num 0.5  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1    >/dev/null 2>&1 &
+# 2024-07-11 08:43:16,052 test: f1 39.78, EM : 31.32, old_doc_len:1126.01, new_doc_len:1171.47
+# #  best_step:500
 
 
 # --max_new_tokens 40 
-nohup  python run.py --ID PopQA_0  --gpu 4 --RA_method No_RA   --dataset PopQA    --max_new_tokens 40 >/dev/null 2>&1 &
-nohup  python run.py --ID PopQA_1  --gpu 5 --RA_method Only_RA --dataset PopQA    --max_new_tokens 40 >/dev/null 2>&1 &
-nohup  python run.py --ID PopQA_2  --gpu 4 --RA_method MI_RA   --dataset PopQA    --max_new_tokens 40 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
-nohup  python run.py --ID PopQA_3  --gpu 6 --RA_method Gate_RA --dataset PopQA    --max_new_tokens 40  --gate_weight_0 4 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
-nohup  python run.py --ID PopQA_4  --gpu 6 --RA_method Gate_MI_RA --dataset PopQA --max_new_tokens 40  --gate_weight_0 3 --gate_weight_1 1 --quantile_num 0.5  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+# nohup  python run.py --ID PopQA_2  --gpu 0 --RA_method MI_RA   --dataset PopQA    --max_new_tokens 40 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+# 2024-07-25 12:15:42,918 test: f1 38.65, EM : 30.2/50.25, old_doc_len:1125.99, new_doc_len:1034.46
+
+# nohup  python run.py --ID PopQA_3  --gpu 1 --RA_method Gate_RA --dataset PopQA    --max_new_tokens 40  --gate_weight_0 4 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+# 2024-07-26 06:38:45,768 test: f1 34.54, EM : 27.12/42.68, old_doc_len:0.0, new_doc_len:0.0
+# 2024-07-26 00:15:43,575 test: f1 34.58, EM : 26.7/43.94, old_doc_len:0.0, new_doc_len:0.0
+
+# ohup  python run.py --ID PopQA_4  --gpu 2 --RA_method Gate_MI_RA --dataset PopQA --max_new_tokens 40  --gate_weight_0 3 --gate_weight_1 1 --quantile_num 0.5  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+# 2024-07-25 11:08:00,764 test: f1 36.91, EM : 29.57/44.57, old_doc_len:1125.99, new_doc_len:1176.08
+
+
+nohup  python run.py --ID PopQA_2  --gpu 0 --RA_method MI_RA   --dataset PopQA   --max_new_tokens 40 --quantile_num 0.5  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+ best_step:500, best_performce: 30.62,                                         
+ best_step_in:2500, best_performce_in: 51.16 
+
+nohup  python run.py --ID PopQA_3  --gpu 1 --RA_method Gate_RA --dataset PopQA   --max_new_tokens 40  --gate_weight_0 1 --gate_weight_1 1   --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+ best_step:6500, best_performce: 27.26,                                              
+ best_step_in:500, best_performce_in: 52.56 
+
+nohup  python run.py --ID PopQA_4  --gpu 2 --RA_method Gate_MI_RA   --dataset PopQA --max_new_tokens 40  --gate_weight_0 1 --gate_weight_1 1 --quantile_num 0.5  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+ best_step:500, best_performce: 30.83,                                         
+ best_step_in:1500, best_performce_in: 51.51 
+
+nohup  python run.py --ID PopQA_4-1  --gpu 3 --RA_method Gate_MI_RA --dataset PopQA --max_new_tokens 40  --gate_weight_0 1 --gate_weight_1 1 --quantile_num 0.6  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+ best_step:1500, best_performce: 31.04,                                         
+ best_step_in:500, best_performce_in: 51.02 
 
 
 
+nohup  python run.py --ID PopQA_2    --gpu 0 --RA_method MI_RA   --dataset PopQA   --max_new_tokens 40 --quantile_num 0.5  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+nohup  python run.py --ID PopQA_3    --gpu 1 --RA_method Gate_RA --dataset PopQA   --max_new_tokens 40  --gate_weight_0 1 --gate_weight_1 1   --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+nohup  python run.py --ID PopQA_4    --gpu 2 --RA_method Gate_MI_RA --dataset PopQA --max_new_tokens 40  --gate_weight_0 1 --gate_weight_1 1 --quantile_num 0.5  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+nohup  python run.py --ID PopQA_4-1  --gpu 3 --RA_method Gate_MI_RA --dataset PopQA --max_new_tokens 40  --gate_weight_0 1 --gate_weight_1 1 --quantile_num 0.6  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
 
 
 ===================================================================================================================================================================================================
@@ -471,13 +495,30 @@ nohup  python run.py --ID NQ_4  --gpu 7 --RA_method Gate_MI_RA    --dataset NQ -
 nohup  python run.py --ID NQ_5  --gpu 2 --RA_method No_RA      --dataset NQ --max_new_tokens 10 >/dev/null 2>&1 &
 2024-07-24 10:35:16,204 test: f1 24.62, EM : 14.43/33.24, old_doc_len:0.0, new_doc_len:0.0
 
-
-nohup  python run.py --ID NQ_6  --gpu 5 --RA_method Only_RA    --dataset NQ --max_new_tokens 10 >/dev/null 2>&1 &
-nohup  python run.py --ID NQ_2  --gpu 2 --RA_method MI_RA      --dataset NQ --max_new_tokens 10 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 --max_new_tokens 10 >/dev/null 2>&1 &
-nohup  python run.py --ID NQ_3  --gpu 3 --RA_method Gate_RA    --dataset NQ --max_new_tokens 10 --gate_weight_0 2  --gate_weight_1 1 --max_new_tokens 10 >/dev/null 2>&1 &
-nohup  python run.py --ID NQ_4  --gpu 4 --RA_method Gate_MI_RA --dataset NQ --max_new_tokens 10 --gate_weight_0 2  --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  --max_new_tokens 10 >/dev/null 2>&1 &
+nohup  python run.py --ID NQ_6  --gpu 2 --RA_method Only_RA    --dataset NQ --max_new_tokens 10 >/dev/null 2>&1 &
+2024-07-24 11:59:27,870 test: f1 28.57, EM : 17.7/40.53, old_doc_len:0.0, new_doc_len:0.0
 
 
+
+nohup  python run.py --ID NQ_2  --gpu 3 --RA_method MI_RA      --dataset NQ --max_new_tokens 10 --train_batch_size 6 --test_batch_size 6 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 --max_new_tokens 10 >/dev/null 2>&1 &
+2024-07-24 12:33:25,843 test: f1 28.98, EM : 18.14/38.84, old_doc_len:1359.93, new_doc_len:1364.83
+
+nohup  python run.py --ID NQ_3  --gpu 4 --RA_method Gate_RA    --dataset NQ --max_new_tokens 10 --train_batch_size 6 --test_batch_size 6 --gate_weight_0 2  --gate_weight_1 1 --max_new_tokens 10 >/dev/null 2>&1 &
+2024-07-24 13:41:04,132 test: f1 28.56, EM : 17.62/40.58, old_doc_len:0.0, new_doc_len:0.0  / gate_res_list: 1.0, 3610 / 3610 
+
+# nohup  python run.py --ID NQ_4  --gpu 5 --RA_method Gate_MI_RA --dataset NQ --max_new_tokens 10 --train_batch_size 6 --test_batch_size 6 --gate_weight_0 2  --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  --max_new_tokens 10 >/dev/null 2>&1 &
+# 2024-07-24 15:15:17,030 test: f1 28.15, EM : 17.4/38.59, old_doc_len:1359.93, new_doc_len:1280.07 / gate_res_list: 1.0, 3610 / 3610 
+
+
+
+nohup  python run.py --ID NQ_4  --gpu 4 --RA_method Gate_MI_RA --dataset NQ --max_new_tokens 10 --train_batch_size 6 --test_batch_size 6 --gate_weight_0 2.5  --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  --max_new_tokens 10 >/dev/null 2>&1 &
+2024-07-24 20:34:39,396 test: f1 28.29, EM : 17.56/38.67, old_doc_len:1359.93, new_doc_len:1279.27
+2024-07-24 20:34:39,396 cost_time: 39.81255404949188 , gate_res_list: 1.0, 3610 / 3610 
+
+nohup  python run.py --ID NQ_4-1  --gpu 5 --RA_method Gate_MI_RA --dataset NQ --max_new_tokens 10 --train_batch_size 6 --test_batch_size 6 --gate_weight_0 2.5  --gate_weight_1 1 --quantile_num 0.8  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  --max_new_tokens 10 >/dev/null 2>&1 &
+2024-07-24 22:52:03,106 test: f1 26.16, EM : 16.01/36.62, old_doc_len:1359.93, new_doc_len:1145.39
+2024-07-24 22:52:03,106 cost_time: 36.72661734024684 , gate_res_list: 0.93, 3351 / 3610 
+ 
 
 ===================================================================================================================================================================================================
 # hotpot 
@@ -500,8 +541,37 @@ nohup  python run.py --ID Hotpot_3  --gpu 6 --RA_method Gate_RA    --dataset Hot
 
 
 nohup  python run.py --ID Hotpot_2  --gpu 5 --RA_method MI_RA      --dataset Hotpot --max_new_tokens 30 --train_batch_size 6 --test_batch_size 6 --quantile_num 0.8  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+17.99/35.19
+
 nohup  python run.py --ID Hotpot_3  --gpu 6 --RA_method Gate_RA    --dataset Hotpot --max_new_tokens 30 --train_batch_size 6 --test_batch_size 6 --gate_weight_0 1.5   --gate_weight_1 1  >/dev/null 2>&1 &
+17.07/36.81
+
 nohup  python run.py --ID Hotpot_4  --gpu 7 --RA_method Gate_MI_RA --dataset Hotpot --max_new_tokens 30 --train_batch_size 6 --test_batch_size 6 --gate_weight_0 1.5   --gate_weight_1 1 --quantile_num 0.8  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 >/dev/null 2>&1 &
+16.54/34.41
+
+
+
+nohup  python run.py --ID Hotpot_2  --gpu 5 --RA_method MI_RA      --dataset Hotpot --max_new_tokens 30 --train_batch_size 6 --test_batch_size 6 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+2024-07-26 11:25:57,036 test: f1 30.72, EM : 19.12/35.89, old_doc_len:1391.61, new_doc_len:1405.93
+2024-07-26 11:25:57,036 cost_time: 100.8371283809344  
+ 
+
+nohup  python run.py --ID Hotpot_3  --gpu 6 --RA_method Gate_RA    --dataset Hotpot --max_new_tokens 30 --train_batch_size 6 --test_batch_size 6 --gate_weight_0 1  --gate_weight_1 1.2  >/dev/null 2>&1 &
+2024-07-26 04:56:11,754 test: f1 29.84, EM : 18.26/37.41, old_doc_len:0.0, new_doc_len:0.0
+2024-07-26 04:56:11,754 cost_time: 125.7584606965383 , gate_res_list: 1.0, 7405 / 7405 
+
+
+nohup  python run.py --ID Hotpot_4  --gpu 7 --RA_method Gate_MI_RA --dataset Hotpot --max_new_tokens 30 --train_batch_size 6 --test_batch_size 6 --gate_weight_0 1   --gate_weight_1 1.2 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 >/dev/null 2>&1 &
+2024-07-26 05:20:53,869 test: f1 30.7, EM : 19.23/35.72, old_doc_len:1391.61, new_doc_len:1419.46
+2024-07-26 05:20:53,870 cost_time: 143.22977697849274 , gate_res_list: 1.0, 7405 / 7405 
+
+
+
+
+nohup  python run.py --ID Hotpot_4-0  --gpu 5 --RA_method Gate_MI_RA --dataset Hotpot --max_new_tokens 30 --train_batch_size 5 --test_batch_size 5 --gate_weight_0 1     --gate_weight_1 1  --quantile_num 0.83  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+nohup  python run.py --ID Hotpot_4-1  --gpu 6 --RA_method Gate_MI_RA --dataset Hotpot --max_new_tokens 30 --train_batch_size 5 --test_batch_size 5 --gate_weight_0 1.1   --gate_weight_1 1  --quantile_num 0.8  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+nohup  python run.py --ID Hotpot_4-2  --gpu 7 --RA_method Gate_MI_RA --dataset Hotpot --max_new_tokens 30 --train_batch_size 5 --test_batch_size 5 --gate_weight_0 1.3   --gate_weight_1 1  --quantile_num 0.75  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+
 
 
 
@@ -516,8 +586,6 @@ nohup  python run.py --ID TriviaQA_1  --gpu 4 --RA_method Only_RA --dataset Triv
 
 
 
-
-
 nohup  python run.py --ID TriviaQA_2  --gpu 6 --RA_method MI_RA   --dataset TriviaQA --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
 2024-07-22 12:17:02,204 test: f1 51.52, EM : 41.22/58.49, old_doc_len:1392.57, new_doc_len:1414.93
 
@@ -526,7 +594,56 @@ nohup  python run.py --ID TriviaQA_3  --gpu 6 --RA_method Gate_RA   --dataset Tr
 
 
 
-
 # --max_new_tokens 25 
-nohup  python run.py --ID TriviaQA_4—1 --gpu 0 --RA_method Gate_MI_RA --dataset TriviaQA --max_new_tokens 25 --gate_weight_0 2   --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 --train_batch_size 4 --test_batch_size 4 >/dev/null 2>&1 &
-nohup  python run.py --ID TriviaQA_4—2 --gpu 1 --RA_method Gate_MI_RA --dataset TriviaQA --max_new_tokens 25 --gate_weight_0 2.5 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 --train_batch_size 4 --test_batch_size 4 >/dev/null 2>&1 &
+# nohup  python run.py --ID TriviaQA_4—1 --gpu 0 --RA_method Gate_MI_RA --dataset TriviaQA --max_new_tokens 25 --gate_weight_0 2   --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 --train_batch_size 4 --test_batch_size 4 >/dev/null 2>&1 &
+# 2024-07-24 17:26:15,403 test: f1 51.74, EM : 41.48/59.33, old_doc_len:1392.51, new_doc_len:1421.39
+# 2024-07-24 17:26:15,404 cost_time: 149.25813145240147 , gate_res_list: 0.04, 461 / 11313 
+
+# nohup  python run.py --ID TriviaQA_4—2 --gpu 1 --RA_method Gate_MI_RA --dataset TriviaQA --max_new_tokens 25 --gate_weight_0 2.5 --gate_weight_1 1 --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 --train_batch_size 4 --test_batch_size 4 >/dev/null 2>&1 &
+# 2024-07-24 17:25:15,930 test: f1 51.67, EM : 41.42/59.3, old_doc_len:1392.51, new_doc_len:1421.4
+# 2024-07-24 17:25:15,930 cost_time: 149.36103203694026 , gate_res_list: 0.03, 321 / 11313 # 太少了
+ 
+
+nohup  python run.py --ID TriviaQA_2-0  --gpu 3 --RA_method MI_RA   --dataset TriviaQA --quantile_num 0.75  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+nohup  python run.py --ID TriviaQA_2-1  --gpu 4 --RA_method MI_RA   --dataset TriviaQA --quantile_num 0.80  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+nohup  python run.py --ID TriviaQA_2-2  --gpu 5 --RA_method MI_RA   --dataset TriviaQA --quantile_num 0.85  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+
+
+nohup  python run.py --ID TriviaQA_4—0 --gpu 5 --RA_method Gate_MI_RA --dataset TriviaQA --max_new_tokens 25 --gate_weight_0 1 --gate_weight_1 1    --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 --train_batch_size 4 --test_batch_size 4 >/dev/null 2>&1 &
+nohup  python run.py --ID TriviaQA_4—1 --gpu 6 --RA_method Gate_MI_RA --dataset TriviaQA --max_new_tokens 25 --gate_weight_0 1 --gate_weight_1 1.5  --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 --train_batch_size 4 --test_batch_size 4 >/dev/null 2>&1 &
+nohup  python run.py --ID TriviaQA_4—2 --gpu 7 --RA_method Gate_MI_RA --dataset TriviaQA --max_new_tokens 25 --gate_weight_0 1 --gate_weight_1 2    --quantile_num 0.7  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 --train_batch_size 4 --test_batch_size 4 >/dev/null 2>&1 &
+
+
+===================================================================================================================================================================================================
+
+nohup  python run.py --ID PubmedQA_0  --gpu 3 --RA_method No_RA   --dataset PubmedQA   >/dev/null 2>&1 &
+nohup  python run.py --ID PubmedQA_1  --gpu 4 --RA_method Only_RA --dataset PubmedQA   >/dev/null 2>&1 &
+
+
+
+===================================================================================================================================================================================================
+
+nohup  python run.py --ID USMLE_0 --gpu 4 --RA_method No_RA      --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 10    >/dev/null 2>&1 &
+nohup  python run.py --ID USMLE_1 --gpu 5 --RA_method Only_RA    --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 10   >/dev/null 2>&1 &
+
+nohup  python run.py --ID USMLE_2 --gpu 0 --RA_method Gate_RA    --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard  --quantile_num 0.95 --train_batch_size 8 --test_batch_size 8  --gate_weight_1 2 >/dev/null 2>&1 &
+nohup  python run.py --ID USMLE_3 --gpu 1 --RA_method Gate_MI_RA --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 10 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 8 --test_batch_size 8 --gate_weight_1 2 >/dev/null 2>&1 &
+·
+
+
+
+nohup  python run.py --ID MedMCQA_0 --gpu 4  --RA_method No_RA      --dataset MedMCQA  --LLM meta-llama/Llama-2-7b-chat-hf >/dev/null 2>&1 &
+nohup  python run.py --ID MedMCQA_1 --gpu 5  --RA_method Only_RA    --dataset MedMCQA  --LLM meta-llama/Llama-2-7b-chat-hf >/dev/null 2>&1 &
+
+nohup  python run.py --ID MedMCQA_2 --gpu 5  --RA_method Gate_RA    --dataset MedMCQA  --LLM meta-llama/Llama-2-7b-chat-hf --quantile_num 0.80 --gate_weight_1 2 >/dev/null 2>&1 &
+nohup  python run.py --ID MedMCQA_3 --gpu 7  --RA_method Gate_MI_RA --dataset MedMCQA  --LLM meta-llama/Llama-2-7b-chat-hf --quantile_num 0.80 --gate_weight_1 2 >/dev/null 2>&1 &
+
+
+
+
+nohup  python run.py --ID HEADQA_0  --gpu 4 --RA_method No_RA --dataset HEADQA  --LLM meta-llama/Llama-2-7b-chat-hf  --quantile_num 0.80 --gate_weight_1 2  >/dev/null 2>&1 &
+nohup  python run.py --ID HEADQA_1  --gpu 5 --RA_method Only_RA --dataset HEADQA --LLM meta-llama/Llama-2-7b-chat-hf  --quantile_num 0.80 --gate_weight_1 2   >/dev/null 2>&1 &
+
+nohup  python run.py --ID HEADQA_2  --gpu 6 --RA_method Gate_RA --dataset HEADQA  --LLM meta-llama/Llama-2-7b-chat-hf  --quantile_num 0.80 --gate_weight_1 2  >/dev/null 2>&1 &
+nohup  python run.py --ID HEADQA_3  --gpu 7 --RA_method Gate_MI_RA --dataset HEADQA --LLM meta-llama/Llama-2-7b-chat-hf  --quantile_num 0.80 --gate_weight_1 2 >/dev/null 2>&1 &
+

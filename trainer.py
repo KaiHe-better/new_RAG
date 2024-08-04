@@ -308,11 +308,11 @@ class My_Trainer:
                 #     self.my_gate.train()
 
                 step_num+=1
-                question = data_item['question']
+                question = data_item['question']   
                 labels = data_item['label']
                 one_hot_labels = data_item['one_hot_label']
                 batch_answer = data_item["answer"]
-                
+              
                 if self.args.RA_method == "Gate_RA":
                     gate_loss, gate_acc, _, _,  _, _, _, _, _, _, _, label_0_0, label_0_1, label_1_0, label_1_1, total_gate_res, total_new_lable  \
                         = self.Gate_RA(total_gate_res, total_new_lable, data_item, labels, batch_answer, question, label_0_0, label_0_1, label_1_0, label_1_1)
@@ -375,14 +375,14 @@ class My_Trainer:
                         # if self.args.RA_method in ["Gate_RA", "Gate_MI_RA"]:
                         #     self.my_gate.train()
 
-                    if test_performce>best_performce:
+                    if test_performce>=best_performce:
                         best_performce = test_performce
                         best_step = step_num
 
                         with open(self.args.dir_path+'/MI_' +str(best_performce)+'.txt', "w") as f:
                             f.writelines(" ")
 
-                    if test_performce_in>best_performce_in:
+                    if test_performce_in>=best_performce_in:
                         best_performce_in = test_performce_in
                         best_step_in = step_num
 
@@ -613,11 +613,11 @@ class My_Trainer:
         generation_config = GenerationConfig(
             max_new_tokens=self.args.max_new_tokens,  
             pad_token_id = self.LLM_tokenizer.eos_token_id,
-            do_sample=False,
+            do_sample=self.args.do_sample,
             num_return_sequences=1, 
-            # temperature=self.args.temperature,
-            # top_p=self.args.top_p,
-            # length_penalty=self.args.length_penalty,
+            temperature=self.args.temperature,
+            top_p=self.args.top_p,
+            length_penalty=self.args.length_penalty,
             # num_beams=self.args.num_beams,
             return_dict_in_generate=True, 
             output_scores=True,

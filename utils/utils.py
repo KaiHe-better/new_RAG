@@ -139,6 +139,27 @@ def extracted_token_id_label(res, label, tokenizer, dataset, prompt, LLM):
 
         hall_label = random.choice(label_list)
         return res, [hall_label] , 1 
+    
+    elif dataset == "PubmedQA":
+        res = res.split(prompt.template[-10:])[1]
+        # res = res.split(prompt.template[-10:])[1][:5]
+        label_list = [tokenizer._convert_token_to_id_with_added_voc("yes"), tokenizer._convert_token_to_id_with_added_voc("no"), tokenizer._convert_token_to_id_with_added_voc("maybe") ]
+        
+        if "yes" in res:
+            return "yes", [label_list[0]], 0 
+        
+        if "no" in res:
+            return "no", [label_list[1]], 0
+        
+        if "maybe" in res:
+            return "maybe", [label_list[2]], 0
+        
+        
+        if int(label[0][0]) in label_list:
+            label_list.remove(int(label[0][0]))
+
+        hall_label = random.choice(label_list)
+        return res, [hall_label] , 1 
 
     else:
         res = res.split(prompt.template[-10:])
@@ -299,8 +320,8 @@ def load_LLM(args, dtype=torch.bfloat16):
         return model, tokenizer
     else:
         model_name_or_path = os.path.join(args.LLM)
-        if model_name_or_path == "meta-llama/Llama-2-7b-chat-hf":
-            model_name_or_path = "../LLM_models/llama2/Llama-2-7b-chat-hf"
+        # if model_name_or_path == "meta-llama/Llama-2-7b-chat-hf":
+        #     model_name_or_path = "../LLM_models/llama2/Llama-2-7b-chat-hf"
 
         # Load the FP16 modelargs.triever
         args.print_logger.info(f"Loading {model_name_or_path} in {dtype}...")

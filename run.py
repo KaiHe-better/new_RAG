@@ -18,9 +18,9 @@ parser.add_argument("--loading_ckpt_path", type=str, default=None, help="loading
 parser.add_argument("--RA_method", type=str,  default="Gate_MI_RA", choices=["No_RA", "Only_RA", "Gate_RA", "MI_RA", "Gate_MI_RA"], help="RA_method")
 parser.add_argument("--LLM", type=str, default="meta-llama/Meta-Llama-3-8B-Instruct", help="[meta-llama/Meta-Llama-3-8B-Instruct, meta-llama/Llama-2-7b-chat-hf]")  
 # train
-parser.add_argument('--dataset', type=str, default="TriviaQA", choices=["USMLE", "MedMCQA", "HEADQA", "PopQA", "Hotpot", "WebQA", "TriviaQA", "NQ"], help='train_file_path')
-parser.add_argument('--train_batch_size', type=int, default=8, help='train_batch_size')
-parser.add_argument('--test_batch_size', type=int, default=8, help='train_batch_size')
+parser.add_argument('--dataset', type=str, default="PubmedQA", choices=["USMLE", "MedMCQA", "HEADQA", "PopQA", "Hotpot", "WebQA", "TriviaQA", "NQ", "PubmedQA"], help='train_file_path')
+parser.add_argument('--train_batch_size', type=int, default=6, help='train_batch_size')
+parser.add_argument('--test_batch_size', type=int, default=6, help='train_batch_size')
 parser.add_argument('--accumulation_steps', type=int, default=1, help='accumulation_steps')
 parser.add_argument('--demonstration', type=bool, default=False, help='in_context learning')
 parser.add_argument('--demons_cnt', type=int, default=1, help='demonstration number')
@@ -47,10 +47,11 @@ parser.add_argument('--len_penalty_weight', type=float, default=10, help='soft_w
 parser.add_argument('--soft_weight', type=float, default=1, help='soft_weight')
 parser.add_argument('--hard_weight', type=float, default=1, help='hard_weight')
 # decoding
-parser.add_argument('--do_sample', type=bool, default=True, help='do_sample')
+parser.add_argument('--do_sample', type=bool, default=False, help='do_sample')
 parser.add_argument("--temperature", type=float, default=1e-9, help="Temperature for decoding")
 parser.add_argument("--top_p", type=float, default=0, help="Nucleus sampling top-p")
 parser.add_argument("--max_new_tokens", type=int, default=40, help="Max number of new tokens to generate in one step， popqa=40")
+parser.add_argument("--length_penalty", type=int, default=-30, help="Max number of new tokens to generate in one step， popqa=40")
 # my_retrieval
 parser.add_argument('--infer_add_gold_retrieval', type=bool, default=False, help='max_document_num')
 parser.add_argument('--multi_query', type=bool, default=False, help='multi_query, using open AI')
