@@ -133,16 +133,19 @@ class My_Trainer:
             else:
                 general_input_dict = {'question': data_item["question"]}
             
-            general_batch_input_list, general_batch_pred, general_batch_id_pred, general_batch_hallucination_cnt, general_save_doc_num, general_batch_loss_list, general_batch_logit_log_softmax \
+            general_batch_input_list, general_batch_pred, general_batch_id_pred, general_batch_hallucination_cnt, \
+                general_save_doc_num, general_batch_loss_list, general_batch_logit_log_softmax, pior_list \
                 = self.pipeline_inference(self.general_prompt, general_input_dict, labels, batch_answer, training_flag=True, record_flag=False)
-        return general_batch_input_list, general_batch_pred, general_batch_id_pred, general_batch_hallucination_cnt, general_save_doc_num, general_batch_loss_list, general_batch_logit_log_softmax
+        return general_batch_input_list, general_batch_pred, general_batch_id_pred, general_batch_hallucination_cnt, \
+                general_save_doc_num, general_batch_loss_list, general_batch_logit_log_softmax, pior_list
     
     def RA_input_loop(self, input_dict, labels, batch_answer):
         with torch.no_grad():
-            RA_batch_input_list, RA_batch_pred, RA_batch_id_pred, RA_batch_hallucination_cnt, RA_save_doc_num, RA_batch_loss, RA_batch_logit_log_softmax \
+            RA_batch_input_list, RA_batch_pred, RA_batch_id_pred, RA_batch_hallucination_cnt, RA_save_doc_num, RA_batch_loss, RA_batch_logit_log_softmax, pior_list \
                 = self.pipeline_inference(self.prompt, input_dict, labels, batch_answer, training_flag=True, record_flag=False)
         
-        return RA_batch_input_list, RA_batch_pred, RA_batch_id_pred, RA_batch_hallucination_cnt, RA_save_doc_num, RA_batch_loss, RA_batch_logit_log_softmax
+        return RA_batch_input_list, RA_batch_pred, RA_batch_id_pred, RA_batch_hallucination_cnt, \
+                        RA_save_doc_num, RA_batch_loss, RA_batch_logit_log_softmax, pior_list
 
     def Only_RA(self, question, data_item, labels, batch_answer):
         query = self.get_multi_query_input(question, data_item)
@@ -151,11 +154,11 @@ class My_Trainer:
         input_dict = self.return_input_dict(data_item, retrieve_docs)
         
         RA_batch_input_list, RA_batch_pred, RA_batch_id_pred, \
-            RA_batch_hallucination_cnt, RA_save_doc_num, RA_batch_loss, RA_batch_logit_log_softmax \
+            RA_batch_hallucination_cnt, RA_save_doc_num, RA_batch_loss, RA_batch_logit_log_softmax, pior_list \
                 = self.RA_input_loop(input_dict, labels, batch_answer)
 
         return  RA_batch_input_list, RA_batch_pred, RA_batch_id_pred, RA_batch_hallucination_cnt, \
-            RA_batch_loss, RA_batch_logit_log_softmax
+            RA_batch_loss, RA_batch_logit_log_softmax, pior_list
     
     def Gate_RA(self, total_gate_res, total_new_lable,
                    data_item, labels, batch_answer, question,
@@ -163,7 +166,7 @@ class My_Trainer:
         
         general_batch_input_list, general_batch_pred, general_batch_id_pred, \
             general_batch_hallucination_cnt, general_save_doc_num, general_batch_loss_list, \
-                general_batch_logit_log_softmax = self.general_input_loop(data_item, labels, batch_answer)
+                general_batch_logit_log_softmax, orginal_pior_list = self.general_input_loop(data_item, labels, batch_answer)
 
         query = self.get_multi_query_input(question, data_item)
         query_emb_list, attention_mask_list, bags_list = self.retriever.search_document(query) 
@@ -171,7 +174,7 @@ class My_Trainer:
         input_dict = self.return_input_dict(data_item, retrieve_docs)
 
         RA_batch_input_list, RA_batch_pred, RA_batch_id_pred, \
-            RA_batch_hallucination_cnt, RA_save_doc_num, RA_batch_loss, RA_batch_logit_log_softmax \
+            RA_batch_hallucination_cnt, RA_save_doc_num, RA_batch_loss, RA_batch_logit_log_softmax, tra_pior_list \
                 = self.RA_input_loop(input_dict, labels, batch_answer)
         
         raw_ques_emb_list = []
@@ -189,7 +192,7 @@ class My_Trainer:
                                                                              RA_batch_loss, raw_ques_emb_list, 
                                                                              raw_doc_emb_list, general_batch_loss_list,  
                                                                              RA_batch_logit_log_softmax, general_batch_logit_log_softmax)
-                                                        
+                                                      
         label_0_0 += new_label_count_list[0]
         label_0_1 += new_label_count_list[1]
         label_1_0 += new_label_count_list[2]
@@ -203,7 +206,7 @@ class My_Trainer:
         return gate_loss, gate_acc, gate_res, \
             RA_batch_input_list,  RA_batch_pred, RA_batch_id_pred, RA_batch_hallucination_cnt, \
             general_batch_input_list, general_batch_hallucination_cnt, general_batch_id_pred, general_batch_pred,\
-            label_0_0, label_0_1, label_1_0, label_1_1, total_gate_res, total_new_lable
+            label_0_0, label_0_1, label_1_0, label_1_1, total_gate_res, total_new_lable, orginal_pior_list,  tra_pior_list  
 
     def Train_MI_RA(self, question, data_item, labels, batch_answer, one_hot_labels):
         query = self.get_multi_query_input(question, data_item)
@@ -212,7 +215,7 @@ class My_Trainer:
         input_dict = self.return_input_dict(data_item, retrieve_docs)
         
         RA_batch_input_list, RA_batch_pred, RA_batch_id_pred, \
-            RA_batch_hallucination_cnt, RA_save_doc_num, RA_batch_loss, RA_batch_logit_log_softmax \
+            RA_batch_hallucination_cnt, RA_save_doc_num, RA_batch_loss, RA_batch_logit_log_softmax, pior_list \
                 = self.RA_input_loop(input_dict, labels, batch_answer)
 
         loss_list, new_retrieve_docs, select_doc_num, raw_ques_emb_list, raw_doc_emb_list\
@@ -224,7 +227,7 @@ class My_Trainer:
         new_doc_len = round(new_doc_len, 2)
 
         return loss_list, RA_batch_input_list, RA_batch_pred, RA_batch_id_pred, RA_batch_hallucination_cnt, \
-            RA_batch_loss, RA_batch_logit_log_softmax, old_doc_len, new_doc_len, raw_ques_emb_list, raw_doc_emb_list
+            RA_batch_loss, RA_batch_logit_log_softmax, old_doc_len, new_doc_len, raw_ques_emb_list, raw_doc_emb_list, pior_list
 
     def Test_MI_RA(self, question, data_item, labels, batch_answer, one_hot_labels):
         query = self.get_multi_query_input(question, data_item)
@@ -236,7 +239,7 @@ class My_Trainer:
         
         input_dict = self.return_input_dict(data_item, new_retrieve_docs)
         RA_batch_input_list, RA_batch_pred, RA_batch_id_pred, \
-            RA_batch_hallucination_cnt, RA_save_doc_num, RA_batch_loss, RA_batch_logit_log_softmax \
+            RA_batch_hallucination_cnt, RA_save_doc_num, RA_batch_loss, RA_batch_logit_log_softmax, pior_list\
                 = self.RA_input_loop(input_dict, labels, batch_answer)
         
         old_doc_len =  sum([len(i) for i in self.LLM_tokenizer(retrieve_docs)["input_ids"]]) / len(retrieve_docs)
@@ -245,7 +248,7 @@ class My_Trainer:
         new_doc_len = round(new_doc_len, 2)
 
         return loss_list, RA_batch_input_list, RA_batch_pred, RA_batch_id_pred, RA_batch_hallucination_cnt, \
-            RA_batch_loss, RA_batch_logit_log_softmax, old_doc_len, new_doc_len, raw_ques_emb_list, raw_doc_emb_list
+            RA_batch_loss, RA_batch_logit_log_softmax, old_doc_len, new_doc_len, raw_ques_emb_list, raw_doc_emb_list, pior_list
     
     def Gate_MI_RA(self, total_gate_res, total_new_lable,
                    data_item, labels, batch_answer, question, one_hot_labels,
@@ -253,15 +256,15 @@ class My_Trainer:
         
         general_batch_input_list, general_batch_pred, general_batch_id_pred, \
             general_batch_hallucination_cnt, general_save_doc_num, general_batch_loss_list, \
-                general_batch_logit_log_softmax = self.general_input_loop(data_item, labels, batch_answer)
+                general_batch_logit_log_softmax, orginal_pior_list= self.general_input_loop(data_item, labels, batch_answer)
 
         if train_flag:
             loss_list, RA_batch_input_list, RA_batch_pred, RA_batch_id_pred, RA_batch_hallucination_cnt, \
-                RA_batch_loss, RA_batch_logit_log_softmax, old_doc_len, new_doc_len, raw_ques_emb_list, raw_doc_emb_list\
+                RA_batch_loss, RA_batch_logit_log_softmax, old_doc_len, new_doc_len, raw_ques_emb_list, raw_doc_emb_list, MI_pior_list\
                         = self.Train_MI_RA(question, data_item, labels, batch_answer, one_hot_labels)
         else:
             loss_list, RA_batch_input_list, RA_batch_pred, RA_batch_id_pred, RA_batch_hallucination_cnt, \
-                RA_batch_loss, RA_batch_logit_log_softmax, old_doc_len, new_doc_len, raw_ques_emb_list, raw_doc_emb_list\
+                RA_batch_loss, RA_batch_logit_log_softmax, old_doc_len, new_doc_len, raw_ques_emb_list, raw_doc_emb_list, MI_pior_list\
                         = self.Test_MI_RA(question, data_item, labels, batch_answer, one_hot_labels)
                 
         gate_loss, gate_res, new_lable, new_label_count_list  = self.my_gate(general_batch_pred, RA_batch_pred, batch_answer, 
@@ -282,7 +285,7 @@ class My_Trainer:
         return loss_list, gate_loss, gate_acc, old_doc_len, new_doc_len, gate_res, \
             RA_batch_input_list,  RA_batch_pred, RA_batch_id_pred, RA_batch_hallucination_cnt, \
             general_batch_input_list, general_batch_hallucination_cnt, general_batch_id_pred, general_batch_pred,\
-            label_0_0, label_0_1, label_1_0, label_1_1, total_gate_res, total_new_lable
+            label_0_0, label_0_1, label_1_0, label_1_1, total_gate_res, total_new_lable, orginal_pior_list, MI_pior_list
 
     def train_proc(self, train_data_loader, test_data_loader):
         self.print_logger.info("Start training ... \n ")
@@ -302,11 +305,6 @@ class My_Trainer:
             # self.train_result_logger = get_logger(self.args.dir_path, "train_result")
             
             for tmp_step, data_item in enumerate(train_data_loader):
-                # if self.args.RA_method in ["Gate_MI_RA", "MI_RA"]:
-                #     self.MI_learner.train()
-                # if self.args.RA_method in ["Gate_RA", "Gate_MI_RA"]:
-                #     self.my_gate.train()
-
                 step_num+=1
                 question = data_item['question']   
                 labels = data_item['label']
@@ -314,18 +312,21 @@ class My_Trainer:
                 batch_answer = data_item["answer"]
               
                 if self.args.RA_method == "Gate_RA":
-                    gate_loss, gate_acc, _, _,  _, _, _, _, _, _, _, label_0_0, label_0_1, label_1_0, label_1_1, total_gate_res, total_new_lable  \
-                        = self.Gate_RA(total_gate_res, total_new_lable, data_item, labels, batch_answer, question, label_0_0, label_0_1, label_1_0, label_1_1)
+                    gate_loss, gate_acc, _, _,  _, _, _, _, _, _, _, \
+                        label_0_0, label_0_1, label_1_0, label_1_1, \
+                              total_gate_res, total_new_lable, orginal_pior_list,  tra_pior_list \
+                        = self.Gate_RA(total_gate_res, total_new_lable, data_item, labels, 
+                                       batch_answer, question, label_0_0, label_0_1, label_1_0, label_1_1)
                     gate_loss.backward()
                     
                     if tmp_step% 50==0:
                         self.print_logger.info(f"epoch_num: {epoch_num}, training process num: {step_num}/{total_batch},  gate_loss: {round(float(gate_loss), 4)},  \
                                             \n gate_acc:{gate_acc}, label_0_0:{label_0_0}, label_0_1:{label_0_1}, label_1_0:{label_1_0}, label_1_1:{label_1_1}, \
                                             \n\n best_step:{best_step}, best_performce: {best_performce}, \
-                                             \n best_step_in:{best_step_in}, best_performce_in: {best_performce_in} \n ")
+                                            \n best_step_in:{best_step_in}, best_performce_in: {best_performce_in} \n ")
                     
                 elif self.args.RA_method == "MI_RA":
-                    loss_list, _, _, _, _, _, _, old_doc_len, new_doc_len, _, _ \
+                    loss_list, _, _, _, _, _, _, old_doc_len, new_doc_len, _, _, pior_list \
                                 = self.Train_MI_RA(question, data_item, labels, batch_answer, one_hot_labels)
                     
                     loss_list[-1].backward()
@@ -333,11 +334,11 @@ class My_Trainer:
                         self.print_logger.info(f"epoch_num: {epoch_num}, training process num: {step_num}/{total_batch},  kl_soft_loss: {round(float(loss_list[1]), 4)}, kl_hard_loss: {round(float(loss_list[2]), 4)}, len_loss: {round(float(loss_list[0]), 4)}, \
                                             \n old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, \
                                             \n\n best_step:{best_step}, best_performce: {best_performce}, \
-                                        \n best_step_in:{best_step_in}, best_performce_in: {best_performce_in} \n ")
+                                            \n best_step_in:{best_step_in}, best_performce_in: {best_performce_in} \n ")
                     
                 elif self.args.RA_method == "Gate_MI_RA":
                     loss_list, gate_loss, gate_acc, old_doc_len, new_doc_len, _, _, _, _, _, _, _, _, _, \
-                        label_0_0, label_0_1, label_1_0, label_1_1, _, _ = self.Gate_MI_RA(total_gate_res, total_new_lable,
+                        label_0_0, label_0_1, label_1_0, label_1_1, _, _, orginal_pior_list, MI_pior_list = self.Gate_MI_RA(total_gate_res, total_new_lable,
                                                                     data_item, labels, batch_answer, question, one_hot_labels,
                                                                     label_0_0, label_0_1, label_1_0, label_1_1, True)
                     loss_list[-1].backward()
@@ -363,24 +364,23 @@ class My_Trainer:
 
                     break_cnt = 2 if self.args.test_code_flag else None
                     with torch.no_grad():
-                        # if self.args.RA_method in ["Gate_MI_RA", "MI_RA"]:
-                        #     self.MI_learner.eval()
-                        # if self.args.RA_method in ["Gate_RA", "Gate_MI_RA"]:
-                        #     self.my_gate.eval()
-
-                        test_performce, test_performce_in, all_test_predictions, all_test_input_list, all_test_answers = self.test_proc(test_data_loader, step_num, break_cnt=break_cnt)
-
-                        # if self.args.RA_method in ["Gate_MI_RA", "MI_RA"]:
-                        #     self.MI_learner.train()
-                        # if self.args.RA_method in ["Gate_RA", "Gate_MI_RA"]:
-                        #     self.my_gate.train()
+                        test_performce, test_performce_in, all_test_predictions, all_test_input_list, \
+                            all_test_answers, orginal_pior_list, r3_pior_list = self.test_proc(test_data_loader, step_num, break_cnt=break_cnt)
 
                     if test_performce>=best_performce:
                         best_performce = test_performce
                         best_step = step_num
 
+                        tmp_result = [1 if a == b else 0 for a, b in zip(all_test_answers, all_test_predictions)]
                         with open(self.args.dir_path+'/MI_' +str(best_performce)+'.txt', "w") as f:
-                            f.writelines(" ")
+                            f.writelines("orginal_pior_list\n")
+                            f.writelines(str(orginal_pior_list)+"\n")
+
+                            f.writelines("r3_pior_list\n")
+                            f.writelines(str(r3_pior_list)+"\n")
+
+                            f.writelines("right_wrong\n")
+                            f.writelines(str(tmp_result)+"\n")
 
                     if test_performce_in>=best_performce_in:
                         best_performce_in = test_performce_in
@@ -390,8 +390,16 @@ class My_Trainer:
                         for batch_pred, batch_input, batch_answer in zip(all_test_predictions, all_test_input_list, all_test_answers):
                             self.recored_res(batch_pred, batch_input, batch_answer, training_flag=False, record_flag=True)     
 
+                        tmp_result = [1 if a == b else 0 for a, b in zip(all_test_answers, all_test_predictions)]
                         with open(self.args.dir_path+'/in_MI_' +str(best_performce_in)+'.txt', "w") as f:
-                            f.writelines(" ")
+                            f.writelines("orginal_pior_list\n")
+                            f.writelines(str(orginal_pior_list)+"\n")
+
+                            f.writelines("r3_pior_list\n")
+                            f.writelines(str(r3_pior_list)+"\n")
+
+                            f.writelines("right_wrong\n")
+                            f.writelines(str(tmp_result)+"\n")
 
                 if step_num == self.args.total_step :
                     with open(self.args.dir_path+'/Finsh' +'.txt', "w") as f:
@@ -414,7 +422,10 @@ class My_Trainer:
         all_test_predictions = []
         all_hallucination = []
         total_old_doc_len, total_new_doc_len =0, 0
-  
+
+        all_orginal_pior_list = []
+        all_r3_pior_list = []
+
         total_new_lable =[]
         total_gate_res = []
         for index, data_item in enumerate(test_data_loader):
@@ -434,29 +445,35 @@ class My_Trainer:
                 gate_loss, gate_acc, gate_res, \
                 RA_batch_input_list,  RA_batch_pred, RA_batch_id_pred, RA_batch_hallucination_cnt, \
                 general_batch_input_list, general_batch_hallucination_cnt, general_batch_id_pred, general_batch_pred,\
-                label_0_0, label_0_1, label_1_0, label_1_1, total_gate_res, total_new_lable  \
+                label_0_0, label_0_1, label_1_0, label_1_1, total_gate_res, total_new_lable, orginal_pior_list,  gate_pior_list   \
                     = self.Gate_RA(total_gate_res, total_new_lable, data_item, labels, batch_answer, question)
-
                 
+                all_orginal_pior_list+=orginal_pior_list
+
                 for gate_index, res in enumerate(gate_res):
                     if res ==1:
                         all_test_input_list+=RA_batch_input_list
                         all_hallucination.append(RA_batch_hallucination_cnt[gate_index])
                         all_test_prediction_ids.append(RA_batch_id_pred[gate_index])
                         all_test_predictions.append(RA_batch_pred[gate_index])
+                        try:
+                            all_r3_pior_list.append(gate_pior_list[gate_index])
+                        except:
+                            print(1)
                     else:
                         retrieve_docs = ""
                         all_test_input_list+=general_batch_input_list
                         all_hallucination.append(general_batch_hallucination_cnt[gate_index])
                         all_test_prediction_ids.append(general_batch_id_pred[gate_index])
                         all_test_predictions.append(general_batch_pred[gate_index])
+                        all_r3_pior_list.append(orginal_pior_list[gate_index])
                 
             elif self.args.RA_method == "MI_RA":
                 # if self.args.infer_add_gold_retrieval:
                 #     retrieve_docs = self.add_gold_retrieval(retrieve_docs, data_item)
                 
                 loss_list, batch_input_list, batch_pred, batch_id_pred, batch_hallucination_cnt, \
-                    batch_loss, batch_logit_log_softmax, old_doc_len, new_doc_len, raw_ques_emb_list, raw_doc_emb_list \
+                    batch_loss, batch_logit_log_softmax, old_doc_len, new_doc_len, raw_ques_emb_list, raw_doc_emb_list, pior_list \
                                 = self.Test_MI_RA(question, data_item, labels, batch_answer, one_hot_labels)
                 
                 total_old_doc_len += old_doc_len
@@ -474,8 +491,11 @@ class My_Trainer:
                 MI_learner_loss, gate_loss, gate_acc, old_doc_len, new_doc_len, gate_res, \
                     RA_batch_input_list, RA_batch_pred, RA_batch_id_pred, RA_batch_hallucination_cnt, \
                         general_batch_input_list, general_batch_hallucination_cnt, general_batch_id_pred, general_batch_pred, \
-                        _, _, _, _, total_gate_res, total_new_lable \
+                        _, _, _, _, total_gate_res, total_new_lable, orginal_pior_list, MI_pior_list \
                         = self.Gate_MI_RA(total_gate_res, total_new_lable, data_item, labels, batch_answer, question, one_hot_labels)
+
+                all_orginal_pior_list+=orginal_pior_list
+             
 
                 total_old_doc_len += old_doc_len
                 total_new_doc_len += new_doc_len
@@ -486,16 +506,20 @@ class My_Trainer:
                         all_hallucination.append(RA_batch_hallucination_cnt[gate_index])
                         all_test_prediction_ids.append(RA_batch_id_pred[gate_index])
                         all_test_predictions.append(RA_batch_pred[gate_index])
+                        all_r3_pior_list.append(MI_pior_list[gate_index])
                     else:
                         retrieve_docs = ""
                         all_test_input_list+=general_batch_input_list
                         all_hallucination.append(general_batch_hallucination_cnt[gate_index])
                         all_test_prediction_ids.append(general_batch_id_pred[gate_index])
                         all_test_predictions.append(general_batch_pred[gate_index])
-            
+                        all_r3_pior_list.append(orginal_pior_list[gate_index])
+
             elif self.args.RA_method == "Only_RA":
                 batch_input_list, batch_pred, batch_id_pred, batch_hallucination_cnt, \
-                    batch_loss, batch_logit_log_softmax = self.Only_RA(question, data_item, labels, batch_answer)
+                    batch_loss, batch_logit_log_softmax, pior_list = self.Only_RA(question, data_item, labels, batch_answer)
+                
+                all_r3_pior_list+=pior_list
 
                 all_test_input_list+=batch_input_list
                 all_hallucination+=batch_hallucination_cnt
@@ -505,7 +529,9 @@ class My_Trainer:
             elif self.args.RA_method == "No_RA":
                 batch_input_list, batch_pred, batch_id_pred, \
                     batch_hallucination_cnt, general_save_doc_num, general_batch_loss_list, \
-                        general_batch_logit_log_softmax = self.general_input_loop(data_item, labels, batch_answer)
+                        general_batch_logit_log_softmax, pior_list = self.general_input_loop(data_item, labels, batch_answer)
+                
+                all_orginal_pior_list+=pior_list
                 
                 all_test_input_list+=batch_input_list
                 all_hallucination+=batch_hallucination_cnt
@@ -527,6 +553,7 @@ class My_Trainer:
             all_hallucination = round(sum(all_hallucination)/len(test_data_loader.dataset)*100, 2)
             self.args.print_logger.info(f"test: acc {test_acc}, f1 {test_f1}, precision {test_precision}, recall {test_recall}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}, hallucination: {all_hallucination} ")
             record_performance = test_acc
+            record_performance_in = test_acc
         else:
             test_f1, test_EM, test_EM_in = F_EM(all_test_answers, all_test_predictions)
             self.args.print_logger.info(f"test: f1 {test_f1}, EM : {test_EM}/{test_EM_in}, old_doc_len:{old_doc_len}, new_doc_len:{new_doc_len}")
@@ -544,16 +571,17 @@ class My_Trainer:
         # self.writer.add_scalar('Performance/test/recall', test_recall, eval_num )
         # self.writer.add_scalar('Performance/test/f1', test_f1, eval_num )
 
-        return record_performance, record_performance_in, all_test_predictions, all_test_input_list, all_test_answers
+        return record_performance, record_performance_in, all_test_predictions, all_test_input_list, all_test_answers, all_orginal_pior_list, all_r3_pior_list
+
          
     def pipeline_inference(self, used_prompt, input_dict, label, batch_answer, training_flag=False, record_flag=True):
         if self.args.LLM == "chatGPT":
             batch_pred, batch_id_pred, batch_hallucination_cnt, save_doc_num = self.non_local_llm_infer(input_dict, label, batch_answer, training_flag, record_flag)
             batch_loss, batch_logit_log_softmax = 0, 0
         else:
-            batch_my_input_list, batch_pred, batch_id_pred, batch_hallucination_cnt, save_doc_num, batch_loss_list, batch_logit_log_softmax= self.local_llm_infer(used_prompt, input_dict, label, batch_answer, training_flag, record_flag)
+            batch_my_input_list, batch_pred, batch_id_pred, batch_hallucination_cnt, save_doc_num, batch_loss_list, batch_logit_log_softmax, pior_list= self.local_llm_infer(used_prompt, input_dict, label, batch_answer, training_flag, record_flag)
 
-        return batch_my_input_list, batch_pred, batch_id_pred, batch_hallucination_cnt, save_doc_num, batch_loss_list, batch_logit_log_softmax
+        return batch_my_input_list, batch_pred, batch_id_pred, batch_hallucination_cnt, save_doc_num, batch_loss_list, batch_logit_log_softmax, pior_list
 
     def non_local_llm_infer(self, input_dict, label, batch_answer, training_flag=False, record_flag=True):
         batch_pred = []
@@ -628,6 +656,7 @@ class My_Trainer:
         batch_loss_list = []
         logit_log_softmax = []
 
+        pior_list = []
         for index, (outputs_score, output, answer, label) in enumerate(zip(outputs_scores, outputs["sequences"], batch_answer, labels)):
             generation = self.LLM_tokenizer.decode(output, skip_special_tokens=True)
             pred, id_pred, hallucination_cnt = extracted_token_id_label(generation, label, self.LLM_tokenizer, self.args.dataset, used_prompt, self.args.LLM)
@@ -636,14 +665,19 @@ class My_Trainer:
                 label = torch.LongTensor([label]).to(outputs_score[0].device)
                 process_score =  F.log_softmax(outputs_score[:len(label)], dim=-1)
                 batch_loss_list.append( self.loss_fct(process_score, label.view(-1)) )
+
+                pior_list.append( round(float(F.softmax(outputs_score[0], dim=0).detach()[int(label)]), 2) )
             else:
                 temp_loss = []
                 temp_process_score = []
                 
+                pior_list.append( round(float(F.softmax(outputs_score[0], dim=0).detach()[int(label[0][0])]), 2) )
                 for lab in label:
                     lab = torch.LongTensor([lab[:self.args.max_new_tokens]]).to(outputs_score[0].device)
-                    process_score =  F.log_softmax(outputs_score[:len(lab[0])], dim=-1)
-                    temp_loss.append(torch.mean(self.loss_fct(process_score, lab.view(-1))))
+
+                    need_len = min(len(lab[0]), outputs_score.size(0))
+                    process_score =  F.log_softmax(outputs_score[:need_len], dim=-1)
+                    temp_loss.append(torch.mean(self.loss_fct(process_score, lab.view(-1)[:need_len])))
                     
                     temp_process_score.append(torch.sum(process_score, dim=0))
 
@@ -657,7 +691,7 @@ class My_Trainer:
 
         logit_log_softmax = torch.stack(logit_log_softmax)
         batch_loss_list = torch.stack(batch_loss_list)
-        return my_input_list, batch_pred, batch_id_pred, batch_hallucination_cnt, save_doc_num, batch_loss_list, logit_log_softmax
+        return my_input_list, batch_pred, batch_id_pred, batch_hallucination_cnt, save_doc_num, batch_loss_list, logit_log_softmax, pior_list
 
     def recored_res(self, pred, my_input, answer, training_flag, record_flag):
         if training_flag:

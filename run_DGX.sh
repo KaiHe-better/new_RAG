@@ -343,10 +343,6 @@ nohup  python run.py --ID PopQA_4-1  --gpu 3 --RA_method Gate_MI_RA --dataset Po
 
 
 
-nohup  python run.py --ID PopQA_2    --gpu 0 --RA_method MI_RA   --dataset PopQA   --max_new_tokens 40 --quantile_num 0.5  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
-nohup  python run.py --ID PopQA_3    --gpu 1 --RA_method Gate_RA --dataset PopQA   --max_new_tokens 40  --gate_weight_0 1 --gate_weight_1 1   --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
-nohup  python run.py --ID PopQA_4    --gpu 2 --RA_method Gate_MI_RA --dataset PopQA --max_new_tokens 40  --gate_weight_0 1 --gate_weight_1 1 --quantile_num 0.5  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
-nohup  python run.py --ID PopQA_4-1  --gpu 3 --RA_method Gate_MI_RA --dataset PopQA --max_new_tokens 40  --gate_weight_0 1 --gate_weight_1 1 --quantile_num 0.6  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
 
 
 ===================================================================================================================================================================================================
@@ -568,10 +564,6 @@ nohup  python run.py --ID Hotpot_4  --gpu 7 --RA_method Gate_MI_RA --dataset Hot
 
 
 
-nohup  python run.py --ID Hotpot_4-0  --gpu 5 --RA_method Gate_MI_RA --dataset Hotpot --max_new_tokens 30 --train_batch_size 5 --test_batch_size 5 --gate_weight_0 1     --gate_weight_1 1  --quantile_num 0.83  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
-nohup  python run.py --ID Hotpot_4-1  --gpu 6 --RA_method Gate_MI_RA --dataset Hotpot --max_new_tokens 30 --train_batch_size 5 --test_batch_size 5 --gate_weight_0 1.1   --gate_weight_1 1  --quantile_num 0.8  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
-nohup  python run.py --ID Hotpot_4-2  --gpu 7 --RA_method Gate_MI_RA --dataset Hotpot --max_new_tokens 30 --train_batch_size 5 --test_batch_size 5 --gate_weight_0 1.3   --gate_weight_1 1  --quantile_num 0.75  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
-
 
 
 
@@ -623,24 +615,68 @@ nohup  python run.py --ID PubmedQA_1  --gpu 4 --RA_method Only_RA --dataset Pubm
 
 ===================================================================================================================================================================================================
 
-# nohup  python run.py --ID USMLE_1 --gpu 0 --RA_method Only_RA    --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 10   >/dev/null 2>&1 &
+# nohup  python run.py --ID USMLE_1 --gpu 0 --RA_method Only_RA    --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 10  --test_batch_size 1 >/dev/null 2>&1 &
+2024-08-05 01:07:08,389 test: acc 34.01, f1 32.22, precision 34.96, recall 38.12, old_doc_len:0.0, new_doc_len:0.0, hallucination: 0.94 
 
-# nohup  python run.py --I¥D USMLE_2 --gpu 3 --RA_method Gate_RA    --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard  --quantile_num 0.95 --train_batch_size 4 --test_batch_size 4  --gate_weight_1 2 >/dev/null 2>&1 &
-# nohup  python run.py --ID USMLE_3 --gpu 4 --RA_method Gate_MI_RA --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 10 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 4 --test_batch_size 4 --gate_weight_1 2 >/dev/null 2>&1 &
+# nohup  python run.py --ID USMLE_2 --gpu 1 --RA_method Gate_RA    --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard  --quantile_num 0.95 --train_batch_size 2 --test_batch_size 2  --gate_weight_1 2 >/dev/null 2>&1 &
+2024-08-05 09:14:21,128 test: acc 44.78, f1 44.35, precision 45.42, recall 49.72, old_doc_len:0.0, new_doc_len:0.0, hallucination: 0.63 
 
-# nohup  python run.py --ID USMLE_2-1 --gpu 5 --RA_method Gate_RA    --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 5  --loss_list kl_soft+kl_hard  --quantile_num 0.95 --train_batch_size 8 --test_batch_size 8  --gate_weight_1 2 >/dev/null 2>&1 &
-# nohup  python run.py --ID USMLE_3-1 --gpu 6 --RA_method Gate_MI_RA --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 5 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 8 --test_batch_size 8 --gate_weight_1 2 >/dev/null 2>&1 &
-
-
-
-# nohup  python run.py --ID MedMCQA_1 --gpu 7  --RA_method Only_RA    --dataset MedMCQA  --LLM meta-llama/Llama-2-7b-chat-hf >/dev/null 2>&1 &
-
-nohup  python run.py --ID MedMCQA_2 --gpu 5  --RA_method Gate_RA    --dataset MedMCQA  --LLM meta-llama/Llama-2-7b-chat-hf --quantile_num 0.80 --gate_weight_1 2 >/dev/null 2>&1 &
-nohup  python run.py --ID MedMCQA_3 --gpu 6  --RA_method Gate_MI_RA --dataset MedMCQA  --LLM meta-llama/Llama-2-7b-chat-hf --quantile_num 0.80 --gate_weight_1 2 >/dev/null 2>&1 &
+# nohup  python run.py --ID USMLE_3 --gpu 3 --RA_method Gate_MI_RA --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 10 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 2 --test_batch_size 2 --gate_weight_1 2 >/dev/null 2>&1 &
+2024-08-05 06:40:49,551 test: acc 43.44, f1 42.84, precision 44.01, recall 49.34, old_doc_len:2481.97, new_doc_len:1128.55, hallucination: 0.0 
 
 
-# nohup  python run.py --ID HEADQA_1  --gpu 1 --RA_method Only_RA --dataset HEADQA --LLM meta-llama/Llama-2-7b-chat-hf  --quantile_num 0.80 --gate_weight_1 2   >/dev/null 2>&1 &
 
-nohup  python run.py --ID HEADQA_2  --gpu 7 --RA_method Gate_RA --dataset HEADQA  --LLM meta-llama/Llama-2-7b-chat-hf  --quantile_num 0.80 --gate_weight_1 2  >/dev/null 2>&1 &
-nohup  python run.py --ID HEADQA_3  --gpu 1 --RA_method Gate_MI_RA --dataset HEADQA --LLM meta-llama/Llama-2-7b-chat-hf  --quantile_num 0.80 --gate_weight_1 2 >/dev/null 2>&1 &
+# nohup  python run.py --ID USMLE_2-1 --gpu 4 --RA_method Gate_RA    --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 5  --loss_list kl_soft+kl_hard  --quantile_num 0.95 --train_batch_size 2 --test_batch_size 2  --gate_weight_1 2 >/dev/null 2>&1 &
+2024-08-05 02:33:38,574 test: acc 43.91, f1 43.32, precision 44.47, recall 49.13, old_doc_len:0.0, new_doc_len:0.0, hallucination: 0.0 
 
+# nohup  python run.py --ID USMLE_3-1 --gpu 5 --RA_method Gate_MI_RA --LLM meta-llama/Llama-2-7b-chat-hf --dataset USMLE --n_docs 5 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 2 --test_batch_size 2 --gate_weight_1 2 >/dev/null 2>&1 &
+
+
+
+nohup  python run.py --ID MedMCQA_1 --gpu 2  --RA_method Only_RA    --dataset MedMCQA  --LLM meta-llama/Llama-2-7b-chat-hf --test_batch_size 1 >/dev/null 2>&1 &
+2024-08-05 10:43:44,922 test: acc 37.37, f1 34.67, precision 35.99, recall 38.2, old_doc_len:0.0, new_doc_len:0.0, hallucination: 0.0 
+
+nohup  python run.py --ID MedMCQA_2 --gpu 3  --RA_method Gate_RA    --dataset MedMCQA  --LLM meta-llama/Llama-2-7b-chat-hf --n_docs 10 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 2 --test_batch_size 2 --gate_weight_1 2 >/dev/null 2>&1 &
+2024-08-05 15:11:27,477 test: acc 49.56, f1 42.24, precision 45.34, recall 49.96, old_doc_len:0.0, new_doc_len:0.0, hallucination: 0.0 
+
+nohup  python run.py --ID MedMCQA_3 --gpu 4  --RA_method Gate_MI_RA --dataset MedMCQA  --LLM meta-llama/Llama-2-7b-chat-hf --n_docs 10 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 2 --test_batch_size 2 --gate_weight_1 2 >/dev/null 2>&1 &
+2024-08-05 11:56:42,743 test: acc 48.31, f1 40.87, precision 43.98, recall 49.52, old_doc_len:1859.21, new_doc_len:1098.24, hallucination: 0.0 
+
+
+
+nohup  python run.py --ID MedMCQA_2 --gpu 5  --RA_method Gate_RA    --dataset MedMCQA  --LLM meta-llama/Llama-2-7b-chat-hf --n_docs 5 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 2 --test_batch_size 2 --gate_weight_1 2 >/dev/null 2>&1 &
+2024-08-05 15:14:41,433 test: acc 48.53, f1 40.32, precision 43.82, recall 50.37, old_doc_len:0.0, new_doc_len:0.0, hallucination: 0.0 
+
+nohup  python run.py --ID MedMCQA_3 --gpu 6  --RA_method Gate_MI_RA --dataset MedMCQA  --LLM meta-llama/Llama-2-7b-chat-hf --n_docs 5 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 2 --test_batch_size 2 --gate_weight_1 2 >/dev/null 2>&1 &
+2024-08-05 14:13:55,990 test: acc 45.28, f1 35.89, precision 40.37, recall 49.55, old_doc_len:934.26, new_doc_len:506.74, hallucination: 0.0 
+
+
+
+# nohup  python run.py --ID HEADQA_1  --gpu 5 --RA_method Only_RA --dataset HEADQA --LLM meta-llama/Llama-2-7b-chat-hf  --quantile_num 0.80 --gate_weight_1 2   >/dev/null 2>&1 &
+
+# nohup  python run.py --ID HEADQA_2  --gpu 6 --RA_method Gate_RA --dataset HEADQA  --LLM meta-llama/Llama-2-7b-chat-hf  --n_docs 10 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 2 --test_batch_size 2 --gate_weight_1 2  >/dev/null 2>&1 &
+# nohup  python run.py --ID HEADQA_3  --gpu 7 --RA_method Gate_MI_RA --dataset HEADQA --LLM meta-llama/Llama-2-7b-chat-hf  --n_docs 10 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 2 --test_batch_size 2 --gate_weight_1 2 >/dev/null 2>&1 &
+
+# nohup  python run.py --ID HEADQA_2  --gpu 5 --RA_method Gate_RA --dataset HEADQA  --LLM meta-llama/Llama-2-7b-chat-hf  --n_docs 5 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 2 --test_batch_size 2 --gate_weight_1 2  >/dev/null 2>&1 &
+# nohup  python run.py --ID HEADQA_3  --gpu 6 --RA_method Gate_MI_RA --dataset HEADQA --LLM meta-llama/Llama-2-7b-chat-hf  --n_docs 5 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 2 --test_batch_size 2 --gate_weight_1 2 >/dev/null 2>&1 &
+
+
+===================================================================================================================================================================================================
+
+
+
+# nohup  python run.py --ID PopQA_0  --gpu 7 --RA_method No_RA    --dataset PopQA   >/dev/null 2>&1 &
+# nohup  python run.py --ID PopQA_1  --gpu 4 --RA_method Only_RA  --dataset PopQA   >/dev/null 2>&1 &
+nohup  python run.py --ID PopQA_3  --gpu 5 --RA_method Gate_RA  --dataset PopQA   --max_new_tokens 40  --gate_weight_0 1.5 --gate_weight_1 1   --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+nohup  python run.py --ID PopQA_4  --gpu 6 --RA_method Gate_MI_RA --dataset PopQA --max_new_tokens 40  --gate_weight_0 1.5 --gate_weight_1 1 --quantile_num 0.5  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1  >/dev/null 2>&1 &
+
+
+===================================================================================================================================================================================================
+
+
+
+nohup  python run.py --ID 0_USMLE_1 --gpu 4 --RA_method No_RA   --dataset USMLE --n_docs 10    >/dev/null 2>&1 &
+nohup  python run.py --ID 0_USMLE_2 --gpu 5 --RA_method Only_RA --dataset USMLE --n_docs 10   >/dev/null 2>&1 &
+
+nohup  python run.py --ID 0_USMLE_3 --gpu 6 --RA_method Gate_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard  --quantile_num 0.95 --train_batch_size 6 --test_batch_size 6  >/dev/null 2>&1 &
+nohup  python run.py --ID 0_USMLE_4 --gpu 7 --RA_method Gate_MI_RA --dataset USMLE --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 6 --test_batch_size 6  >/dev/null 2>&1 &

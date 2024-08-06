@@ -34,11 +34,11 @@ def get_loader(args, tokenizer):
     elif args.dataset == "MedMCQA":
         train_file_path = "datasets/Downstream/MedMCQA/train.json"
         dev_file_path = "datasets/Downstream/MedMCQA/dev.json"
-        test_file_path = "datasets/Downstream/MedMCQA/test.json"
+        test_file_path = "datasets/Downstream/MedMCQA/dev.json"
 
         rewrite_train_file_path = None
         rewrite_dev_file_path = "datasets/Downstream/MedMCQA/rewrite_MedMCQA_dev.json"
-        rewrite_test_file_path = "datasets/MedMCQA/rewrite_MedMCQA_test.json"
+        rewrite_test_file_path = "datasets/MedMCQA/rewrite_MedMCQA_dev.json"
 
         train_data_loader, dev_data_loader, test_data_loader, args = get_loader_MedMCQA(args, tokenizer, train_file_path, dev_file_path, test_file_path,
                                                                                         rewrite_train_file_path, rewrite_dev_file_path, rewrite_test_file_path,

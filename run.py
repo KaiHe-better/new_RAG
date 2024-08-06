@@ -8,19 +8,19 @@ parser = argparse.ArgumentParser()
 
 # system settings
 # parser.add_argument("--config", type=str, default="llama3-8b_USMLE_MI_RA.yaml", help="Path to the config file")
-parser.add_argument('--gpu', default="6", type=str, help='gpu device numbers')
+parser.add_argument('--gpu', default="4", type=str, help='gpu device numbers')
 parser.add_argument("--test_code_flag", type=bool, default=False, help="if retrieval augmented")
 parser.add_argument('--ID', type=str, default='0', help='run ID')
 parser.add_argument('--seed', default=42, help='trandom seed')
 parser.add_argument('--num_workers', default=48, type=int, help='data_loader_work')
 parser.add_argument("--loading_ckpt_path", type=str, default=None, help="loading_ckpt_path, None ")
 # In config
-parser.add_argument("--RA_method", type=str,  default="Gate_MI_RA", choices=["No_RA", "Only_RA", "Gate_RA", "MI_RA", "Gate_MI_RA"], help="RA_method")
+parser.add_argument("--RA_method", type=str,  default="No_RA", choices=["No_RA", "Only_RA", "Gate_RA", "MI_RA", "Gate_MI_RA"], help="RA_method")
 parser.add_argument("--LLM", type=str, default="meta-llama/Meta-Llama-3-8B-Instruct", help="[meta-llama/Meta-Llama-3-8B-Instruct, meta-llama/Llama-2-7b-chat-hf]")  
 # train
-parser.add_argument('--dataset', type=str, default="PubmedQA", choices=["USMLE", "MedMCQA", "HEADQA", "PopQA", "Hotpot", "WebQA", "TriviaQA", "NQ", "PubmedQA"], help='train_file_path')
-parser.add_argument('--train_batch_size', type=int, default=6, help='train_batch_size')
-parser.add_argument('--test_batch_size', type=int, default=6, help='train_batch_size')
+parser.add_argument('--dataset', type=str, default="Hotpot", choices=["USMLE", "MedMCQA", "HEADQA", "PopQA", "Hotpot", "WebQA", "TriviaQA", "NQ", "PubmedQA"], help='train_file_path')
+parser.add_argument('--train_batch_size', type=int, default=2, help='train_batch_size')
+parser.add_argument('--test_batch_size', type=int, default=2, help='train_batch_size')
 parser.add_argument('--accumulation_steps', type=int, default=1, help='accumulation_steps')
 parser.add_argument('--demonstration', type=bool, default=False, help='in_context learning')
 parser.add_argument('--demons_cnt', type=int, default=1, help='demonstration number')
@@ -42,7 +42,7 @@ parser.add_argument('--layer_norm_eps', type=float, default=1e-5, help='MI_learn
 parser.add_argument('--nhead', type=int, default=8, help='MI_learner nhead')
 parser.add_argument('--dropout', type=float, default=0.1, help='MI_learner dropout')
 # loss
-parser.add_argument('--loss_list', type=str, default="kl_soft+kl_hard", help='kl_soft+kl_hard+len_penalty')
+parser.add_argument('--loss_list', type=str, default="kl_soft+kl_hard+len_penalty", help='kl_soft+kl_hard+len_penalty')
 parser.add_argument('--len_penalty_weight', type=float, default=10, help='soft_weight')
 parser.add_argument('--soft_weight', type=float, default=1, help='soft_weight')
 parser.add_argument('--hard_weight', type=float, default=1, help='hard_weight')
@@ -176,11 +176,23 @@ def main(args):
         # trainer.train_proc(train_data_loader, dev_data_loader)
         trainer.train_proc(train_data_loader, test_data_loader)
     elif args.RA_method in ["No_RA", "Only_RA"]:
-        test_performce, test_performce_in, all_test_predictions, all_test_input_list, all_test_answers = trainer.test_proc(test_data_loader)  
-
+        test_performce, test_performce_in, all_test_predictions, all_test_input_list, all_test_answers, all_orginal_pior_list, all_r3_pior_list= trainer.test_proc(test_data_loader)  
+        
         test_result_logger = get_logger(args.dir_path, "test_result")
         for batch_pred, batch_input, batch_answer in zip(all_test_predictions, all_test_input_list, all_test_answers):
             trainer.recored_res(batch_pred, batch_input, batch_answer, training_flag=False, record_flag=True) 
+
+        tmp_result = [1 if a == b else 0 for a, b in zip(all_test_answers, all_test_predictions)]
+        with open(args.dir_path+'/MI_' +str(0)+'.txt', "w") as f:
+            f.writelines("orginal_pior_list\n")
+            f.writelines(str(all_orginal_pior_list)+"\n")
+
+            f.writelines("r3_pior_list\n")
+            f.writelines(str(all_r3_pior_list)+"\n")
+
+            f.writelines("right_wrong\n")
+            f.writelines(str(tmp_result)+"\n")
+
 
     else:
         raise Exception("wrong RA_method")
