@@ -675,8 +675,44 @@ nohup  python run.py --ID PopQA_4  --gpu 6 --RA_method Gate_MI_RA --dataset PopQ
 
 
 
-nohup  python run.py --ID 0_USMLE_1 --gpu 4 --RA_method No_RA   --dataset USMLE --n_docs 10    >/dev/null 2>&1 &
-nohup  python run.py --ID 0_USMLE_2 --gpu 5 --RA_method Only_RA --dataset USMLE --n_docs 10   >/dev/null 2>&1 &
+# nohup  python run.py --ID 0_USMLE_1 --gpu 4 --RA_method No_RA   --dataset USMLE --n_docs 10    >/dev/null 2>&1 &
+# nohup  python run.py --ID 0_USMLE_2 --gpu 4 --RA_method Only_RA --dataset USMLE --n_docs 10   >/dev/null 2>&1 &
 
-nohup  python run.py --ID 0_USMLE_3 --gpu 6 --RA_method Gate_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard  --quantile_num 0.95 --train_batch_size 6 --test_batch_size 6  >/dev/null 2>&1 &
-nohup  python run.py --ID 0_USMLE_4 --gpu 7 --RA_method Gate_MI_RA --dataset USMLE --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 6 --test_batch_size 6  >/dev/null 2>&1 &
+# nohup  python run.py --ID 0_USMLE_3 --gpu 6 --RA_method Gate_RA --dataset USMLE --n_docs 10  --loss_list kl_soft+kl_hard  --quantile_num 0.95 --train_batch_size 4 --test_batch_size 4  >/dev/null 2>&1 &
+# nohup  python run.py --ID 0_USMLE_4 --gpu 5 --RA_method Gate_MI_RA --dataset USMLE --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 4 --test_batch_size 4  >/dev/null 2>&1 &
+
+
+
+# nohup  python run.py --ID 0_MedMCQA_1 --gpu 7  --RA_method No_RA      --dataset MedMCQA   >/dev/null 2>&1 &
+# nohup  python run.py --ID 0_MedMCQA_2 --gpu 7  --RA_method Only_RA    --dataset MedMCQA   >/dev/null 2>&1 &
+
+# # nohup  python run.py --ID 0_MedMCQA_3 --gpu 6  --RA_method Gate_RA    --dataset MedMCQA   >/dev/null 2>&1 &
+# # nohup  python run.py --ID 0_MedMCQA_4 --gpu 7  --RA_method Gate_MI_RA --dataset MedMCQA --quantile_num 0.80  >/dev/null 2>&1 &
+
+
+
+# nohup  python run.py --ID 0_HEADQA_1  --gpu 4 --RA_method No_RA --dataset HEADQA   >/dev/null 2>&1 &
+# nohup  python run.py --ID 0_HEADQA_2  --gpu 7 --RA_method Only_RA --dataset HEADQA   >/dev/null 2>&1 &
+
+# nohup  python run.py --ID 0_HEADQA_3  --gpu 3 --RA_method Gate_RA --dataset HEADQA   >/dev/null 2>&1 &
+# nohup  python run.py --ID 0_HEADQA_4  --gpu 4 --RA_method Gate_MI_RA --dataset HEADQA --quantile_num 0.80  >/dev/null 2>&1 &
+
+
+===================================================================================================================================================================================================
+nohup  bash tmp.sh >/dev/null 2>&1 &
+
+nohup  python run.py --ID 1_USMLE_1 --gpu 0 --RA_method Gate_MI_RA --dataset USMLE --n_docs 1 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 6 --test_batch_size 6  >/dev/null 2>&1 &
+nohup  python run.py --ID 1_USMLE_3 --gpu 1 --RA_method Gate_MI_RA --dataset USMLE --n_docs 3 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 6 --test_batch_size 6  >/dev/null 2>&1 &
+nohup  python run.py --ID 1_USMLE_5 --gpu 2 --RA_method Gate_MI_RA --dataset USMLE --n_docs 5 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 4 --test_batch_size 4  >/dev/null 2>&1 &
+nohup  python run.py --ID 1_USMLE_6 --gpu 3 --RA_method Gate_MI_RA --dataset USMLE --n_docs 7 --quantile_num 0.99 --if_hierarchical_retrieval True --train_batch_size 4 --test_batch_size 4  >/dev/null 2>&1 &
+
+
+
+
+nohup  bash tmp1.sh >/dev/null 2>&1 &
+
+nohup  python run.py --ID 1_pop_2 --gpu 4 --RA_method Gate_MI_RA --dataset PopQA --n_docs 2 --quantile_num 0.5 --if_hierarchical_retrieval True --train_batch_size 6 --test_batch_size 6  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 >/dev/null 2>&1 &
+nohup  python run.py --ID 1_pop_4 --gpu 5 --RA_method Gate_MI_RA --dataset PopQA --n_docs 4 --quantile_num 0.5 --if_hierarchical_retrieval True --train_batch_size 6 --test_batch_size 6  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 >/dev/null 2>&1 &
+nohup  python run.py --ID 1_pop_6 --gpu 6 --RA_method Gate_MI_RA --dataset PopQA --n_docs 6 --quantile_num 0.5 --if_hierarchical_retrieval True --train_batch_size 6 --test_batch_size 6  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 >/dev/null 2>&1 &
+nohup  python run.py --ID 1_pop_8 --gpu 7 --RA_method Gate_MI_RA --dataset PopQA --n_docs 8 --quantile_num 0.5 --if_hierarchical_retrieval True --train_batch_size 6 --test_batch_size 6  --loss_list kl_soft+kl_hard+len_penalty --len_penalty_weight 1 >/dev/null 2>&1 &
+

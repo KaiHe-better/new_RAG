@@ -157,8 +157,9 @@ class My_Trainer:
             RA_batch_hallucination_cnt, RA_save_doc_num, RA_batch_loss, RA_batch_logit_log_softmax, pior_list \
                 = self.RA_input_loop(input_dict, labels, batch_answer)
 
+        old_doc_len =  sum([len(i) for i in self.LLM_tokenizer(retrieve_docs)["input_ids"]]) / len(retrieve_docs)
         return  RA_batch_input_list, RA_batch_pred, RA_batch_id_pred, RA_batch_hallucination_cnt, \
-            RA_batch_loss, RA_batch_logit_log_softmax, pior_list
+            RA_batch_loss, RA_batch_logit_log_softmax, pior_list, old_doc_len
     
     def Gate_RA(self, total_gate_res, total_new_lable,
                    data_item, labels, batch_answer, question,
@@ -176,7 +177,8 @@ class My_Trainer:
         RA_batch_input_list, RA_batch_pred, RA_batch_id_pred, \
             RA_batch_hallucination_cnt, RA_save_doc_num, RA_batch_loss, RA_batch_logit_log_softmax, tra_pior_list \
                 = self.RA_input_loop(input_dict, labels, batch_answer)
-        
+    
+
         raw_ques_emb_list = []
         raw_doc_emb_list = []
         for bag, raw_ques_emb, ques_att_mask in zip(bags_list, query_emb_list, attention_mask_list):
@@ -192,7 +194,7 @@ class My_Trainer:
                                                                              RA_batch_loss, raw_ques_emb_list, 
                                                                              raw_doc_emb_list, general_batch_loss_list,  
                                                                              RA_batch_logit_log_softmax, general_batch_logit_log_softmax)
-                                                      
+
         label_0_0 += new_label_count_list[0]
         label_0_1 += new_label_count_list[1]
         label_1_0 += new_label_count_list[2]
@@ -365,7 +367,7 @@ class My_Trainer:
                     break_cnt = 2 if self.args.test_code_flag else None
                     with torch.no_grad():
                         test_performce, test_performce_in, all_test_predictions, all_test_input_list, \
-                            all_test_answers, orginal_pior_list, r3_pior_list = self.test_proc(test_data_loader, step_num, break_cnt=break_cnt)
+                            all_test_answers, orginal_pior_list, r3_pior_list, old_doc_len,  new_doc_len = self.test_proc(test_data_loader, step_num, break_cnt=break_cnt)
 
                     if test_performce>=best_performce:
                         best_performce = test_performce
@@ -449,7 +451,7 @@ class My_Trainer:
                     = self.Gate_RA(total_gate_res, total_new_lable, data_item, labels, batch_answer, question)
                 
                 all_orginal_pior_list+=orginal_pior_list
-
+                
                 for gate_index, res in enumerate(gate_res):
                     if res ==1:
                         all_test_input_list+=RA_batch_input_list
@@ -517,8 +519,10 @@ class My_Trainer:
 
             elif self.args.RA_method == "Only_RA":
                 batch_input_list, batch_pred, batch_id_pred, batch_hallucination_cnt, \
-                    batch_loss, batch_logit_log_softmax, pior_list = self.Only_RA(question, data_item, labels, batch_answer)
+                    batch_loss, batch_logit_log_softmax, pior_list, old_doc_len = self.Only_RA(question, data_item, labels, batch_answer)
                 
+                total_old_doc_len += old_doc_len
+
                 all_r3_pior_list+=pior_list
 
                 all_test_input_list+=batch_input_list
@@ -571,7 +575,8 @@ class My_Trainer:
         # self.writer.add_scalar('Performance/test/recall', test_recall, eval_num )
         # self.writer.add_scalar('Performance/test/f1', test_f1, eval_num )
 
-        return record_performance, record_performance_in, all_test_predictions, all_test_input_list, all_test_answers, all_orginal_pior_list, all_r3_pior_list
+        return record_performance, record_performance_in, all_test_predictions, \
+            all_test_input_list, all_test_answers, all_orginal_pior_list, all_r3_pior_list, old_doc_len,  new_doc_len
 
          
     def pipeline_inference(self, used_prompt, input_dict, label, batch_answer, training_flag=False, record_flag=True):

@@ -8,17 +8,17 @@ parser = argparse.ArgumentParser()
 
 # system settings
 # parser.add_argument("--config", type=str, default="llama3-8b_USMLE_MI_RA.yaml", help="Path to the config file")
-parser.add_argument('--gpu', default="4", type=str, help='gpu device numbers')
+parser.add_argument('--gpu', default="7", type=str, help='gpu device numbers')
 parser.add_argument("--test_code_flag", type=bool, default=False, help="if retrieval augmented")
 parser.add_argument('--ID', type=str, default='0', help='run ID')
 parser.add_argument('--seed', default=42, help='trandom seed')
 parser.add_argument('--num_workers', default=48, type=int, help='data_loader_work')
 parser.add_argument("--loading_ckpt_path", type=str, default=None, help="loading_ckpt_path, None ")
 # In config
-parser.add_argument("--RA_method", type=str,  default="No_RA", choices=["No_RA", "Only_RA", "Gate_RA", "MI_RA", "Gate_MI_RA"], help="RA_method")
-parser.add_argument("--LLM", type=str, default="meta-llama/Meta-Llama-3-8B-Instruct", help="[meta-llama/Meta-Llama-3-8B-Instruct, meta-llama/Llama-2-7b-chat-hf]")  
+parser.add_argument("--RA_method", type=str,  default="Only_RA", choices=["No_RA", "Only_RA", "Gate_RA", "MI_RA", "Gate_MI_RA"], help="RA_method")
+parser.add_argument("--LLM", type=str, default="meta-llama/Llama-2-7b-chat-hf", help="[meta-llama/Meta-Llama-3-8B-Instruct, meta-llama/Llama-2-7b-chat-hf]")  
 # train
-parser.add_argument('--dataset', type=str, default="Hotpot", choices=["USMLE", "MedMCQA", "HEADQA", "PopQA", "Hotpot", "WebQA", "TriviaQA", "NQ", "PubmedQA"], help='train_file_path')
+parser.add_argument('--dataset', type=str, default="USMLE", choices=["USMLE", "MedMCQA", "HEADQA", "PopQA", "Hotpot", "WebQA", "TriviaQA", "NQ", "PubmedQA"], help='train_file_path')
 parser.add_argument('--train_batch_size', type=int, default=2, help='train_batch_size')
 parser.add_argument('--test_batch_size', type=int, default=2, help='train_batch_size')
 parser.add_argument('--accumulation_steps', type=int, default=1, help='accumulation_steps')
@@ -176,7 +176,8 @@ def main(args):
         # trainer.train_proc(train_data_loader, dev_data_loader)
         trainer.train_proc(train_data_loader, test_data_loader)
     elif args.RA_method in ["No_RA", "Only_RA"]:
-        test_performce, test_performce_in, all_test_predictions, all_test_input_list, all_test_answers, all_orginal_pior_list, all_r3_pior_list= trainer.test_proc(test_data_loader)  
+        test_performce, test_performce_in, all_test_predictions, all_test_input_list, \
+            all_test_answers, all_orginal_pior_list, all_r3_pior_list, old_doc_len,  new_doc_len= trainer.test_proc(test_data_loader)  
         
         test_result_logger = get_logger(args.dir_path, "test_result")
         for batch_pred, batch_input, batch_answer in zip(all_test_predictions, all_test_input_list, all_test_answers):
